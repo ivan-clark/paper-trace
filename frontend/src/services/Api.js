@@ -8,12 +8,10 @@ class Api {
     });
   }
 
-  static register(username, password, firstname, lastname) {
+  static register(username, password) {
     return Http.post("/api/Account/Register", {
       username: username,
-      password: password,
-      firstname: firstname,
-      lastname: lastname
+      password: password
     });
   }
 
@@ -23,6 +21,13 @@ class Api {
 
   static getUsers() {
     return Http.get("/api/User/GetUsers");
+  }
+
+  static createUser(firstname, lastname) {
+    return Http.post("/api/User/CreateUser", {
+      firstname: firstname,
+      lastname: lastname
+    });
   }
 
   static getDepartments() {

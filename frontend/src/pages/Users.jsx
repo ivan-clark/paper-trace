@@ -5,6 +5,9 @@ import Api from "../services/Api";
 const Users = () => {
   const [data, setData] = useState([]);
 
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+
   useEffect(() => {
     Api.getUsers().then((response) => {
       setData(response.data.data);
@@ -12,6 +15,14 @@ const Users = () => {
       console.log(error);
     });
   }, []);
+
+  const handleCreate = () => {
+    Api.createUser(firstName, lastName).then(()=>{
+      
+    }).catch(() =>{
+
+    });
+  }
 
   const columns = ["Department", "Name", "Role", "Email", "Date created", ""];
   const rows = data.map((d) => [d.department.name, `${d.firstName} ${d.lastName}`, d.role.name, d.email, d.createdDate, ""])
