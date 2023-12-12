@@ -2,16 +2,16 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Api from "./services/Api";
 import Http from "./services/Http";
-import Admin from "./pages/Admin";
 import Main from "./pages/Main";
 import Login from "./pages/Login";
 import Error from "./pages/Error";
-import Users from "./pages/Users";
-import UsersAdd from './components/layout/Admin/UsersAdd'
-import UsersEdit from './components/layout/Admin/UsersEdit'
-import Departments from "./pages/Departments";
-import DepartmentAdd from './components/layout/Admin/DepartmentAdd'
-import DepartmentEdit from './components/layout/Admin/DepartmentEdit'
+import Admin from "./pages/Admin/Admin";
+import Users from "./pages/Users/Users";
+import UsersAdd from './pages/Users/UsersAdd'
+import UsersEdit from './pages/Users/UsersEdit'
+import Departments from "./pages/Departments/Departments";
+import DepartmentAdd from './pages/Departments/DepartmentsAdd'
+import DepartmentEdit from './pages/Departments/DepartmentsEdit'
 
 const Protected = ({ isLoggedIn, children }) => {
   return isLoggedIn ? children : <Navigate to="/" replace />;

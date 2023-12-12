@@ -19,8 +19,8 @@ class Api {
     return Http.post("/api/Account/Validate");
   }
 
-  static getUsers() {
-    return Http.get("/api/User/GetUsers");
+  static getUsers(controller) {
+    return Http.get("/api/User/GetUsers", { signal: controller?.signal });
   }
 
   static createUser(firstname, lastname) {
@@ -30,8 +30,8 @@ class Api {
     });
   }
 
-  static getDepartments() {
-    return Http.get("/api/Department/GetDepartments");
+  static getDepartments(controller) {
+    return Http.get("/api/Department/GetDepartments", { signal: controller?.signal });
   }
 }
 

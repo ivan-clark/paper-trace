@@ -1,7 +1,7 @@
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import {sortedDepartments} from './Departments'
+import {sortedDepartments} from '../../components/layout/Admin/Departments'
 import {Link} from 'react-router-dom'
 import React, {useState} from 'react'
 

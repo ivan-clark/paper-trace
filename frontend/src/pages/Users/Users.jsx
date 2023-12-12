@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { CircularProgress } from '@mui/material';
-import Table from "../components/common/Table";
-import Api from "../services/Api";
+import Table from "../../components/common/Table";
+import Api from "../../services/Api";
 
 const Users = () => {
   const [data, setData] = useState([]);
@@ -10,15 +10,20 @@ const Users = () => {
   const [lastName, setLastName] = useState("");
 
   useEffect(() => {
+    let controller = new AbortController();
     setLoading(true)
 
-    Api.getUsers().then((response) => {
+    Api.getUsers(controller).then((response) => {
       setData(response.data.data);
     }).catch((error) => {
       console.log(error);
     }).finally(() => {
       setLoading(false)
     })
+
+    return () => {
+      controller.abort();
+    }
   }, []);
 
   const handleCreate = () => {

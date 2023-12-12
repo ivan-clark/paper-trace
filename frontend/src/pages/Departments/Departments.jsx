@@ -1,22 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { CircularProgress } from '@mui/material';
-import Table from "../components/common/Table";
-import Api from "../services/Api";
+import Table from "../../components/common/Table";
+import Api from "../../services/Api";
 
 const Departments = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let controller = new AbortController();
     setLoading(true)
 
-    Api.getDepartments().then((response) => {
+    Api.getDepartments(controller).then((response) => {
       setData(response.data.data);
     }).catch((error) => {
       console.log(error);
     }).finally(() => {
       setLoading(false)
     })
+
+    return () => {
+      controller.abort();
+    }
   }, []);
 
   const columns = ["Departments", "Department Head", "Date created", ""];

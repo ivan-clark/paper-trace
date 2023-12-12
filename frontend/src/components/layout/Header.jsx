@@ -2,21 +2,21 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DomainAddIcon from '@mui/icons-material/DomainAdd';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import LogoutIcon from '@mui/icons-material/Logout';
-import Logout from '../../pages/Logout'
 import React, {useState, useEffect, useRef} from "react";
 import {styles} from '../common/styles'
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import SearchIcon from '@mui/icons-material/Search';
 import MainLogo from "../../assets/MainLogo.svg";
 import Http from "../../services/Http";
 
 const Header = (props) => {
+  const navigate = useNavigate();
   const location = useLocation();
+
   const isUsersPath = location.pathname.includes('/users')
   const iseDeptPath = location.pathname.includes('/departments')
 
-  const { logout } = Logout()
   const [modal, setModal] = useState(false)
   const modalRef = useRef()
 
@@ -24,9 +24,13 @@ const Header = (props) => {
     setModal(!modal);
   }
 
-  const handleClick = () => {
-    logout()
-  }
+  const handleLogout = () => {
+    localStorage.clear();
+    props.setIsLoggedIn(false);
+    delete Http.defaults.headers.Authorization;
+    
+    navigate("/");
+  };
 
   useEffect(() => {
     let handler = (e) => {
@@ -118,7 +122,7 @@ const Header = (props) => {
                   View profile
                 </div>
               </div>
-              <div onClick={handleClick} className='logout'>
+              <div onClick={handleLogout} className='logout'>
                 <div>
                   <LogoutIcon style={styles.smallIcon}/>
                 </div>
