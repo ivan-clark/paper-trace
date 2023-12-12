@@ -14,7 +14,7 @@ const Sidebar = () => {
     {
       title: "Home",
       path: "/admin",
-      icon: <HomeOutlinedIcon/>,
+      icon: <HomeOutlinedIcon />,
       activeIcon: <HomeIcon/>,
       cName: "sidebar-text"
     },

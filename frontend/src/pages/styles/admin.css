@@ -1,0 +1,256 @@
+/*----------* ADMIN SECTION *----------*/
+
+/* users section */
+.area {
+  width: 100%;
+}
+.area table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.admin-header {
+  width: 100%;
+  border-radius: 6px 6px 0px 0px;
+}
+.admin-header th {
+  top: 0;
+  position: sticky;
+  font-size: 13px;
+  font-weight: normal;
+  padding: 1rem;
+  text-align: left;
+  border-bottom: solid 1px var(--border-bottom-onwhite);
+  background-color: var(--outlet-bg);
+}
+.admin-header td {
+  font-size: 14px;
+  font-weight: 500;
+  padding: 1rem;
+}
+.admin-header div {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 0.5em;
+}
+#user-and-pass span {
+  display: flex;
+}
+#edited-on-wrapper div {
+  font-size: 0.8em;
+  color: var(--secondary-font-color);
+}
+.admin-details-wrapper svg {
+  display: flex;
+}
+.admin-details-wrapper button, .admin-details-wrapper a {
+  background-color: transparent;
+  padding: 6px;
+  border-radius: 1em;
+  transition: background-color 0.1s;
+}
+.admin-details-wrapper button:hover, .admin-details-wrapper a:hover {
+  background-color: var(--on-white-darker-hover);
+}
+.admin-details-wrapper:hover {
+  background-color: var(--on-white-hover);
+}
+#role-text {
+  font-size: 0.8em;
+  color: var(--secondary-font-color);
+}
+#uclm-id-and-campus, #role-text {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+}
+#uclm-id-and-campus #campus-text, #role-text #campus-text {
+  font-size: 0.8em;
+  color: var(--secondary-font-color);
+}
+.timestamp div {
+  display: flex;
+  flex-direction: column;
+}
+.timestamp div span {
+  font-size: 0.8em;
+  color: var(--secondary-font-color);
+}
+.add-user-form-wrapper {
+  width: 100%;
+}
+.add-text-and-back-icon {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1em;
+}
+.add-text-and-back-icon a {
+  display: flex;
+  padding: 12px;
+}
+.add-header-content {
+  padding-inline: 5em;
+  padding-top: 1em;
+}
+.line-header {
+  border-bottom: solid 1px var(--on-white-darker-hover);
+}
+.two-input-inline {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+}
+.two-input-inline .input-flex-one {
+  width: 300px;
+  flex-grow: 1;
+}
+.two-input-inline .input-flex-two {
+  flex-grow: 2;
+}
+.two-input-inline div {
+  flex-grow: 1;
+}
+.edit-form-main-wrapper {
+  width: 100%;
+}
+.edit-form-main-wrapper .line-header {
+  height: 1px;
+  border-bottom: solid 1px var(--on-white-darker-hover);
+}
+.edit-form-main-wrapper #role-text, .edit-form-main-wrapper .edited-time {
+  font-size: 0.8em;
+  white-space: nowrap;
+}
+.edit-form-main-wrapper .edited-time {
+  display: flex;
+  flex-direction: column;
+}
+.edit-form-main-wrapper .edit-form-wrapper {
+  margin-top: 1em;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.edit-form-main-wrapper .edit-form-wrapper .header-content {
+  padding-inline: 5em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.edit-form-main-wrapper .edit-form-wrapper .header-content #dept-head-and-role {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4em;
+}
+.edit-form-main-wrapper .edit-form-wrapper .header-content h3 {
+  margin-right: 4em;
+}
+.edit-form-main-wrapper .edit-form-wrapper .header-content .edit-text-and-back-icon {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+.edit-form-main-wrapper a {
+  display: flex;
+  padding: 12px;
+  border-radius: 2em;
+}
+.edit-content-wrapper {
+  padding-top: 2em;
+  padding-inline: 5em;
+}
+.edit-content-wrapper .edit-content-border {
+  border: solid 1px #d8d8d8;
+  padding-block: 2em;
+  padding-inline: 1.6em;
+  border-radius: 6px;
+}
+.edit-content input {
+  font-family: 'Inter', sans-serif;
+  outline: solid 1px var(--on-white-darker-hover);
+  border-radius: 6px;
+  padding: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-block: 4px;
+}
+label {
+  font-size: 0.9em;
+}
+.admin-edit-buttons {
+  display: flex;
+  margin-top: 1em;
+  align-items: center;
+  justify-content: end;
+  gap: 1em;
+}
+button, a {
+  padding: 12px 24px 12px 24px;
+  border-radius: 4em;
+  font-weight: 500;
+}
+.save {
+  color: white;
+  background-color: var(--main-btn-color);
+  transition: background-color 0.1s;
+}
+.save:hover {
+  background-color: var(--main-btn-hover);
+}
+a {
+  color: var(--main-btn-color);
+  background-color: transparent;
+  transition: background-color 0.1s;
+}
+a:hover {
+  background-color: var(--main-bg-color);
+}
+
+tbody tr {
+  position: relative;
+  transition: background-color 0.12s;
+}
+
+tbody tr td {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+tbody tr:hover {
+  /* box-shadow: 0px 2px 3px 2px rgba(0, 0, 0, 0.2); */
+  background-color: var(--on-white-hover);
+}
+
+#absolute {
+  margin-right: 1em;
+}
+
+tbody tr:hover #absolute {
+  visibility: visible;
+}
+
+.td-tooltip-wrapper .tooltip-bg .edit,
+.td-tooltip-wrapper .tooltip-bg .delete {
+  padding: 12px;
+  transition: background-color 0.12s;
+}
+
+.edit:hover,
+.delete:hover {
+  background-color: var(--on-white-darker-hover);
+}
+ 
+.select {
+  display: flex;
+  flex-direction: column;
+}
+
+.select label {
+  margin-bottom: .4em;
+}
+
+/* departments section */
