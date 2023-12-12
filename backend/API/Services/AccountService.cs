@@ -3,6 +3,7 @@ using API.Repositories;
 using DataAccess.Entities;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 
 namespace API.Services
@@ -42,11 +43,14 @@ namespace API.Services
             }
         }
 
-        public string GenerateJSONWebToken()
+        public string GenerateJSONWebToken(int userId)
         {
+            var claims = new[] { new Claim("id", userId.ToString()) };
+
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_KEY")!));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-            var token = new JwtSecurityToken(expires: DateTime.Now.AddMinutes(120), signingCredentials: credentials);
+
+            var token = new JwtSecurityToken(claims: claims, expires: DateTime.Now.AddMinutes(120), signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
