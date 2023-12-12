@@ -1,6 +1,7 @@
 ﻿using API.Models;
 using API.Repositories;
 using API.Repositories.Data;
+using DataAccess.Entities;
 
 namespace API.Services
 {
@@ -15,6 +16,16 @@ namespace API.Services
             _userRepository = userRepository;
             _roleRepository = roleRepository;
             _departmentRepository = departmentRepository;
+        }
+
+        public UserModel GetUserById(int id)
+        {
+            var user = _userRepository.GetUserById(id);
+            
+            return new UserModel { 
+                Id = user?.Id ?? 0,
+                Role = new Role { Id = user?.RoleId ?? 0 }
+            };
         }
 
         public List<UserModel> GetUsers()
