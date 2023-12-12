@@ -3,6 +3,7 @@
 /* users section */
 .area {
   width: 100%;
+  position: relative;
 }
 .area table {
   width: 100%;

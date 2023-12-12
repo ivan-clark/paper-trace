@@ -15,5 +15,5 @@ export const styles = {
   small: {
     width: 18,
     height: 18
-  }
+  },
 }

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { CircularProgress } from '@mui/material';
+import Button from '@mui/material/Button';
 import { useNavigate } from "react-router-dom";
 import Link from "@mui/material/Link";
 import MainLogo from "../assets/MainLogo.svg";
@@ -82,11 +83,16 @@ const Login = (props) => {
             </div>
           </div>
           <div id="button-link-wrapper">
-            <button
-              disabled={isLoading}
-              id="login-button">Login
-            </button>
-            <Link to="/forgot-password" >Forgot password?</Link>
+          <Button
+            disabled={isLoading}
+            onClick={handleLogin}
+            variant="contained"
+            color="primary"
+            id="login-button"
+          >
+            {isLoading ? <CircularProgress size={20} color="inherit" /> : 'Login'}
+          </Button>
+            <Link className="forgotPassLink" to="/forgot-password" >Forgot password?</Link>
           </div>
         </div>
       </div>

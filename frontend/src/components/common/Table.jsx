@@ -8,7 +8,6 @@ import React from "react";
 const Table = (props) => {
   const location = useLocation();
   const isUsersPath = location.pathname.includes('/users')
-  const iseDeptPath = location.pathname.includes('/departments')
 
   const handleDelete = () => {
     

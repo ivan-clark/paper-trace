@@ -211,6 +211,14 @@
  #form-container #form-wrapper #button-link-wrapper #login-button:hover {
 	 background-color: #204682;
 }
+.forgotPassLink:hover {
+	background-color: transparent;
+}
+.forgotPassLink {
+	padding: 0;
+	cursor: pointer;
+}
+
 /*----------* forgotPassword-section *----------*/
  #form-wrapper {
 	 display: flex;
@@ -447,6 +455,13 @@
 	 white-space: nowrap;
 }
 /*----------* MAIN LAYOUT *----------*/
+	.circularProgress {
+		position: absolute;
+    top: 50%;
+    left: 50%; 
+    transform: translate(-50%, -50%);
+	}
+
  .main-wrapper {
 	 height: 100vh;
 	 display: flex;

@@ -1,19 +1,24 @@
 import React, { useEffect, useState } from "react";
+import { CircularProgress } from '@mui/material';
 import Table from "../components/common/Table";
 import Api from "../services/Api";
 
 const Users = () => {
   const [data, setData] = useState([]);
-
+  const [loading, setLoading] = useState(true);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
 
   useEffect(() => {
+    setLoading(true)
+
     Api.getUsers().then((response) => {
       setData(response.data.data);
     }).catch((error) => {
       console.log(error);
-    });
+    }).finally(() => {
+      setLoading(false)
+    })
   }, []);
 
   const handleCreate = () => {
@@ -30,7 +35,12 @@ const Users = () => {
   return (
     <div className='area'>
       <div className="admin-header">
-        <Table columns={columns} rows={rows} />
+        {loading && (
+        <div className="circularProgress">
+          <CircularProgress />
+        </div>
+         )}
+         <Table columns={columns} rows={rows} />
       </div>
     </div>
   );
