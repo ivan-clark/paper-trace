@@ -7,7 +7,11 @@ import Main from "./pages/Main";
 import Login from "./pages/Login";
 import Error from "./pages/Error";
 import Users from "./pages/Users";
+import UsersAdd from './components/layout/Admin/UsersAdd'
+import UsersEdit from './components/layout/Admin/UsersEdit'
 import Departments from "./pages/Departments";
+import DepartmentAdd from './components/layout/Admin/DepartmentAdd'
+import DepartmentEdit from './components/layout/Admin/DepartmentEdit'
 
 const Protected = ({ isLoggedIn, children }) => {
   return isLoggedIn ? children : <Navigate to="/" replace />;
@@ -37,7 +41,13 @@ const App = () => {
         <Route element={<Protected isLoggedIn={isLoggedIn}><Main setIsLoggedIn={setIsLoggedIn} /></Protected>}>
           <Route path="admin" element={<Admin/>} />
           <Route path="users" element={<Users/>} />
+          <Route path="users/add" element={<UsersAdd/>} />
+          {/* need to add /:id for edit */}
+          <Route path="users/edit/" element={<UsersEdit/>} />
           <Route path="departments" element={<Departments/>} />
+          <Route path="departments/add" element={<DepartmentAdd/>} />
+          {/* need to add /:id for edit */}
+          <Route path="departments/edit/" element={<DepartmentEdit/>} />
         </Route>
         <Route path="*" element={<Error />} />
       </Routes>
