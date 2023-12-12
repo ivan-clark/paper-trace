@@ -33,13 +33,24 @@ const Login = (props) => {
           delete Http.defaults.headers.Authorization;
           
           // reassign storage
-          localStorage.setItem("id", response.data.data.userId);
           localStorage.setItem("token", response.data.data.token);
           Http.defaults.headers.Authorization = `Bearer ${response.data.data.token}`;
           
           // set logged in
+          const userId = response.data.data.userId;
+          const roleId = response.data.data.roleId;
+
           props.setIsLoggedIn(true);
-          navigate("admin");
+          props.setUserId(userId);
+          props.setRoleId(roleId);
+
+          if (roleId == 1)
+            navigate("admin");
+          else if (roleId == 2)
+            navigate("admin");
+          else
+            navigate("admin");
+          
         } else {
           setErrorMessage("Username or password is incorrect");
           return false;

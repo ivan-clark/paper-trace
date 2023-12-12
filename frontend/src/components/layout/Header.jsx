@@ -122,11 +122,11 @@ const Header = (props) => {
                   View profile
                 </div>
               </div>
-              <div onClick={handleLogout} className='logout'>
+              <div className='logout'>
                 <div>
                   <LogoutIcon style={styles.smallIcon}/>
                 </div>
-                <div>
+                <div onClick={() => handleLogout()} >
                   Sign out
                 </div>
               </div>

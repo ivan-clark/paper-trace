@@ -7,11 +7,11 @@ const Main = (props) => {
   return (
     <div className="main-wrapper">
       <div>
-        <Header setIsLoggedIn={props.setIsLoggedIn} />
+        <Header setIsLoggedIn={props.setIsLoggedIn} roleId={props.roleId}/>
       </div>
       <div className="sub-wrapper">
         <div className="sidebars">
-          <Sidebar />
+          <Sidebar roleId={props.roleId} />
         </div>
         <div className="content">
           <Outlet />

@@ -7,7 +7,7 @@ import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import MeetingRoomOutlinedIcon from '@mui/icons-material/MeetingRoomOutlined';
 
-const Sidebar = () => {
+const Sidebar = (props) => {
   const location = useLocation();
 
   const navItems = [
@@ -18,20 +18,24 @@ const Sidebar = () => {
       activeIcon: <HomeIcon/>,
       cName: "sidebar-text"
     },
-    {
-      title: "Users",
-      path: "/users",
-      icon: <PersonOutlineIcon/>,
-      activeIcon: <PersonIcon/>,
-      cName: "sidebar-text"
-    },
-    {
-      title: "Departments",
-      path: "/departments",
-      icon: <MeetingRoomOutlinedIcon/>,
-      activeIcon: <MeetingRoomIcon/>,
-      cName: "sidebar-text"
-    }
+    ...(props.roleId !==3 ? [
+      {
+        title: "Users",
+        path: "/users",
+        icon: <PersonOutlineIcon/>,
+        activeIcon: <PersonIcon/>,
+        cName: "sidebar-text"
+      }    
+    ] : []),
+    ...(props.roleId === 1 ? [
+      {
+        title: "Departments",
+        path: "/departments",
+        icon: <MeetingRoomOutlinedIcon/>,
+        activeIcon: <MeetingRoomIcon/>,
+        cName: "sidebar-text"
+      }
+    ] : [])
   ];
 
   const isActive = (item) => {

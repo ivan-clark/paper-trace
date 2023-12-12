@@ -20,10 +20,14 @@ const Protected = ({ isLoggedIn, children }) => {
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState();
+  const [roleId, setRoleId] = useState();
 
   useEffect(() => {
-    Api.validate().then(() => {
+    Api.validate().then((response) => {
       setIsLoggedIn(true);
+      setUserId(response.data.data.userId);
+      setRoleId(response.data.data.roleId);
       setIsLoading(false);
     }).catch(() => {
       setIsLoggedIn(false);
@@ -37,17 +41,23 @@ const App = () => {
     !isLoading &&
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Login setIsLoggedIn={setIsLoggedIn}/>} />
-        <Route element={<Protected isLoggedIn={isLoggedIn}><Main setIsLoggedIn={setIsLoggedIn} /></Protected>}>
+        <Route path="/" element={<Login setIsLoggedIn={setIsLoggedIn} setUserId={setUserId} setRoleId={setRoleId}/>} />
+        <Route element={<Protected isLoggedIn={isLoggedIn}><Main setIsLoggedIn={setIsLoggedIn} roleId={roleId} /></Protected>}>
           <Route path="admin" element={<Admin/>} />
-          <Route path="users" element={<Users/>} />
-          <Route path="users/add" element={<UsersAdd/>} />
-          {/* need to add /:id for edit */}
-          <Route path="users/edit/" element={<UsersEdit/>} />
-          <Route path="departments" element={<Departments/>} />
-          <Route path="departments/add" element={<DepartmentAdd/>} />
-          {/* need to add /:id for edit */}
-          <Route path="departments/edit/" element={<DepartmentEdit/>} />
+          {roleId !== 3 && (
+            <>
+              <Route path="users" element={<Users />} />
+              <Route path="users/add" element={<UsersAdd />} />
+              <Route path="users/edit" element={<UsersEdit />} />
+            </>
+          )}
+          {roleId === 1 && (
+            <>
+              <Route path="departments" element={<Departments />} />
+              <Route path="departments/add" element={<DepartmentAdd />} />
+              <Route path="departments/edit" element={<DepartmentEdit />} />
+            </>
+          )}
         </Route>
         <Route path="*" element={<Error />} />
       </Routes>
