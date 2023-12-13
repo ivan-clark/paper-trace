@@ -53,5 +53,15 @@ namespace API.Services
         {
             _userRepository.CreateUser(model);
         }
+
+        public void DeleteUser(int userId) 
+        {
+            _userRepository.DeleteUser(userId);
+        }
+
+        public void UpdateUser(UserModel model)
+        {
+            _userRepository.UpdateUser(model);
+        }
     }
 }

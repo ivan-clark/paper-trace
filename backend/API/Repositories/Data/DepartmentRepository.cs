@@ -1,4 +1,5 @@
-﻿using DataAccess.Entities;
+﻿using API.Models;
+using DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Repositories.Data
@@ -20,6 +21,40 @@ namespace API.Repositories.Data
         public List<Department> GetDepartments()
         {
             return _dbcontext.Departments.ToList();
+        }
+
+        public void DeleteDepartment(int departmentId)
+        {
+            var department = new Department { Id = departmentId };
+
+            _dbcontext.Departments.Attach(department);
+            _dbcontext.Departments.Remove(department);
+            _dbcontext.SaveChanges();
+        }
+
+        public void CreateDepartment(DepartmentModel model)
+        {
+            var department = new Department
+            {
+                Name = model.Name,
+                HeadId = model.Head?.Id
+            };
+
+            _dbcontext.Departments.Add(department);
+            _dbcontext.SaveChanges();
+        }
+
+        public void UpdateDepartment(DepartmentModel model)
+        {
+            var department = _dbcontext.Departments.SingleOrDefault(u => u.Id == model.Id);
+
+            if (department != null)
+            {
+                department.Name = model.Name;
+                department.HeadId = model.Head?.Id;
+
+                _dbcontext.SaveChanges();
+            }
         }
     }
 }
