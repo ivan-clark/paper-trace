@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { CircularProgress } from '@mui/material';
+import Button from '@mui/material/Button';
 import { useNavigate } from "react-router-dom";
 import Link from "@mui/material/Link";
 import MainLogo from "../assets/MainLogo.svg";
@@ -31,13 +33,24 @@ const Login = (props) => {
           delete Http.defaults.headers.Authorization;
           
           // reassign storage
-          localStorage.setItem("id", response.data.data.userId);
           localStorage.setItem("token", response.data.data.token);
           Http.defaults.headers.Authorization = `Bearer ${response.data.data.token}`;
           
           // set logged in
+          const userId = response.data.data.userId;
+          const roleId = response.data.data.roleId;
+
           props.setIsLoggedIn(true);
-          navigate("admin");
+          props.setUserId(userId);
+          props.setRoleId(roleId);
+
+          if (roleId === 1)
+            navigate("users");
+          else if (roleId === 2)
+            navigate("inbox");
+          else
+            navigate("inbox");
+          
         } else {
           setErrorMessage("Username or password is incorrect");
           return false;
@@ -81,11 +94,16 @@ const Login = (props) => {
             </div>
           </div>
           <div id="button-link-wrapper">
-            <button
-              disabled={isLoading}
-              id="login-button">Login
-            </button>
-            <Link to="/forgot-password" >Forgot password?</Link>
+          <Button
+            disabled={isLoading}
+            onClick={handleLogin}
+            variant="contained"
+            color="primary"
+            id="login-button"
+          >
+            {isLoading ? <CircularProgress size={20} color="inherit" /> : 'Login'}
+          </Button>
+            <Link className="forgotPassLink" to="/forgot-password" >Forgot password?</Link>
           </div>
         </div>
       </div>

@@ -13,10 +13,12 @@ namespace API.Controllers
     public class UserController : ControllerBase
     {
         private readonly UserService _userService;
+        private readonly AccountService _accountService;
 
-        public UserController(UserService userService)
+        public UserController(UserService userService, AccountService accountService)
         {
             _userService = userService;
+            _accountService = accountService;
         }
 
         [HttpGet]
@@ -37,7 +39,44 @@ namespace API.Controllers
         {
             try
             {
+                if (model.SendEmail ?? false)
+                {
+                    var header = HttpContext.Request.Headers["Authorization"].ToString();
+                    var id = _accountService.GetUserIdFromToken(header);
+                    model.Id = id;
+                }
+                
                 _userService.CreateUser(model);
+                return new JsonResponse().Success();
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
+
+        [HttpPost]
+        public JsonResponse DeleteUser(UserModel model)
+        {
+            try
+            {
+                _userService.DeleteUser(model.Id);
+                return new JsonResponse().Success();
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
+
+        [HttpPost]
+        public JsonResponse UpdateUser(UserModel model)
+        {
+            try
+            {
+                _userService.UpdateUser(model);
                 return new JsonResponse().Success();
             }
             catch (Exception ex)

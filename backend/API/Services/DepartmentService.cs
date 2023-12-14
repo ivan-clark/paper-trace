@@ -34,5 +34,20 @@ namespace API.Services
 
             return result;
         }
+
+        public void CreateDepartment(DepartmentModel model)
+        {
+            _departmentRepository.CreateDepartment(model);
+        }
+
+        public void DeleteDepartment(int departmentID)
+        {
+            _departmentRepository.DeleteDepartment(departmentID);
+        }
+
+        public void UpdateDepartment(DepartmentModel model)
+        {
+            _departmentRepository.UpdateDepartment(model);
+        }
     }
 }

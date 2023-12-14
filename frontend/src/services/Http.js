@@ -5,6 +5,7 @@ class Http {
 
   static headers = {
     "Content-Type": "application/json",
+    //"ngrok-skip-browser-warning": "true",
     ...(Http.token && { "Authorization": `Bearer ${Http.token}` }),
   };
 

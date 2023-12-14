@@ -8,12 +8,10 @@ class Api {
     });
   }
 
-  static register(username, password, firstname, lastname) {
+  static register(username, password) {
     return Http.post("/api/Account/Register", {
       username: username,
-      password: password,
-      firstname: firstname,
-      lastname: lastname
+      password: password
     });
   }
 
@@ -21,12 +19,20 @@ class Api {
     return Http.post("/api/Account/Validate");
   }
 
-  static getUsers() {
-    return Http.get("/api/User/GetUsers");
+  static getUsers(controller) {
+    return Http.get("/api/User/GetUsers", { signal: controller?.signal });
   }
 
-  static getDepartments() {
-    return Http.get("/api/Department/GetDepartments");
+  static createUser(model) {
+    return Http.post("/api/User/CreateUser", model);
+  }
+
+  static deleteUser(model) {
+    return Http.post("/api/User/DeleteUser", model);
+  }
+
+  static getDepartments(controller) {
+    return Http.get("/api/Department/GetDepartments", { signal: controller?.signal });
   }
 }
 

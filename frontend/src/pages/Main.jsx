@@ -1,24 +1,31 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Header from "../components/layout/Header";
 import Sidebar from "../components/layout/Sidebar";
 
 const Main = (props) => {
+  const location = useLocation()
+
+  const isComposePath = location.pathname.includes('/compose')
+
   return (
     <div className="main-wrapper">
       <div>
-        <Header setIsLoggedIn={props.setIsLoggedIn} />
+        <Header setIsLoggedIn={props.setIsLoggedIn} roleId={props.roleId}/>
       </div>
       <div className="sub-wrapper">
         <div className="sidebars">
-          <Sidebar />
+          <Sidebar roleId={props.roleId} />
         </div>
-        <div className="content">
+        {isComposePath ? (
           <Outlet />
-        </div>
+          ) : (
+          <div className="content">
+            <Outlet />
+          </div>
+        )}
       </div>
     </div>
-
   );
 }
 

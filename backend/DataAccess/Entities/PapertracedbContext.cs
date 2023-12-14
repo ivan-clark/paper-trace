@@ -14,6 +14,12 @@ public partial class PapertracedbContext : DbContext
 
     public virtual DbSet<Role> Roles { get; set; }
 
+    public virtual DbSet<Status> Statuses { get; set; }
+
+    public virtual DbSet<Timeline> Timelines { get; set; }
+
+    public virtual DbSet<Transaction> Transactions { get; set; }
+
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -67,6 +73,52 @@ public partial class PapertracedbContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(45)
                 .HasColumnName("name");
+        });
+
+        modelBuilder.Entity<Status>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("status");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Description)
+                .HasMaxLength(45)
+                .HasColumnName("description");
+            entity.Property(e => e.Name)
+                .HasMaxLength(45)
+                .HasColumnName("name");
+        });
+
+        modelBuilder.Entity<Timeline>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("timeline");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.CreatedDate)
+                .HasColumnType("datetime")
+                .HasColumnName("createdDate");
+            entity.Property(e => e.StatusId).HasColumnName("statusId");
+            entity.Property(e => e.TransactionId).HasColumnName("transactionId");
+        });
+
+        modelBuilder.Entity<Transaction>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("transaction");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Message)
+                .HasMaxLength(45)
+                .HasColumnName("message");
+            entity.Property(e => e.RecepientId).HasColumnName("recepientId");
+            entity.Property(e => e.SenderId).HasColumnName("senderId");
+            entity.Property(e => e.Subject)
+                .HasMaxLength(45)
+                .HasColumnName("subject");
         });
 
         modelBuilder.Entity<User>(entity =>

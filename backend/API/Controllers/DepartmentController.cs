@@ -1,4 +1,5 @@
-﻿using API.Services;
+﻿using API.Models;
+using API.Services;
 using API.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -28,6 +29,51 @@ namespace API.Controllers
             catch (Exception ex)
             {
                 return new JsonResponse().Error().Msg(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public JsonResponse CreateDepartment(DepartmentModel model)
+        {
+            try
+            {
+                _departmentService.CreateDepartment(model);
+                return new JsonResponse().Success();
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
+
+        [HttpPost]
+        public JsonResponse DeleteDepartment(DepartmentModel model)
+        {
+            try
+            {
+                _departmentService.DeleteDepartment(model.Id);
+                return new JsonResponse().Success();
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
+
+        [HttpPost]
+        public JsonResponse UpdateDepartment(DepartmentModel model)
+        {
+            try
+            {
+                _departmentService.UpdateDepartment(model);
+                return new JsonResponse().Success();
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
             }
         }
     }
