@@ -18,7 +18,9 @@ namespace API.Repositories.Data
                 SenderId = model.Sender?.Id,
                 RecepientId = model.Recepient?.Id,
                 Subject = model.Subject,
-                Message = model.Message   
+                Message = model.Message,
+                StatusId = model.Status?.Id,
+                ModifiedDate = DateTime.Now
             };
 
             _dbcontext.Transactions.Add(transaction);

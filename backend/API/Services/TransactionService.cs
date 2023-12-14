@@ -19,13 +19,20 @@ namespace API.Services
 
         public void CreateTransaction(TransactionModel model)
         {
+            model.Status = new DataAccess.Entities.Status { Id = 1 };
             _transactionRepository.CreateTransaction(model);
         }
 
-        public List<TransactionModel> GetTransactions()
+        public List<TransactionModel> GetTransactions(int? senderId, int? recepientId, int? statusId)
         {
             var result = new List<TransactionModel>();
-            var transactions = _transactionRepository.GetTransactions();
+            var transactions = _transactionRepository.GetTransactions().Where(t => t.StatusId == statusId);
+
+            if (senderId != null)
+                transactions = transactions.Where(t => t.SenderId == senderId).ToList();
+
+            if (recepientId != null)
+                transactions = transactions.Where(t => t.RecepientId == recepientId).ToList();
 
             foreach (var transaction in transactions)
             {
@@ -35,7 +42,8 @@ namespace API.Services
                     Sender = _userRepository.GetUserById(transaction.SenderId ?? 0),
                     Recepient = _departmentRepository.GetDepartmentById(transaction.RecepientId ?? 0),
                     Subject = transaction.Subject,
-                    Message = transaction.Message
+                    Message = transaction.Message,
+                    ModifiedDate = transaction.ModifiedDate
                 });
             }
 

@@ -114,8 +114,12 @@ public partial class PapertracedbContext : DbContext
             entity.Property(e => e.Message)
                 .HasMaxLength(45)
                 .HasColumnName("message");
+            entity.Property(e => e.ModifiedDate)
+                .HasColumnType("datetime")
+                .HasColumnName("modifiedDate");
             entity.Property(e => e.RecepientId).HasColumnName("recepientId");
             entity.Property(e => e.SenderId).HasColumnName("senderId");
+            entity.Property(e => e.StatusId).HasColumnName("statusId");
             entity.Property(e => e.Subject)
                 .HasMaxLength(45)
                 .HasColumnName("subject");

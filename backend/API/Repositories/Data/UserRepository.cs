@@ -38,7 +38,8 @@ namespace API.Repositories.Data
                 Lastname = model.LastName,
                 Email = model.Email,
                 DepartmentId = model.Department?.Id,
-                RoleId = model.Role?.Id
+                RoleId = model.Role?.Id,
+                CreatedDate = DateTime.Now
             };
 
             _dbcontext.Users.Add(user);

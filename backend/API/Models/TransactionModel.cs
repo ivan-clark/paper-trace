@@ -13,5 +13,9 @@ namespace API.Models
         public string? Subject { get; set; }
 
         public string? Message { get; set; }
+
+        public Status? Status { get; set; }
+
+        public DateTime? ModifiedDate { get; set; }
     }
 }

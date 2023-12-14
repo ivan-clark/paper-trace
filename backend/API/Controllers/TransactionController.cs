@@ -21,11 +21,12 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public JsonResponse GetTransactions()
+        public JsonResponse GetTransactions(int? senderId, int? recepientId, int? statusId)
         {
             try
             {
-                return new JsonResponse().Success().For(_transactionService.GetTransactions());
+                var transactions = _transactionService.GetTransactions(senderId, recepientId, statusId);
+                return new JsonResponse().Success().For(transactions);
             }
             catch (Exception ex)
             {
