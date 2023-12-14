@@ -22,6 +22,19 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        public JsonResponse GetUserbyId(UserModel model)
+        {
+            try
+            {
+                return new JsonResponse().Success().For(_userService.GetUserById(model.Id));
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+            }
+        }
+
+        [HttpGet]
         public JsonResponse GetUsers()
         {
             try
