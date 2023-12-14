@@ -1,14 +1,55 @@
-import {Link} from 'react-router-dom'
-import TextField from '@mui/material/TextField';
+import { Link, useNavigate } from 'react-router-dom'
 import MenuItem from '@mui/material/MenuItem';
 import SendIcon from '@mui/icons-material/Send';
-import InputLabel from '@mui/material/InputLabel';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './compose.scss'
+import Api from "../../services/Api";
+import { Select } from "@mui/material";
 
-function Compose() {
+const Compose = (props) => {
+  const controller = new AbortController();
+
+  const [loading, setLoading] = useState(true);
+  const [departments, setDepartments] = useState([]);
+
+  const [department, setDepartment] = useState(0);
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setLoading(true);
+    getDepartments(controller);
+
+    return () => {
+      controller.abort();
+    }
+  }, []);
+
+  const getDepartments = () => {
+    Api.getDepartments(controller).then((response) => {
+      setDepartments(response.data.data);
+    }).catch((error) => {
+      console.log(error);
+    }).finally(() => {
+      setLoading(false);
+    })
+  };
+
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    const model = {
+      sender: {id: props.user.id},
+      recepient: {id: department},
+      subject: subject,
+      message: message
+    };
+    Api.createTransaction(model).then(()=>{
+      alert("Successfully sent");
+    }).catch(()=>{
+
+    })
   }
 
   return (
@@ -18,30 +59,29 @@ function Compose() {
           <div className="send-message-header">
             <span>New Message</span>
           </div>
-        </div>  
+        </div>
         <div className="send-body-wrapper">
           <div className="recipient-and-subject">
-            <TextField 
-              select
+            <Select
               label="To:"
-              size='small'
               className='compose-select'
-              labelId="test-select-label"
-              // value={deptAssigned}
-              // onChange={handleChange}
-              >
-                {[].map((department) => (
-                  <MenuItem key={department.value} value={department.value}>
-                    {department.label}
-                  </MenuItem>
-                ))}
-            </TextField>
-            <input 
-              className='subject' 
-              placeholder='Subject:'/>
+              value={department}
+              onChange={(e) => setDepartment(e.target.value)}
+            >
+              {departments.map((dept) => (
+                <MenuItem key={dept.id} value={dept.id}>
+                  {dept.name}
+                </MenuItem>
+              ))}
+            </Select>
+            <input
+              className='subject'
+              placeholder='Subject:'
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)} />
           </div>
           <div className="body-body">
-            <textarea />
+            <textarea value={message} onChange={(e) => setMessage(e.target.value)}/>
           </div>
           <div className="send-button-wrapper">
             <button className='cancel'>
@@ -51,15 +91,15 @@ function Compose() {
             </button>
             <button className='send-doc-btn'>
               <span>
-                <SendIcon fontSize='small'/> 
+                <SendIcon fontSize='small' />
                 Send
               </span>
             </button>
           </div>
         </div>
-      </div>  
+      </div>
     </form>
-)
+  )
 }
 
 export default Compose

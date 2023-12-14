@@ -23,6 +23,10 @@ class Api {
     return Http.get("/api/User/GetUsers", { signal: controller?.signal });
   }
 
+  static getUserById(id, controller) {
+    return Http.get(`/api/User/GetUserById?id=${id}`, { signal: controller?.signal });
+  }
+
   static createUser(model) {
     return Http.post("/api/User/CreateUser", model);
   }
@@ -49,6 +53,22 @@ class Api {
 
   static updateDepartment(model) {
     return Http.post("/api/Department/UpdateDepartment", model);
+  }
+
+  static getTransactions(senderId, recepientId, statusId, controller) {
+    const params = new URLSearchParams();
+
+    senderId && params.append('senderId', senderId);
+    recepientId && params.append('recepientId', recepientId);
+    statusId && params.append('statusId', statusId);
+  
+    const url = `/api/Transaction/GetTransactions?${params.toString()}`;
+
+    return Http.get(url, { signal: controller?.signal });
+  }
+
+  static createTransaction(model) {
+    return Http.post("/api/Transaction/CreateTransaction", model);
   }
 }
 

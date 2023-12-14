@@ -1,11 +1,32 @@
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import Checkbox from '@mui/material/Checkbox';
-import Tooltip from '@mui/material/Tooltip';
-import { Link } from 'react-router-dom';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import Api from "../../services/Api";
 
-function InboxOutgoing() {  
+function InboxOutgoing(props) {
+  const controller = new AbortController();
   const [isChecked, setIsChecked] = useState(false)
+  const [loading, setLoading] = useState(true);
+
+  const [transactions, setTransactions] = useState([]);
+
+  useEffect(() => {
+    setLoading(true);
+    getTransactions(controller);
+
+    return () => {
+      controller.abort();
+    }
+  }, []);
+
+  const getTransactions = () => {
+    Api.getTransactions(props.userId, null, 1, controller).then((response) => {
+      console.log(response.data.data);
+      setTransactions(response.data.data);
+    }).catch((error) => {
+      console.log(error);
+    }).finally(() => {
+      setLoading(false);
+    })
+  };
 
   const handleChecked = () => {
     setIsChecked(!isChecked)
@@ -17,42 +38,32 @@ function InboxOutgoing() {
 
   return (
     <>
-    <table>
-      <tbody>
-        <tr className={`tbl-row ${isChecked ? 'checked' : ''}`}>
-          <td>
-            <Checkbox onChange={handleChecked}/>
-          </td>
-          <td className='sender'>
-            <div className='text'>
-              <span><strong>Student Affairs Office</strong></span>
-            </div>
-          </td>
-          <td id='td-spacer'></td>
-          <td className='title-and-message'>
-            <div>
-              <span className='title'>Title - </span>
-              <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis et velit, quis earum id optio tenetur. Repellendus necessitatibus id sapiente culpa velit dolorum nostrum. Adipisci nobis necessitatibus quo quaerat tempora?</span>
-            </div>
-          </td>
-          <td id='td-spacer'></td>
-          <td className='date'>
-            <div>
-              <span><strong>Nov 14</strong></span>
-            </div>
-          </td>
-          <div className={`inbox-tr ${isChecked ? 'checked' : ''}`}>
-            <Tooltip title='Delete'>
-              <button onClick={handleDelete} className={`delete inbox-delete ${isChecked ? 'checked' : ''}`}>
-                <div>
-                  <DeleteOutlineOutlinedIcon fontSize='small'/>
+      <table>
+        <tbody>
+          {transactions.map((transaction) => (
+            <tr className={`tbl-row ${isChecked ? 'checked' : ''}`}>
+              <td className='sender'>
+                <div className='text'>
+                  <span><strong>{transaction.recepient.name}</strong></span>
                 </div>
-              </button>
-            </Tooltip>
-          </div>
-        </tr>
-      </tbody>
-    </table>
+              </td>
+              <td id='td-spacer'></td>
+              <td className='title-and-message'>
+                <div>
+                  <span className='title'>{transaction.subject} - </span>
+                  <span>{transaction.message}</span>
+                </div>
+              </td>
+              <td id='td-spacer'></td>
+              <td className='date'>
+                <div>
+                  <span><strong>{transaction.modifiedDate}</strong></span>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </>
   )
 }

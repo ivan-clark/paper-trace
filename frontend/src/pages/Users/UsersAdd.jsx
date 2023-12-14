@@ -24,14 +24,21 @@ function UsersAdd() {
 
 
   useEffect(() => {
+    setLoading(true);
+    getDepartments();
+
+    return () => { controller.abort() }
+  }, []);
+
+  const getDepartments = () => {
     Api.getDepartments(controller).then((response) => {
       setDepartments(response.data.data);
     }).catch((error) => {
       console.log(error);
+    }).finally(() => {
+      setLoading(false);
     })
-
-    return () => { controller.abort() }
-  }, []);
+  };
 
   const getUsers = () => {
     Api.getUsers(controller).then((response) => {
@@ -39,7 +46,7 @@ function UsersAdd() {
     }).catch((error) => {
       console.log(error);
     }).finally(() => {
-      setLoading(false)
+      setLoading(false);
     })
   };
 
@@ -58,7 +65,6 @@ function UsersAdd() {
     };
 
     Api.createUser(model).then((response)=>{
-      console.log(response);
       getUsers(controller)
       navigate('/users')
     }).catch((error)=>{

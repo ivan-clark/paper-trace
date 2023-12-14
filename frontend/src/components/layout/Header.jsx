@@ -109,14 +109,14 @@ const Header = (props) => {
               <div className="modal-profile-info">
                 <div className="modal-and-role">
                   <div className='modal-name'>
-                    {`Hi Ivan`}
+                    {`Hi ${props.user.firstName}`}
                   </div>
                   <div className='modal-role'>
-                    {`ADMIN`}
+                    {`${props.user.role.name}`}
                   </div>
                 </div>
                 <div className='modal-dept'>
-                  {`ADMIN Department`}
+                  {`${props.user.department.name}`}
                 </div>
               </div>
             </div>
