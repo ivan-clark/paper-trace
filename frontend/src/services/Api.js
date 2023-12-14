@@ -31,8 +31,24 @@ class Api {
     return Http.post("/api/User/DeleteUser", model);
   }
 
+  static updateUser(model) {
+    return Http.post("/api/User/UpdateUser", model);
+  }
+
   static getDepartments(controller) {
     return Http.get("/api/Department/GetDepartments", { signal: controller?.signal });
+  }
+
+  static createDepartment(model) {
+    return Http.post("/api/Department/CreateDepartment", model);
+  }
+
+  static deleteDepartment(model) {
+    return Http.post("/api/Department/DeleteDepartment", model);
+  }
+
+  static updateDepartment(model) {
+    return Http.post("/api/Department/UpdateDepartment", model);
   }
 }
 

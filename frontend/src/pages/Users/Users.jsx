@@ -1,9 +1,13 @@
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import EditIcon from '@mui/icons-material/Edit';
+import DateFormat from '../../components/common/DateFormat'
+import Tooltip from '@mui/material/Tooltip';
 import React, { useEffect, useState } from "react";
 import { CircularProgress } from '@mui/material';
-import DateFormat from '../../components/common/DateFormat'
 import Table from "../../components/common/Table";
 import Api from "../../services/Api";
 import { useNavigate } from "react-router";
+import './users.scss'
 
 const Users = () => {
   const controller = new AbortController();
@@ -28,6 +32,7 @@ const Users = () => {
       console.log(error);
     }).finally(() => {
       setLoading(false)
+      navigate('/users')
     })
   };
 
@@ -36,7 +41,7 @@ const Users = () => {
   };
 
   const columns = [
-    { field: 'id', headerName: 'ID', width: 90 },
+    { field: 'id', headerName: '#', width: 70 },
     {
       field: 'department',
       headerName: 'Department',
@@ -45,7 +50,7 @@ const Users = () => {
     {
       field: 'name',
       headerName: 'Name',
-      width: 150
+      width: 230
     },
     {
       field: 'role',
@@ -55,7 +60,7 @@ const Users = () => {
     {
       field: 'email',
       headerName: 'Email',
-      width: 150
+      width: 230
     },
     {
       field: 'createdDate',
@@ -64,6 +69,8 @@ const Users = () => {
     },
     {
       field: " ",
+      width: 300,
+      className:"action-btn-wrapper",
       sortable: false,
       renderCell: (params) => {
         const handleEdit = (e) => {
@@ -83,8 +90,14 @@ const Users = () => {
         };
   
         return <>
-          <button onClick={handleEdit}>Edit</button>
-          <button onClick={handleDelete}>Delete</button>
+        <div className='action-btns'>
+          <Tooltip title='Edit'>
+            <button className='users-edit' onClick={handleEdit}><EditIcon fontSize='small'/></button>
+          </Tooltip>
+          <Tooltip title='Delete'>
+            <button className='users-delete' onClick={handleDelete}><DeleteOutlineOutlinedIcon fontSize='small'/></button>
+          </Tooltip>
+        </div>
         </>;
       }
     }
@@ -96,7 +109,7 @@ const Users = () => {
     name: `${d.firstName} ${d.lastName}`,
     role: d.role.name,
     email: d.email,
-    createdDate: d.createdDate
+    createdDate: DateFormat({createdAt: d.createdDate})
   }));
 
   return (

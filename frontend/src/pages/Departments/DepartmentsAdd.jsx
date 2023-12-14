@@ -1,20 +1,43 @@
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import TextField from '@mui/material/TextField';
+import { useNavigate } from "react-router";
 import {Link} from 'react-router-dom'
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
+import Api from "../../services/Api"
+
 
 function DepartmentAdd() {
-  const [deptAssigned, setDeptAssigned] = useState('')
+  const controller = new AbortController();
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [name, setName] = useState('');
   const [error, setError] = useState(null)
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-  }
+  const navigate = useNavigate();
 
-  const handleChange = (event) => {
-    setDeptAssigned(event.target.value);
+  const getDepartments = () => {
+    Api.getDepartments(controller).then((response) => {
+      setData(response.data.data);
+    }).catch((error) => {
+      console.log(error);
+    }).finally(() => {
+      setLoading(false)
+    })
   };
+
+  const handleSave = () => {
+    let model = {
+      name: name
+    };
+
+    Api.createDepartment(model).then((response)=> {
+      console.log(response);
+      getDepartments(controller)
+      navigate('/departments')
+    }).catch((error) => {
+      console.log(error)
+    })
+  }
 
   return (
     <div className="add-user-form-wrapper">
@@ -31,38 +54,25 @@ function DepartmentAdd() {
       <div className="line-header">
       </div>
         <div className="edit-content-wrapper">
-        <div 
-          className='admin-form-wrapper' 
-          onSubmit={handleSubmit}
-          >
-            <form id='admin-add-user-form'>
+        <div className='admin-form-wrapper' >
+            <div id='admin-add-user-form'>
               <div className='select'>
                 <TextField 
-                  select
-                  label="Department"
-                  size='small'
-                  className='compose-select'
-                  labelId="test-select-label"
-                  // value={deptAssigned}
-                  // onChange={handleChange}
-                  >
-                  {[].map((department) => (
-                    <MenuItem key={department.value} value={department.value}>
-                      {department.label}
-                    </MenuItem>
-                  ))}
-              </TextField>
+                  label="Department Name"
+                  onChange={(e) => setName(e.target.value)}
+                  value={name}
+                  />
               </div>
               <div className='admin-edit-buttons'>
                 <div>
                   <Link to='/departments' className='cancel'>Cancel</Link>
                 </div>
                 <div>
-                  <button className='save'>Save</button>
+                  <button className='save' onClick={()=>handleSave()}>Save</button>
                 </div>
               </div>
               {error && <div id='admin-add-user-error'>{error}</div>}
-            </form>
+            </div>
         </div>
         </div>
     </div>
