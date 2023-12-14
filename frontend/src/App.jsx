@@ -63,7 +63,7 @@ const App = () => {
               <Route path="admin" element={<Admin/>} />
               <Route path="departments" element={<Departments />} />
               <Route path="departments/add" element={<DepartmentAdd />} />
-              <Route path="departments/edit" element={<DepartmentEdit />} />
+              <Route path="departments/edit/:id" element={<DepartmentEdit />} />
             </>
           )}
           {(roleId === 2 || roleId == 3) && (

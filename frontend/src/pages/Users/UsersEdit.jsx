@@ -1,34 +1,68 @@
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import {Link, useParams} from 'react-router-dom'
+import {Link, useParams, useNavigate} from 'react-router-dom'
 import React, {useEffect, useState} from 'react'
+import Api from "../../services/Api"
 
 function UsersEdit() {
-  const [deptAssigned, setDeptAssigned] = useState('')
-  const [role, setRole] = useState('')
-  const [firstname, setFirstname] = useState('')
-  const [lastname, setLastname] = useState('')
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [uclmID, setUclmID] = useState('')
-  const [campus, setCampus] = useState('')
+  const controller = new AbortController();
+  
+  const [departments, setDepartments] = useState([]);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [department, setDepartment] = useState("");
+  const [firstname, setFirstname] = useState("")
+  const [lastname, setLastname] = useState("")
+  const [email, setEmail] = useState("")
   const [error, setError] = useState(null)
 
+  const navigate = useNavigate();
   const { id } = useParams();
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-  }
-
-  const handleChange = (e) => {
-    setDeptAssigned(e.target.value);
+  const getUsers = () => {
+    Api.getUsers(controller).then((response) => {
+      setData(response.data.data);
+      setDepartment()
+      setFirstname()
+      setLastname()
+      setEmail()
+    }).catch((error) => {
+      console.log(error);
+    }).finally(() => {
+      setLoading(false)
+    })
   };
+
+  useEffect(() => {
+    setLoading(true)
+    getUsers(controller);
+    
+    return () => {
+      controller.abort();
+    }
+  }, []);
+
+
+  useEffect(() => {
+    Api.getDepartments(controller).then((response) => {
+      setDepartments(response.data.data);
+    }).catch((error) => {
+      console.log(error);
+    })
+
+    return () => { controller.abort() }
+  }, []);
+  
+  const handleSave = () => {
+    Api.updateUser({id}).then(() => {
+      getUsers(controller);
+    }).catch((error) => {
+      console.log(error)
+    })
+  }
 
   return (
     <> 
-      <form 
-        onSubmit={handleSubmit} 
+      <div  
         className="edit-form-main-wrapper"
       >
       <div className="edit-form-wrapper">
@@ -69,18 +103,9 @@ function UsersEdit() {
                     <label>Dept. Assigned</label>
                     <input 
                       type="text" 
-                      // onChange={(e) => setDeptAssigned(e.target.value)}
-                      // value={deptAssigned}
+                      onChange={(e) => setDepartment(e.target.value)}
+                      value={department}
                       disabled={true}
-                    />
-                  </div>
-                  <div className='input-flex-one'>
-                    <label>Role</label>
-                    <input 
-                      // onChange={(e) => setRole(e.target.value)}
-                      disabled={true}
-                      type="text" 
-                      // value={role}
                     />
                   </div>
                 </div>
@@ -89,16 +114,16 @@ function UsersEdit() {
                     <label>Firstname</label>
                     <input 
                       type="text" 
-                      // onChange={(e) => setFirstname(e.target.value)}
-                      // value={firstname}
+                      onChange={(e) => setFirstname(e.target.value)}
+                      value={firstname}
                     />
                   </div>
                   <div className='input-flex-one'>
                     <label>Lastname</label>
                     <input 
                       type="text" 
-                      // onChange={(e) => setLastname(e.target.value)}
-                      // value={lastname}
+                      onChange={(e) => setLastname(e.target.value)}
+                      value={lastname}
                     />
                   </div>
                 </div>
@@ -108,28 +133,28 @@ function UsersEdit() {
                         <label>Email</label>
                         <input 
                           type="text" 
-                          // onChange={(e) => setUclmID(e.target.value)}
-                          // value={uclmID}
+                          onChange={(e) => setEmail(e.target.value)}
+                          value={email}
                         />
                       </div>
                     </div>
-                    <div className="input-flex-one">
+                    {/* <div className="input-flex-one">
                       <div>
                         <label>Campus</label>
                         <input 
                           type="text" 
-                          // onChange={(e) => setCampus(e.target.value)}
-                          // value={campus}
+                          onChange={(e) => setCampus(e.target.value)}
+                          value={campus}
                         />
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 <div className='admin-edit-buttons'>
                   <div>
                     <Link to='/users' className='cancel'>Cancel</Link>
                   </div>
                   <div>
-                    <button className='save'>Save</button>
+                    <button className='save' onClick={()=>handleSave()}>Save</button>
                     {error && <div id='admin-add-user-error'>{error}</div>}
                   </div>
                 </div>
@@ -138,7 +163,7 @@ function UsersEdit() {
           </div>
         </div>
       </div>
-      </form>
+      </div>
     </>
   )
 }

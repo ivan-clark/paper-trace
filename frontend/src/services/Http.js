@@ -10,7 +10,7 @@ class Http {
   };
 
   static instance = axios.create({
-    baseURL: "https://localhost:32770/",
+    baseURL: "https://test1-d0ztmbdg.b4a.run/",
     headers: Http.headers
   });
 }

@@ -1,25 +1,51 @@
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import {Link} from 'react-router-dom'
-import React, {useState} from 'react'
+import {Link, useParams} from 'react-router-dom'
+import React, {useState, useEffect} from 'react'
+import Api from "../../services/Api"
+import { useNavigate } from "react-router";
 
 function DepartmentEdit() {
-  const [deptAssigned, setDeptAssigned] = useState('')
+  const controller = new AbortController();
+  const { id } = useParams();
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [departments, setDepartments] = useState([]);
+  const [department, setDepartment] = useState(0);
   const [error, setError] = useState(null)
 
-  const handleChange = (e) => {
-    setDeptAssigned(e.target.value);
-  };
+  const getDepartments = () => {
+    Api.getDepartments(controller).then((response) => {
+      setData(response.data.data)
+      setDepartment()
+    }).catch((error) => {
+      console.log(error)
+    }).finally(() => {
+      setLoading(false)
+    })
+  }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
+  useEffect(() => {
+    Api.getDepartments(controller).then((response) => {
+      setDepartments(response.data.data);
+    }).catch((error) => {
+      console.log(error)
+    })
+
+    return () => { controller.abort() }
+  }, [])
+  const handleSave = () => {
+    Api.updateDepartment({id}).then(() => {
+      getDepartments(controller)
+    }).catch((error) => {
+      console.log(error)
+    })
   };
   return (
     <>
-      <form 
+      <div 
       // key={department._id}
-      onSubmit={handleSubmit}
       className='edit-form-main-wrapper'
       >
         <div className="edit-form-wrapper">
@@ -46,16 +72,13 @@ function DepartmentEdit() {
                 <div className="edit-input-wrapper">
                   <div className='select'>
                     <label>Department</label>
-                    <Select 
-                      value={deptAssigned}
-                      onChange={handleChange}
-                      >
-                      {[].map((department) => (
-                        <MenuItem key={department.value} value={department.value}>
-                          {department.label}
-                        </MenuItem>
-                      ))}
-                    </Select>
+                    <Select value={department} onChange={(e) => setDepartment(e.target.value)}>
+                    {departments.map((dept, index) => (
+                      <MenuItem key={index} value={dept.id}>
+                        {dept.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
                   </div>
                   </div>
                   <div className="admin-edit-buttons">
@@ -63,7 +86,7 @@ function DepartmentEdit() {
                       <Link to='/departments' className='cancel'>Cancel</Link>
                     </div>
                     <div>
-                    <button className='save'>Save</button>
+                    <button className='save' onClick={() =>handleSave()}>Save</button>
                     {error && <div id='admin-add-user-error'>{error}
                     </div>}
                   </div>
@@ -72,7 +95,7 @@ function DepartmentEdit() {
             </div>
           </div>
         </div>
-      </form>
+      </div>
     </>
   )
 }
