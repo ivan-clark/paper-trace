@@ -1,3 +1,21 @@
+input, button, textarea {
+  font-family: inherit;
+  font-size: 1rem;
+  border-radius: 6px;
+}
+button {
+  border: none;
+  margin: 0;
+  cursor: pointer;
+  text-transform: none;
+}
+input {
+  border: none;
+}
+input:focus {
+  outline: none;
+}
+
 
 /*----------* error-page-section *----------*/
 #errorpage {
