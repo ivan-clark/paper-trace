@@ -1,9 +1,8 @@
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import {sortedDepartments} from '../../components/layout/Admin/Departments'
-import {Link} from 'react-router-dom'
-import React, {useState} from 'react'
+import {Link, useParams} from 'react-router-dom'
+import React, {useEffect, useState} from 'react'
 
 function UsersEdit() {
   const [deptAssigned, setDeptAssigned] = useState('')
@@ -15,6 +14,8 @@ function UsersEdit() {
   const [uclmID, setUclmID] = useState('')
   const [campus, setCampus] = useState('')
   const [error, setError] = useState(null)
+
+  const { id } = useParams();
 
   const handleSubmit = (e) => {
     e.preventDefault()

@@ -3,7 +3,6 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import SendIcon from '@mui/icons-material/Send';
 import InputLabel from '@mui/material/InputLabel';
-import {sortedDepartments} from '../../components/layout/Admin/Departments'
 import React from 'react'
 import './compose.scss'
 
@@ -31,7 +30,7 @@ function Compose() {
               // value={deptAssigned}
               // onChange={handleChange}
               >
-                {sortedDepartments.map((department) => (
+                {[].map((department) => (
                   <MenuItem key={department.value} value={department.value}>
                     {department.label}
                   </MenuItem>

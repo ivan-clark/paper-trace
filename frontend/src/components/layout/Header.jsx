@@ -103,7 +103,7 @@ const Header = (props) => {
          <div className='modal'>
           <div className="modal-wrapper">
             <div className="modal-header">
-              <div div className="modal-profile">
+              <div className="modal-profile">
                 <AccountCircleIcon style={styles.largeIcon}/>
               </div>
               <div className="modal-profile-info">

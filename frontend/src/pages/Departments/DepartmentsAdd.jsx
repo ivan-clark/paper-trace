@@ -1,7 +1,6 @@
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import {sortedDepartments} from '../../components/layout/Admin/Departments'
 import {Link} from 'react-router-dom'
 import React, {useState} from 'react'
 
@@ -47,7 +46,7 @@ function DepartmentAdd() {
                   // value={deptAssigned}
                   // onChange={handleChange}
                   >
-                  {sortedDepartments.map((department) => (
+                  {[].map((department) => (
                     <MenuItem key={department.value} value={department.value}>
                       {department.label}
                     </MenuItem>

@@ -55,7 +55,7 @@ const App = () => {
             <>
               <Route path="users" element={<Users />} />
               <Route path="users/add" element={<UsersAdd />} />
-              <Route path="users/edit" element={<UsersEdit />} />
+              <Route path="users/edit/:id" element={<UsersEdit />} />
             </>
           )}
           {roleId === 1 && (

@@ -10,8 +10,7 @@ class Http {
   };
 
   static instance = axios.create({
-    //baseURL: "https://88eb-143-44-164-138.ngrok-free.app/",
-    baseURL: "https://test1-d0ztmbdg.b4a.run/",
+    baseURL: "https://localhost:32770/",
     headers: Http.headers
   });
 }

@@ -23,11 +23,12 @@ class Api {
     return Http.get("/api/User/GetUsers", { signal: controller?.signal });
   }
 
-  static createUser(firstname, lastname) {
-    return Http.post("/api/User/CreateUser", {
-      firstname: firstname,
-      lastname: lastname
-    });
+  static createUser(model) {
+    return Http.post("/api/User/CreateUser", model);
+  }
+
+  static deleteUser(model) {
+    return Http.post("/api/User/DeleteUser", model);
   }
 
   static getDepartments(controller) {
