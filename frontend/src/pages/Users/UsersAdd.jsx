@@ -1,4 +1,4 @@
-import Select from '@mui/material/Select';
+import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {sortedDepartments} from '../../components/layout/Admin/Departments'
@@ -11,8 +11,6 @@ function UsersAdd() {
   const [firstname, setFirstname] = useState('')
   const [lastname, setLastname] = useState('')
   const [email, setEmail] = useState('')
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('P@ssw0rd')
   const [uclmID, setUclmID] = useState('')
   const [campus, setCampus] = useState('UCLM')
   const [error, setError] = useState(null)
@@ -21,8 +19,12 @@ function UsersAdd() {
     setDeptAssigned(e.target.value);
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault()
+  }
+
   return (
-    <div className="add-user-form-wrapper">
+      <div className="add-user-form-wrapper">
           <div className='add-header-content'>
             <div className="add-text-and-back-icon">
               <div div className='back-icon'>
@@ -37,24 +39,28 @@ function UsersAdd() {
           </div>              
           <div className='line-header'> 
           </div>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="edit-content-wrapper">
               <div className='edit-content-border'>
                 <div className='edit-content'>
                   <>
                     <div className='edit-input-wrapper'>  
                       <div className='select'>
-                        <label>Department</label>
-                        <Select 
-                          value={deptAssigned}
-                          onChange={handleChange}
+                        <TextField 
+                          select
+                          label="Department"
+                          size='small'
+                          className='compose-select'
+                          labelId="test-select-label"
+                          // value={deptAssigned}
+                          // onChange={handleChange}
                           >
                           {sortedDepartments.map((department) => (
                             <MenuItem key={department.value} value={department.value}>
                               {department.label}
                             </MenuItem>
                           ))}
-                        </Select>
+                      </TextField>
                       </div>
                       <div className="two-input-inline">
                         <div className='input-flex-one'>
@@ -94,42 +100,25 @@ function UsersAdd() {
                           value={lastname}
                           />
                       </div>
-                      <div className='input-flex-one'>
-                        <label>Email</label>
-                        <input  
-                          type="text"
-                          onChange={(e) => setEmail(e.target.value)}
-                          value={email}
-                          />
-                      </div>
                     </div>
                     <div className='two-input-inline'>  
-                      <div className='input-flex-two'>
-                        <label>Username</label>
-                        <input  
-                          type="text"
-                          maxLength={13}
-                          onChange={(e) => setUsername(e.target.value)}
-                          value={username}
-                          />
-                      </div>
-                      <div className='input-flex-two'>
-                        <label>Password</label>
-                        <input  
-                          type="password"
-                          onChange={(e) => setPassword(e.target.value)}
-                          value={password}
-                          disabled={true}
-                          />
-                      </div>
-                      <div className='input-flex-two'>
-                        <label>UCLM ID#</label>
-                        <input  
-                          type="text"
-                          onChange={(e) => setUclmID(e.target.value)}
-                          value={uclmID}
-                          />
-                      </div>
+                        <div className='input-flex-one'>
+                          <label>Email</label>
+                          <input  
+                            type="text"
+                            onChange={(e) => setEmail(e.target.value)}
+                            value={email}
+                            />
+                        </div>
+                        <div className='input-flex-one'>
+                          <label>UCLM ID#</label> 
+                          <input  
+                            disabled={true}
+                            type="text"
+                            onChange={(e) => setUclmID(e.target.value)}
+                            value={uclmID}
+                            />
+                        </div>
                     </div>
                     <div className='admin-edit-buttons'>
                       <div>

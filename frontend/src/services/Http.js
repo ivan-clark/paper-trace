@@ -5,11 +5,13 @@ class Http {
 
   static headers = {
     "Content-Type": "application/json",
+    //"ngrok-skip-browser-warning": "true",
     ...(Http.token && { "Authorization": `Bearer ${Http.token}` }),
   };
 
   static instance = axios.create({
-    baseURL: "https://papertrace-3c1u7kfw.b4a.run/",
+    //baseURL: "https://88eb-143-44-164-138.ngrok-free.app/",
+    baseURL: "https://test1-d0ztmbdg.b4a.run/",
     headers: Http.headers
   });
 }

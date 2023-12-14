@@ -44,12 +44,12 @@ const Login = (props) => {
           props.setUserId(userId);
           props.setRoleId(roleId);
 
-          if (roleId == 1)
-            navigate("admin");
-          else if (roleId == 2)
-            navigate("admin");
+          if (roleId === 1)
+            navigate("users");
+          else if (roleId === 2)
+            navigate("inbox");
           else
-            navigate("admin");
+            navigate("inbox");
           
         } else {
           setErrorMessage("Username or password is incorrect");

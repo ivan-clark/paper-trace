@@ -1,4 +1,4 @@
-import Select from '@mui/material/Select';
+import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {sortedDepartments} from '../../components/layout/Admin/Departments'
@@ -38,17 +38,21 @@ function DepartmentAdd() {
           >
             <form id='admin-add-user-form'>
               <div className='select'>
-              <label>Department name</label>
-                <Select 
+                <TextField 
+                  select
+                  label="Department"
+                  size='small'
+                  className='compose-select'
+                  labelId="test-select-label"
                   // value={deptAssigned}
-                  onChange={handleChange}
-                >
+                  // onChange={handleChange}
+                  >
                   {sortedDepartments.map((department) => (
                     <MenuItem key={department.value} value={department.value}>
                       {department.label}
                     </MenuItem>
                   ))}
-              </Select>
+              </TextField>
               </div>
               <div className='admin-edit-buttons'>
                 <div>

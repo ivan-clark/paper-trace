@@ -9,8 +9,8 @@ const Table = (props) => {
   const location = useLocation();
   const isUsersPath = location.pathname.includes('/users')
 
-  const handleDelete = () => {
-    
+  const handleDelete = (e) => {
+    e.preventDefault()
   }
 
   return (
@@ -20,39 +20,37 @@ const Table = (props) => {
         <tr>
           {props.columns.map((column, index) => (
             <th key={index}>{column}</th>
-          ))}
-          <th></th>
+            ))}
+            <th></th>
         </tr>
       </thead>
-      <tbody>
+      <tbody className='user-tbody'> 
         {props.rows.map((row, rowIndex) => (
           <tr key={rowIndex}>
             {row.map((r, i) => (
-              <td key={i}>
-                {r}
-              </td>
+              <td key={i}>{r}</td>
             ))}
-            <td>
-              <div id='absolute' className="td-tooltip-wrapper">
-                <div className="tooltip-bg">
-                  <Tooltip title='Edit'>
-                    <Link to={isUsersPath ? '/users/edit' : '/departments/edit'}    className='edit'>
-                      <div>
-                        <EditIcon 
-                        style={styles.small}/>
-                      </div>
-                    </Link>
-                  </Tooltip>
-                  <Tooltip title='Delete'>
-                    <button onClick={handleDelete} className='delete'>
-                      <div>
-                        <DeleteOutlineIcon 
-                        style={styles.small}/>
-                      </div>
-                    </button>
-                  </Tooltip>
-                </div>
+            <td key={rowIndex}>
+            <div id='absolute' className="td-tooltip-wrapper">
+              <div className="tooltip-bg">
+                <Tooltip title='Edit'>
+                  <Link to={isUsersPath ? '/users/edit' : '/departments/edit'} className='edit'>
+                    <div>
+                      <EditIcon 
+                      style={styles.small}/>
+                    </div>
+                  </Link>
+                </Tooltip>
+                <Tooltip title='Delete'>
+                  <button onClick={handleDelete} className='delete'>
+                    <div>
+                      <DeleteOutlineIcon 
+                      style={styles.small}/>
+                    </div>
+                  </button>
+                </Tooltip>
               </div>
+            </div>
             </td>
           </tr>
         ))}

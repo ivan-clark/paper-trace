@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import './index.scss'
 import Api from "./services/Api";
 import Http from "./services/Http";
 import Main from "./pages/Main";
 import Login from "./pages/Login";
 import Error from "./pages/Error";
+import Sent from './pages/Sent/Sent'
+import Track from './pages/Track/Track'
+import Trash from './pages/Trash/Trash'
+import Inbox from './pages/Inbox/Inbox'
 import Admin from "./pages/Admin/Admin";
 import Users from "./pages/Users/Users";
+import Compose from './pages/Compose/Compose'
 import UsersAdd from './pages/Users/UsersAdd'
 import UsersEdit from './pages/Users/UsersEdit'
+import Declined from './pages/Declined/Declined'
+import Accepted from './pages/Accepted/Accepted'
 import Departments from "./pages/Departments/Departments";
 import DepartmentAdd from './pages/Departments/DepartmentsAdd'
 import DepartmentEdit from './pages/Departments/DepartmentsEdit'
@@ -43,7 +51,6 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Login setIsLoggedIn={setIsLoggedIn} setUserId={setUserId} setRoleId={setRoleId}/>} />
         <Route element={<Protected isLoggedIn={isLoggedIn}><Main setIsLoggedIn={setIsLoggedIn} roleId={roleId} /></Protected>}>
-          <Route path="admin" element={<Admin/>} />
           {roleId !== 3 && (
             <>
               <Route path="users" element={<Users />} />
@@ -53,9 +60,22 @@ const App = () => {
           )}
           {roleId === 1 && (
             <>
+              <Route path="admin" element={<Admin/>} />
               <Route path="departments" element={<Departments />} />
               <Route path="departments/add" element={<DepartmentAdd />} />
               <Route path="departments/edit" element={<DepartmentEdit />} />
+            </>
+          )}
+          {(roleId === 2 || roleId == 3) && (
+            <>
+              <Route path="track" element={<Track />} />
+              <Route path="compose" element={<Compose />} />
+              <Route path="inbox" element={<Inbox />} />
+              <Route path="sent" element={<Sent />} />
+              <Route path="accepted-docs" element={<Accepted />} />
+              <Route path="declined-docs" element={<Declined />} />
+              <Route path="trash" element={<Trash />} />
+              
             </>
           )}
         </Route>

@@ -15,14 +15,10 @@ const Header = (props) => {
   const location = useLocation();
 
   const isUsersPath = location.pathname.includes('/users')
+  const isComposePath = location.pathname.includes('/compose')
   const iseDeptPath = location.pathname.includes('/departments')
 
-  const [modal, setModal] = useState(false)
-  const modalRef = useRef()
-
-  const toggleModal = () => { 
-    setModal(!modal);
-  }
+  const [open, setOpen] = useState(false)
 
   const handleLogout = () => {
     localStorage.clear();
@@ -31,21 +27,6 @@ const Header = (props) => {
     
     navigate("/");
   };
-
-  useEffect(() => {
-    let handler = (e) => {
-      if (!modalRef.current.contains(e.target)) {
-        setModal(false);
-      } 
-    }
-
-    document.addEventListener("mousedown", handler)
-    
-    // detach event listener
-    return () => {
-      document.removeEventListener("mousedown", handler);
-    }
-  }, [])
 
   return (
     <div id="header">
@@ -59,8 +40,24 @@ const Header = (props) => {
         </div>
         <div id="middle-section">
           <form id='search-form' role='search'>
-            <input type="text" placeholder='Search inbox' />
-            <button><SearchIcon/></button>
+          {isComposePath ? (
+          <>
+            <input
+              disabled={true}
+              type="text"
+              placeholder="Search inbox"
+            />
+            <button disabled={true}><SearchIcon /></button>
+          </>
+          ) : (
+            <>
+              <input
+                type="text"
+                placeholder="Search inbox"
+              />
+              <button><SearchIcon /></button>
+            </>
+          )}
           </form>
         </div>
       </div>
@@ -89,28 +86,32 @@ const Header = (props) => {
           )}
         <div className='user-and-logout-section'>
         </div>
-        <div onClick={toggleModal} ref={modalRef} id="account-initials">
+        <div onClick={() => {setOpen(!open)}} id="account-initials">
           <div>
             <span>
               IC
             </span>
           </div>
         </div>
-        {modal && (
-        <div className='modal'>
+        {open && (
+         <div className='modal'>
           <div className="modal-wrapper">
             <div className="modal-header">
               <div div className="modal-profile">
                 <AccountCircleIcon style={styles.largeIcon}/>
               </div>
-              <div className='modal-name'>
-                {`Hi Ivan`}
-              </div>
-              <div className='modal-role'>
-                {`ADMIN`}
-              </div>
-              <div className='modal-dept'>
-                {`ADMIN Department`}
+              <div className="modal-profile-info">
+                <div className="modal-and-role">
+                  <div className='modal-name'>
+                    {`Hi Ivan`}
+                  </div>
+                  <div className='modal-role'>
+                    {`ADMIN`}
+                  </div>
+                </div>
+                <div className='modal-dept'>
+                  {`ADMIN Department`}
+                </div>
               </div>
             </div>
             <div className='modal-btn-wrapper'>
@@ -122,18 +123,18 @@ const Header = (props) => {
                   View profile
                 </div>
               </div>
-              <div className='logout'>
+              <div onClick={() => handleLogout()} className='logout'>
                 <div>
                   <LogoutIcon style={styles.smallIcon}/>
                 </div>
-                <div onClick={() => handleLogout()} >
+                <div>
                   Sign out
                 </div>
               </div>
             </div>
           </div>
         </div>
-        )}
+         )}
       </div>
     </div>
   );

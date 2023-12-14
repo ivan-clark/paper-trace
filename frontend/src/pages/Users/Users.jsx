@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { CircularProgress } from '@mui/material';
+import DateFormat from '../../components/common/DateFormat'
 import Table from "../../components/common/Table";
 import Api from "../../services/Api";
 
@@ -35,7 +36,7 @@ const Users = () => {
   }
 
   const columns = ["Department", "Name", "Role", "Email", "Date created", ""];
-  const rows = data.map((d) => [d.department.name, `${d.firstName} ${d.lastName}`, d.role.name, d.email, d.createdDate, ""])
+  const rows = data ? data.map((d) => [d.department.name, `${d.firstName} ${d.lastName}`, d.role.name, d.email, DateFormat({ createdAt: d.createdDate }), ""]) : []
 
   return (
     <div className='area'>

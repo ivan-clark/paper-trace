@@ -1,6 +1,10 @@
 /*----------* ADMIN SECTION *----------*/
 
 /* users section */
+.back-icon a{
+  border-radius: 2em;
+}
+
 .area {
   width: 100%;
   position: relative;
@@ -188,7 +192,7 @@ label {
   justify-content: end;
   gap: 1em;
 }
-button, a {
+button {
   padding: 12px 24px 12px 24px;
   border-radius: 4em;
   font-weight: 500;
@@ -215,7 +219,7 @@ tbody tr {
   transition: background-color 0.12s;
 }
 
-tbody tr td {
+.user-tbody tr td {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -243,6 +247,9 @@ tbody tr:hover #absolute {
 .edit:hover,
 .delete:hover {
   background-color: var(--on-white-darker-hover);
+}
+.edit {
+  border-radius: 2em;
 }
  
 .select {

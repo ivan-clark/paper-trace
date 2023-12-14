@@ -64,7 +64,7 @@ function UsersEdit() {
             <div className='edit-content'>
               <>
                 <div className='two-input-inline'>  
-                  <div>
+                  <div className='input-flex-one'>
                     <label>Dept. Assigned</label>
                     <input 
                       type="text" 
@@ -73,7 +73,7 @@ function UsersEdit() {
                       disabled={true}
                     />
                   </div>
-                  <div>
+                  <div className='input-flex-one'>
                     <label>Role</label>
                     <input 
                       // onChange={(e) => setRole(e.target.value)}
@@ -84,7 +84,7 @@ function UsersEdit() {
                   </div>
                 </div>
                 <div className='two-input-inline'>  
-                  <div>
+                  <div className='input-flex-one'>
                     <label>Firstname</label>
                     <input 
                       type="text" 
@@ -92,7 +92,7 @@ function UsersEdit() {
                       // value={firstname}
                     />
                   </div>
-                  <div>
+                  <div className='input-flex-one'>
                     <label>Lastname</label>
                     <input 
                       type="text" 
@@ -100,42 +100,29 @@ function UsersEdit() {
                       // value={lastname}
                     />
                   </div>
-                  <div>
-                    <label>UCLM ID#</label>
-                    <input 
-                      type="text" 
-                      // onChange={(e) => setUclmID(e.target.value)}
-                      // value={uclmID}
-                    />
-                  </div>
                 </div>
                 <div className='two-input-inline'>  
-                  <div>
-                    <label>Username</label>
-                    <input 
-                      type="text" 
-                      // onChange={(e) => setUsername(e.target.value)}
-                      // value={username}
-                    />
+                    <div className="input-flex-one">
+                      <div>
+                        <label>Email</label>
+                        <input 
+                          type="text" 
+                          // onChange={(e) => setUclmID(e.target.value)}
+                          // value={uclmID}
+                        />
+                      </div>
+                    </div>
+                    <div className="input-flex-one">
+                      <div>
+                        <label>Campus</label>
+                        <input 
+                          type="text" 
+                          // onChange={(e) => setCampus(e.target.value)}
+                          // value={campus}
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <label>Password</label>
-                    <input 
-                      type="text" 
-                      // onChange={(e) => setPassword(e.target.value)}
-                      // value={password}
-                      disabled={true}
-                    />
-                  </div>
-                  <div>
-                    <label>Campus</label>
-                    <input 
-                      type="text" 
-                      // onChange={(e) => setCampus(e.target.value)}
-                      // value={campus}
-                    />
-                  </div>
-                </div>
                 <div className='admin-edit-buttons'>
                   <div>
                     <Link to='/users' className='cancel'>Cancel</Link>
