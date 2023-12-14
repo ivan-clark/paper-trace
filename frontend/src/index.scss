@@ -242,6 +242,18 @@ hr {
   align-items: center;
   flex-direction: row;
 }
+#burger {
+  margin-inline: .4em;
+  cursor: pointer;
+  border-radius: 2em;
+}
+#burger svg {
+  display: flex;
+  padding: 12px;
+}
+#burger:hover {
+  background-color: var(--sidebar-hover-color);
+}
 #header #left-and-middle #left-section, #header #left-wrapper #left-section {
   width: 203px;
 }

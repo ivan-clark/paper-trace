@@ -1,10 +1,11 @@
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { useLocation, useNavigate } from "react-router-dom";
+import React, {useState, useEffect, useRef} from "react";
 import DomainAddIcon from '@mui/icons-material/DomainAdd';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import LogoutIcon from '@mui/icons-material/Logout';
-import React, {useState, useEffect, useRef} from "react";
+import MenuIcon from '@mui/icons-material/Menu';
 import {styles} from '../common/styles'
-import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import SearchIcon from '@mui/icons-material/Search';
 import MainLogo from "../../assets/MainLogo.svg";
@@ -33,9 +34,14 @@ const Header = (props) => {
       <div id="left-and-middle">
         <div id="left-section">
           <div id="left-wrapper">
-            <Link to='/admin'>
-              <img id='main-logo' src={MainLogo} alt="logo" />
-            </Link>
+            <div id='burger'>
+              <MenuIcon />
+            </div>
+            <div>
+              <Link to='/inbox'>
+                <img id='main-logo' src={MainLogo} alt="logo" />
+              </Link>
+            </div>
           </div>
         </div>
         <div id="middle-section">
