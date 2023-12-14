@@ -37,16 +37,14 @@ const Login = (props) => {
           Http.defaults.headers.Authorization = `Bearer ${response.data.data.token}`;
           
           // set logged in
-          const userId = response.data.data.userId;
-          const roleId = response.data.data.roleId;
+          const user = response.data.data.user;
 
           props.setIsLoggedIn(true);
-          props.setUserId(userId);
-          props.setRoleId(roleId);
+          props.setUser(user);
 
-          if (roleId === 1)
+          if (user.role.id === 1)
             navigate("users");
-          else if (roleId === 2)
+          else if (user.role.id === 2)
             navigate("inbox");
           else
             navigate("inbox");

@@ -1,12 +1,15 @@
-import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Link } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from "react-router-dom";
 import Api from "../../services/Api"
 import { Select } from "@mui/material";
 
 function UsersAdd() {
+  const controller = new AbortController();
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [departments, setDepartments] = useState([]);
 
   const [department, setDepartment] = useState(0);
@@ -17,17 +20,35 @@ function UsersAdd() {
   const [campus, setCampus] = useState('UCLM')
   const [error, setError] = useState(null)
 
+  const navigate = useNavigate();
+
 
   useEffect(() => {
-    const controller = new AbortController();
+    setLoading(true);
+    getDepartments();
+
+    return () => { controller.abort() }
+  }, []);
+
+  const getDepartments = () => {
     Api.getDepartments(controller).then((response) => {
       setDepartments(response.data.data);
     }).catch((error) => {
       console.log(error);
+    }).finally(() => {
+      setLoading(false);
     })
+  };
 
-    return () => { controller.abort() }
-  }, []);
+  const getUsers = () => {
+    Api.getUsers(controller).then((response) => {
+      setData(response.data.data);
+    }).catch((error) => {
+      console.log(error);
+    }).finally(() => {
+      setLoading(false);
+    })
+  };
 
   const handleSave = () => {
     let model = {
@@ -44,7 +65,8 @@ function UsersAdd() {
     };
 
     Api.createUser(model).then((response)=>{
-      console.log(response);
+      getUsers(controller)
+      navigate('/users')
     }).catch((error)=>{
       console.log(error);
     });

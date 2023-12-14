@@ -1,6 +1,7 @@
 ﻿using API.Models;
 using API.Services;
 using API.Utils;
+using DataAccess.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
@@ -25,12 +26,13 @@ namespace API.Controllers
         {
             try
             {
-                var user = _accountService.Login(model.Username!, model.Password!);
+                var account = _accountService.Login(model.Username!, model.Password!);
 
-                if (user != null)
+                if (account != null)
                 {
-                    var tokenString = _accountService.GenerateJSONWebToken(user.User?.Id ?? 0);
-                    return new JsonResponse().Success().For(new { userId = user.Id, roleId = user?.User?.RoleId, token = tokenString });
+                    var user = _userService.GetUserById(account?.User?.Id ?? 0);
+                    var tokenString = _accountService.GenerateJSONWebToken(account.User?.Id ?? 0);
+                    return new JsonResponse().Success().For(new { user, token = tokenString });
                 }
                 else
                 {
@@ -74,7 +76,7 @@ namespace API.Controllers
                 var header = HttpContext.Request.Headers["Authorization"].ToString();
                 var id = _accountService.GetUserIdFromToken(header);
                 var user = _userService.GetUserById(id);
-                return new JsonResponse().Success().For(new { userId = user?.Id, roleId = user?.Role?.Id });
+                return new JsonResponse().Success().For(user);
             }
             catch (Exception ex)
             {

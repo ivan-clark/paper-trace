@@ -11,11 +11,11 @@ const Main = (props) => {
   return (
     <div className="main-wrapper">
       <div>
-        <Header setIsLoggedIn={props.setIsLoggedIn} roleId={props.roleId}/>
+        <Header setIsLoggedIn={props.setIsLoggedIn} user={props.user}/>
       </div>
       <div className="sub-wrapper">
         <div className="sidebars">
-          <Sidebar roleId={props.roleId} />
+          <Sidebar roleId={props.user.role.id} />
         </div>
         {isComposePath ? (
           <Outlet />

@@ -30,7 +30,7 @@ namespace API.Repositories.Data
             _dbcontext.SaveChanges();
         }
 
-        public void CreateUser(UserModel model)
+        public int CreateUser(UserModel model)
         {
             var user = new User
             {
@@ -38,11 +38,14 @@ namespace API.Repositories.Data
                 Lastname = model.LastName,
                 Email = model.Email,
                 DepartmentId = model.Department?.Id,
-                RoleId = model.Role?.Id
+                RoleId = model.Role?.Id,
+                CreatedDate = DateTime.Now
             };
 
-            _dbcontext.Users.Add(user);
+            var result = _dbcontext.Users.Add(user);
             _dbcontext.SaveChanges();
+
+            return result.Entity.Id;
         }
 
         public void UpdateUser(UserModel model)

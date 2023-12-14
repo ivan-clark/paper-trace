@@ -28,14 +28,12 @@ const Protected = ({ isLoggedIn, children }) => {
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userId, setUserId] = useState();
-  const [roleId, setRoleId] = useState();
+  const [user, setUser] = useState();
 
   useEffect(() => {
     Api.validate().then((response) => {
       setIsLoggedIn(true);
-      setUserId(response.data.data.userId);
-      setRoleId(response.data.data.roleId);
+      setUser(response.data.data);
       setIsLoading(false);
     }).catch(() => {
       setIsLoggedIn(false);
@@ -49,28 +47,28 @@ const App = () => {
     !isLoading &&
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Login setIsLoggedIn={setIsLoggedIn} setUserId={setUserId} setRoleId={setRoleId}/>} />
-        <Route element={<Protected isLoggedIn={isLoggedIn}><Main setIsLoggedIn={setIsLoggedIn} roleId={roleId} /></Protected>}>
-          {roleId !== 3 && (
+        <Route path="/" element={<Login setIsLoggedIn={setIsLoggedIn} setUser={setUser}/>} />
+        <Route element={<Protected isLoggedIn={isLoggedIn}><Main setIsLoggedIn={setIsLoggedIn} user={user}/></Protected>}>
+          {user?.role.id !== 3 && (
             <>
               <Route path="users" element={<Users />} />
               <Route path="users/add" element={<UsersAdd />} />
               <Route path="users/edit/:id" element={<UsersEdit />} />
             </>
           )}
-          {roleId === 1 && (
+          {user?.role.id === 1 && (
             <>
               <Route path="admin" element={<Admin/>} />
               <Route path="departments" element={<Departments />} />
               <Route path="departments/add" element={<DepartmentAdd />} />
-              <Route path="departments/edit" element={<DepartmentEdit />} />
+              <Route path="departments/edit/:id" element={<DepartmentEdit />} />
             </>
           )}
-          {(roleId === 2 || roleId == 3) && (
+          {(user?.role.id !== 1) && (
             <>
               <Route path="track" element={<Track />} />
-              <Route path="compose" element={<Compose />} />
-              <Route path="inbox" element={<Inbox />} />
+              <Route path="compose" element={<Compose user={user}/>} />
+              <Route path="inbox" element={<Inbox user={user}/>} />
               <Route path="sent" element={<Sent />} />
               <Route path="accepted-docs" element={<Accepted />} />
               <Route path="declined-docs" element={<Declined />} />

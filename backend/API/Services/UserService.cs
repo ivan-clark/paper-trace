@@ -11,12 +11,14 @@ namespace API.Services
         private readonly IUserRepository _userRepository;
         private readonly IRoleRepository _roleRepository;
         private readonly IDepartmentRepository _departmentRepository;
+        private readonly IAccountRepository _accountRepository;
 
-        public UserService(IUserRepository userRepository, IRoleRepository roleRepository, IDepartmentRepository departmentRepository)
+        public UserService(IUserRepository userRepository, IRoleRepository roleRepository, IDepartmentRepository departmentRepository, IAccountRepository accountRepository)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
             _departmentRepository = departmentRepository;
+            _accountRepository = accountRepository;
         }
 
         public UserModel GetUserById(int id)
@@ -26,7 +28,12 @@ namespace API.Services
             return new UserModel
             {
                 Id = user?.Id ?? 0,
-                Role = new Role { Id = user?.RoleId ?? 0 }
+                FirstName = user?.Firstname,
+                LastName = user?.Lastname,
+                Email = user?.Email,
+                CreatedDate = user?.CreatedDate,
+                Role = _roleRepository.GetRoleById(user?.RoleId ?? 0),
+                Department = _departmentRepository.GetDepartmentById(user?.DepartmentId ?? 0)
             };
         }
 
@@ -54,7 +61,13 @@ namespace API.Services
 
         public void CreateUser(UserModel model)
         {
-            _userRepository.CreateUser(model);
+            var id = _userRepository.CreateUser(model);
+            _accountRepository.CreateAccount(new AccountModel
+            {
+                Username = model.FirstName?.Replace(" ", ""),
+                Password = model.LastName?.Replace(" ", ""),
+                User = new User { Id = id}
+            });
 
             if (model.SendEmail ?? false)
             {

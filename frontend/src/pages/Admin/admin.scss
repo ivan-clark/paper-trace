@@ -9,24 +9,21 @@
   width: 100%;
   position: relative;
 }
-.area table {
-  width: 100%;
-  border-collapse: collapse;
-}
 .admin-header {
   width: 100%;
+  height: 100%;
   border-radius: 6px 6px 0px 0px;
 }
-.admin-header th {
-  top: 0;
-  position: sticky;
-  font-size: 13px;
-  font-weight: normal;
-  padding: 1rem;
-  text-align: left;
-  border-bottom: solid 1px var(--border-bottom-onwhite);
-  background-color: var(--outlet-bg);
-}
+// .admin-header th {
+//   top: 0;
+//   position: sticky;
+//   font-size: 13px;
+//   font-weight: normal;
+//   padding: 1rem;
+//   text-align: left;
+//   border-bottom: solid 1px var(--border-bottom-onwhite);
+//   background-color: var(--outlet-bg);
+// }
 .admin-header td {
   font-size: 14px;
   font-weight: 500;
@@ -74,14 +71,7 @@
   font-size: 0.8em;
   color: var(--secondary-font-color);
 }
-.timestamp div {
-  display: flex;
-  flex-direction: column;
-}
-.timestamp div span {
-  font-size: 0.8em;
-  color: var(--secondary-font-color);
-}
+
 .add-user-form-wrapper {
   width: 100%;
 }
@@ -192,7 +182,8 @@ label {
   justify-content: end;
   gap: 1em;
 }
-button {
+button,
+.cancel {
   padding: 12px 24px 12px 24px;
   border-radius: 4em;
   font-weight: 500;

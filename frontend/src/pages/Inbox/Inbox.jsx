@@ -30,7 +30,7 @@ function CustomTabPanel(props) {
   );
 }
 
-function Inbox() {
+function Inbox(props) {
   let outgoing = 6
   let upcoming = 0
 
@@ -89,10 +89,10 @@ function Inbox() {
         <div className="inbox-outlet-wrapper">
           <div className="inbox-inbox">
             <CustomTabPanel value={value} index={0}>
-              <InboxOutgoing />
+              <InboxOutgoing userId={props.user.id}/>
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
-              <InboxUpcoming />
+              <InboxUpcoming departmentId={props.user.department.id}/>
             </CustomTabPanel>
           </div>
         </div>
