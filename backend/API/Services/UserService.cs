@@ -26,7 +26,12 @@ namespace API.Services
             return new UserModel
             {
                 Id = user?.Id ?? 0,
-                Role = new Role { Id = user?.RoleId ?? 0 }
+                FirstName = user?.Firstname,
+                LastName = user?.Lastname,
+                Email = user?.Email,
+                CreatedDate = user?.CreatedDate,
+                Role = _roleRepository.GetRoleById(user?.RoleId ?? 0),
+                Department = _departmentRepository.GetDepartmentById(user?.DepartmentId ?? 0)
             };
         }
 
