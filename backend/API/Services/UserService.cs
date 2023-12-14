@@ -1,6 +1,7 @@
 ﻿using API.Models;
 using API.Repositories;
 using API.Repositories.Data;
+using API.Utils;
 using DataAccess.Entities;
 
 namespace API.Services
@@ -21,8 +22,9 @@ namespace API.Services
         public UserModel GetUserById(int id)
         {
             var user = _userRepository.GetUserById(id);
-            
-            return new UserModel { 
+
+            return new UserModel
+            {
                 Id = user?.Id ?? 0,
                 Role = new Role { Id = user?.RoleId ?? 0 }
             };
@@ -35,8 +37,9 @@ namespace API.Services
 
             foreach (var user in users)
             {
-                result.Add(new UserModel { 
-                    Id=user.Id,
+                result.Add(new UserModel
+                {
+                    Id = user.Id,
                     FirstName = user.Firstname,
                     LastName = user.Lastname,
                     Email = user.Email,
@@ -52,6 +55,20 @@ namespace API.Services
         public void CreateUser(UserModel model)
         {
             _userRepository.CreateUser(model);
+
+            if (model.SendEmail ?? false)
+            {
+                var user = _userRepository.GetUserById(model.Id);
+
+                EmailSender.Send(new Email {
+                    SenderEmail = user?.Email,
+                    SenderName = $"{user?.Firstname} {user?.Lastname}",
+                    ReceiverEmail = model.Email,
+                    ReceiverName = $"{model?.FirstName} {model?.LastName}",
+                    Subject = "Paper Trace account creation",
+                    Message = "http://localhost:3000/"
+                });
+            }
         }
 
         public void DeleteUser(int userId) 

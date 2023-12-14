@@ -54,5 +54,13 @@ namespace API.Services
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+        public int GetUserIdFromToken(string header)
+        {
+            var token = header.Substring("Bearer ".Length).Trim();
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
+            return int.Parse(jsonToken?.Claims.FirstOrDefault(c => c.Type == "id")?.Value ?? "0");
+        }
     }
 }
