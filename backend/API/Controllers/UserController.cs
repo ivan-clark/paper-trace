@@ -46,5 +46,35 @@ namespace API.Controllers
 
             }
         }
+
+        [HttpPost]
+        public JsonResponse DeleteUser(UserModel model)
+        {
+            try
+            {
+                _userService.DeleteUser(model.Id);
+                return new JsonResponse().Success();
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
+
+        [HttpPost]
+        public JsonResponse UpdateUser(UserModel model)
+        {
+            try
+            {
+                _userService.UpdateUser(model);
+                return new JsonResponse().Success();
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using DataAccess.Entities;
+﻿using API.Models;
+using DataAccess.Entities;
 
 namespace API.Repositories
 {
@@ -6,5 +7,8 @@ namespace API.Repositories
     {
         Department? GetDepartmentById(int id);
         List<Department> GetDepartments();
+        void DeleteDepartment(int departmentId);
+        void CreateDepartment(DepartmentModel model);
+        void UpdateDepartment(DepartmentModel model);
     }
 }
