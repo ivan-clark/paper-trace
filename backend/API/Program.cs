@@ -11,7 +11,7 @@ using sib_api_v3_sdk.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
-Configuration.Default.ApiKey.Add("api-key", builder.Configuration["SMTP:ApiKey"]);
+Configuration.Default.ApiKey.Add("api-key", Environment.GetEnvironmentVariable("SMTP_KEY"));
 
 // Auth
 builder.Services.AddAuthentication(auth => {
