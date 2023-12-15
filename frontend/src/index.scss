@@ -384,7 +384,7 @@ hr {
   right: 1em;
   top: 64px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, .2);
-  height: 224px;
+  height: 288px;
   width: 260px;
 }
 .modal .modal-wrapper {
@@ -394,7 +394,7 @@ hr {
 }
 .modal .modal-header {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 16px;
@@ -402,9 +402,9 @@ hr {
 }
 .modal-and-role {
   display: flex;
-  flex-direction: row;
-  align-items: baseline;
-  gap: 4px;
+  align-items: center;
+  flex-direction: column;
+
 }
 .modal .modal-name {
   font-size: 1.2em;
