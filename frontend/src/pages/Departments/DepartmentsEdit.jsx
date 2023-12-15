@@ -1,5 +1,6 @@
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import { CircularProgress } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {Link, useParams} from 'react-router-dom'
 import React, {useState, useEffect} from 'react'
@@ -31,6 +32,8 @@ function DepartmentEdit() {
       setDepartments(response.data.data);
     }).catch((error) => {
       console.log(error)
+    }).finally(() => {
+      setLoading(false)
     })
 
     return () => { controller.abort() }
@@ -66,6 +69,11 @@ function DepartmentEdit() {
             </>
           </div>
           <div className='line-header'></div>
+          {loading ? (
+            <div className="circularProgress">
+              <CircularProgress />
+            </div>
+          ) : (
           <div className="edit-content-wrapper">
             <div className="edit-content-border">
               <div className="edit-content">
@@ -94,6 +102,7 @@ function DepartmentEdit() {
               </div>
             </div>
           </div>
+          )}
         </div>
       </div>
     </>

@@ -1,4 +1,5 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { CircularProgress } from '@mui/material';
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import Api from "../../services/Api"
@@ -111,12 +112,17 @@ function UsersEdit() {
           </div>
           <div className='line-header'>
           </div>
+          {loading ? (
+            <div className="circularProgress">
+              <CircularProgress />
+            </div>
+          ) : (
           <div className="edit-content-wrapper">
             <div className='edit-content-border'>
               <div className='edit-content'>
                 <>
                   <div className='two-input-inline'>
-                    <div className='input-flex-one'>
+                    <div className='user-edit-dept'>
                       <label>Dept. Assigned</label>
                       <Select value={department} onChange={(e)=>setDepartment(e.target.value)}>
                         {departments.map((dept) => (
@@ -170,6 +176,7 @@ function UsersEdit() {
               </div>
             </div>
           </div>
+          )}
         </div>
       </div>
     </>

@@ -5,6 +5,8 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import Api from "../../services/Api"
 import { Select } from "@mui/material";
+import { CircularProgress } from '@mui/material';
+
 
 function UsersAdd() {
   const controller = new AbortController();
@@ -95,11 +97,17 @@ function UsersAdd() {
               <div className='edit-input-wrapper'>
                 <div className='select'>
                   <Select value={department} onChange={(e) => setDepartment(e.target.value)}>
-                    {departments.map((dept, index) => (
-                      <MenuItem key={index} value={dept.id}>
+                    {loading ? (
+                      <div className="circularProgress">
+                        <CircularProgress size={16} thickness={6}/>
+                      </div>
+                    ) : (
+                    departments.map((dept, index) => (
+                        <MenuItem key={index} value={dept.id}>
                         {dept.name}
-                      </MenuItem>
-                    ))}
+                        </MenuItem>
+                        ))
+                    )}
                   </Select>
                 </div>
                 <div className="two-input-inline">

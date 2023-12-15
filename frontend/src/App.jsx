@@ -49,7 +49,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Login setIsLoggedIn={setIsLoggedIn} setUser={setUser}/>} />
         <Route element={<Protected isLoggedIn={isLoggedIn}><Main setIsLoggedIn={setIsLoggedIn} user={user}/></Protected>}>
-          {user?.role.id !== 3 && (
+          {user?.role.id !== 3 && ( 
             <>
               <Route path="users" element={<Users />} />
               <Route path="users/add" element={<UsersAdd />} />

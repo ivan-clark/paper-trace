@@ -43,6 +43,10 @@ class Api {
     return Http.get("/api/Department/GetDepartments", { signal: controller?.signal });
   }
 
+  static getDepartmentById(id, controller) {
+    return Http.get(`/api/Department/GetUserById?id=${id}`, { signal: controller?.signal });
+  }
+
   static createDepartment(model) {
     return Http.post("/api/Department/CreateDepartment", model);
   }

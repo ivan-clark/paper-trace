@@ -1,10 +1,13 @@
 import { Link, useNavigate } from 'react-router-dom'
 import MenuItem from '@mui/material/MenuItem';
+import InputLabel from '@mui/material/InputLabel';
 import SendIcon from '@mui/icons-material/Send';
 import React, { useEffect, useState } from 'react'
 import './compose.scss'
 import Api from "../../services/Api";
 import { Select } from "@mui/material";
+import { CircularProgress } from '@mui/material';
+
 
 const Compose = (props) => {
   const controller = new AbortController();
@@ -62,17 +65,25 @@ const Compose = (props) => {
         </div>
         <div className="send-body-wrapper">
           <div className="recipient-and-subject">
+            <InputLabel id="select-label">To:</InputLabel>
             <Select
-              label="To:"
+              labelId="select-label"
               className='compose-select'
               value={department}
               onChange={(e) => setDepartment(e.target.value)}
+              label="To:"
             >
-              {departments.map((dept) => (
-                <MenuItem key={dept.id} value={dept.id}>
-                  {dept.name}
-                </MenuItem>
-              ))}
+              {loading ? (
+                <div className="circularProgress">
+                  <CircularProgress size={16} thickness={6}/>
+                </div>
+              ) : (
+                departments.map((dept) => (
+                  <MenuItem key={dept.id} value={dept.id}>
+                    {dept.name}
+                  </MenuItem>
+                ))
+              )}
             </Select>
             <input
               className='subject'
