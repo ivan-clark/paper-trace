@@ -1,16 +1,16 @@
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import DateFormat from '../../components/common/DateFormat'
-import React, { useEffect, useState } from 'react'
-import { CircularProgress } from '@mui/material';
-import Checkbox from '@mui/material/Checkbox';
-import Tooltip from '@mui/material/Tooltip';
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import React, { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom";
+import { CircularProgress } from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
+import DateFormat from "../../services/Util"
+import Tooltip from "@mui/material/Tooltip";
 import Api from "../../services/Api";
 
 function InboxOutgoing(props) {
   const controller = new AbortController();
-  const [isChecked, setIsChecked] = useState(false)
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(true);
-
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
@@ -24,6 +24,10 @@ function InboxOutgoing(props) {
 
   const getTransactions = () => {
     Api.getTransactions(props.userId, null, 1, controller).then((response) => {
+      const transactionChecked = response.data.data.map((transaction) => ({
+        ...transaction,
+        isChecked: false
+      }))
       console.log(response.data.data);
       setTransactions(response.data.data);
     }).catch((error) => {
@@ -33,8 +37,11 @@ function InboxOutgoing(props) {
     })
   };
 
-  const handleChecked = () => {
-    setIsChecked(!isChecked)
+  // flipper
+  const handleChecked = (i) => {
+    const updatedTransactions = [...transactions]
+    updatedTransactions[i].isChecked = !updatedTransactions[i].isChecked
+    setTransactions(updatedTransactions)
   }
 
   const handleDelete = (e) => {
@@ -50,38 +57,43 @@ function InboxOutgoing(props) {
         ) : (
       <table>
         <tbody>
-          {transactions.map((transaction) => (
-            <tr className={`tbl-row ${isChecked ? 'checked' : ''}`}>
-              <td>
-                <Checkbox onChange={handleChecked} size='small'/>
+          {transactions.map((transaction, i) => (
+          <tr onClick={(e) => {
+              // this checks if checkbox is clicked or not, very useful
+              if(!e.target.closest(".MuiCheckbox-root")) {
+                navigate(`/inbox/${transaction.id}`)
+              }
+            }} 
+            key={transaction.id} 
+            className={`tbl-row ${transaction.isChecked ? "checked" : ""}`}
+            >
+            <td>
+              <Checkbox onChange={() => handleChecked(i)} size="small" checked={transaction.isChecked || false}/>
+            </td>
+              <td className="sender">
+                <span><strong>{transaction.recepient?.name}</strong></span>
               </td>
-              <td className='sender'>
-                <div className='text'>
-                  <span><strong>{transaction.recepient.name}</strong></span>
-                </div>
+              <td id="td-spacer"></td>
+              <td className="title-and-message">
+                <span className="title">{transaction.subject} - </span>
+                <span>{transaction.message}</span>
               </td>
-              <td id='td-spacer'></td>
-              <td className='title-and-message'>
-                <div>
-                  <span className='title'>{transaction.subject} - </span>
-                  <span>{transaction.message}</span>
-                </div>
+              <td id="td-spacer"></td>
+              <td className="date">
+                <span><strong>{DateFormat({ createdAt: transaction.modifiedDate })}</strong></span>
               </td>
-              <td id='td-spacer'></td>
-              <td className='date'>
-                <div>
-                  <span><strong>{DateFormat({ createdAt: transaction.modifiedDate })}</strong></span>
-                </div>
+              <td className={`inbox-tr ${transaction.isChecked ? "checked" : ""}`}>
+                <Tooltip title="Delete">
+                  <button onClick={(e) => {
+                      // prevent tr onclick when button is clicked
+                      e.stopPropagation()
+                      handleDelete()
+                    }} 
+                    className={`delete inbox-delete ${transaction.isChecked ? "checked" : ""}`}>
+                    <DeleteOutlineIcon fontSize="small"/>
+                  </button>
+                </Tooltip>
               </td>
-              <div className={`inbox-tr ${isChecked ? 'checked' : ''}`}>
-              <Tooltip title='Delete'>
-                <button onClick={handleDelete} className={`delete inbox-delete ${isChecked ? 'checked' : ''}`}>
-                  <div>
-                    <DeleteOutlineIcon fontSize='small'/>
-                  </div>
-                </button>
-              </Tooltip>
-            </div>
             </tr>
           ))}
         </tbody>

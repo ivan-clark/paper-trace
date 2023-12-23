@@ -1,12 +1,13 @@
-import { Link, useNavigate } from 'react-router-dom'
-import MenuItem from '@mui/material/MenuItem';
-import InputLabel from '@mui/material/InputLabel';
-import SendIcon from '@mui/icons-material/Send';
-import React, { useEffect, useState } from 'react'
-import './compose.scss'
+import { Alert, Select, LinearProgress } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom"
+import React, { useEffect, useState } from "react"
+import InputLabel from "@mui/material/InputLabel";
+import SendIcon from "@mui/icons-material/Send";
+import TextField from '@mui/material/TextField';
+import Snackbar from '@mui/material/Snackbar';
+import MenuItem from "@mui/material/MenuItem";
 import Api from "../../services/Api";
-import { Select } from "@mui/material";
-import { CircularProgress } from '@mui/material';
+import "./_compose.scss"
 
 
 const Compose = (props) => {
@@ -14,10 +15,11 @@ const Compose = (props) => {
 
   const [loading, setLoading] = useState(true);
   const [departments, setDepartments] = useState([]);
-
   const [department, setDepartment] = useState(0);
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
+  const [error, setError] = useState(null)
+  const [showSnackbar, setShowSnackbar] = useState(false)
 
   const navigate = useNavigate();
 
@@ -25,9 +27,7 @@ const Compose = (props) => {
     setLoading(true);
     getDepartments(controller);
 
-    return () => {
-      controller.abort();
-    }
+    return () => { controller.abort() }
   }, []);
 
   const getDepartments = () => {
@@ -40,23 +40,30 @@ const Compose = (props) => {
     })
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     const model = {
       sender: {id: props.user.id},
       recepient: {id: department},
       subject: subject,
       message: message
     };
+    setShowSnackbar(true)
     Api.createTransaction(model).then(()=>{
-      alert("Successfully sent");
     }).catch(()=>{
-
+      console.log(error)
+    }).finally(() =>{
+      navigate('/inbox')
     })
   }
 
+  const handleClose = (e, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+  }
+
   return (
-    <form onSubmit={handleSubmit} className="send-content">
+    <div className="send-content">
       <div className="send-content-wrapper">
         <div className="send-header-wrapper">
           <div className="send-message-header">
@@ -64,52 +71,52 @@ const Compose = (props) => {
           </div>
         </div>
         <div className="send-body-wrapper">
-          <div className="recipient-and-subject">
-            <InputLabel id="select-label">To:</InputLabel>
-            <Select
-              labelId="select-label"
-              className='compose-select'
-              value={department}
-              onChange={(e) => setDepartment(e.target.value)}
-              label="To:"
-            >
-              {loading ? (
-                <div className="circularProgress">
-                  <CircularProgress size={16} thickness={6}/>
-                </div>
-              ) : (
-                departments.map((dept) => (
-                  <MenuItem key={dept.id} value={dept.id}>
-                    {dept.name}
-                  </MenuItem>
-                ))
-              )}
-            </Select>
+          <TextField
+            select
+            className="compose-select"
+            value={department}
+            onChange={(e) => setDepartment(e.target.value)}
+            label="To:"
+          >
+            {loading ? (
+              <LinearProgress />
+            ) : (
+              departments.map((dept) => (
+                <MenuItem key={dept.id} value={dept.id}>
+                  {dept.name}
+                </MenuItem>
+              ))
+            )}
+          </TextField>
             <input
-              className='subject'
-              placeholder='Subject:'
+              className="subject"
+              placeholder="Subject:"
               value={subject}
               onChange={(e) => setSubject(e.target.value)} />
-          </div>
           <div className="body-body">
             <textarea value={message} onChange={(e) => setMessage(e.target.value)}/>
           </div>
           <div className="send-button-wrapper">
-            <button className='cancel'>
-              <Link to={'/inbox'}>
+            <button className="cancel">
+              <Link to={"/inbox"}>
                 Cancel
               </Link>
             </button>
-            <button className='send-doc-btn'>
+            <button onClick={handleSubmit} className="send-doc-btn">
               <span>
-                <SendIcon fontSize='small' />
+                <SendIcon fontSize="small" />
                 Send
               </span>
             </button>
           </div>
         </div>
       </div>
-    </form>
+      <Snackbar open={showSnackbar} autoHideDuration={5000} onClose={handleClose}>
+        <Alert onClose={handleClose} variant="filled" severity="success">
+          {`Message sent successfully`}
+        </Alert>
+      </Snackbar>
+    </div>
   )
 }
 
