@@ -1,14 +1,14 @@
-import './inbox.scss'
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import PropTypes from 'prop-types';
-import Box from '@mui/material/Box';
-import InboxOutgoing from './InboxOutgoing'
-import InboxUpcoming from './InboxUpcoming'
-import Typography from '@mui/material/Typography';
-import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
-import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
-import React, { useState } from 'react'
+import "./_inbox.scss"
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import PropTypes from "prop-types";
+import Box from "@mui/material/Box";
+import InboxOutgoing from "./InboxOutgoing"
+import InboxUpcoming from "./InboxUpcoming"
+import Typography from "@mui/material/Typography";
+import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
+import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
+import React from "react"
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -49,13 +49,13 @@ function Inbox(props) {
   function a11yProps(index) {
     return {
       id: `simple-tab-${index}`,
-      'aria-controls': `simple-tabpanel-${index}`,
+      "aria-controls": `simple-tabpanel-${index}`,
     };
   }
 
   return (
-    <div className='inbox-wrapper'>
-      <div className='inbox-header'>
+    <div className="inbox-wrapper">
+      <div className="inbox-header">
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
           <Tab 
             iconPosition="start" 
@@ -64,7 +64,7 @@ function Inbox(props) {
               <div className="tab-label">
                 <div className="tab-sub-wrapper">
                   <span>Outgoing</span>
-                  {outgoing !== 0 && <span className='notif'>{`${outgoing} new`}</span>}
+                  {outgoing !== 0 && <span className="notif">{`${outgoing} new`}</span>}
                 </div>
                 <span className="additional-label">docs to other departments</span>
               </div>
@@ -77,7 +77,7 @@ function Inbox(props) {
               <div className="tab-label">
                 <div className="tab-sub-wrapper">
                   <span>Upcoming</span>
-                  {upcoming !== 0 && <span className='notif'>{`${upcoming} new`}</span>}
+                  {upcoming !== 0 && <span className="notif">{`${upcoming} new`}</span>}
                 </div>
                 <span className="additional-label">docs from other departments</span>
               </div>

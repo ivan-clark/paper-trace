@@ -44,3 +44,11 @@
 	 font-size: 15px;
 	 font-weight: 500;
 }
+
+::-webkit-scrollbar {
+	width: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: var(--on-white-darker-hover);
+}

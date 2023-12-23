@@ -1,9 +1,9 @@
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import { CircularProgress } from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import {Link, useParams} from 'react-router-dom'
-import React, {useState, useEffect} from 'react'
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import { CircularProgress } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import {Link, useParams} from "react-router-dom"
+import React, {useState, useEffect} from "react"
 import Api from "../../services/Api"
 import { useNavigate } from "react-router";
 
@@ -49,26 +49,26 @@ function DepartmentEdit() {
     <>
       <div 
       // key={department._id}
-      className='edit-form-main-wrapper'
+      className="edit-form-main-wrapper"
       >
         <div className="edit-form-wrapper">
           <div className="header-content">
             <>
             <div className="edit-text-and-back-icon">
-              <div div className='back-icon'>
-                <Link to='/departments'><ArrowBackIcon /></Link>
+              <div div className="back-icon">
+                <Link to="/departments"><ArrowBackIcon /></Link>
               </div>
               <div>
                 <h3>Edit</h3>
               </div>
             </div>
-            <div className='edited-time'> 
+            <div className="edited-time"> 
               <span>Last edited: </span>
                 {`12:00 AM 1/1/2024`}
             </div>
             </>
           </div>
-          <div className='line-header'></div>
+          <div className="line-header"></div>
           {loading ? (
             <div className="circularProgress">
               <CircularProgress />
@@ -78,7 +78,7 @@ function DepartmentEdit() {
             <div className="edit-content-border">
               <div className="edit-content">
                 <div className="edit-input-wrapper">
-                  <div className='select'>
+                  <div className="select">
                     <label>Department</label>
                     <Select value={department} onChange={(e) => setDepartment(e.target.value)}>
                     {departments.map((dept, index) => (
@@ -91,11 +91,11 @@ function DepartmentEdit() {
                   </div>
                   <div className="admin-edit-buttons">
                     <div>
-                      <Link to='/departments' className='cancel'>Cancel</Link>
+                      <Link to="/departments" className="cancel">Cancel</Link>
                     </div>
                     <div>
-                    <button className='save' onClick={() =>handleSave()}>Save</button>
-                    {error && <div id='admin-add-user-error'>{error}
+                    <button className="save" onClick={() =>handleSave()}>Save</button>
+                    {error && <div id="admin-add-user-error">{error}
                     </div>}
                   </div>
                 </div>

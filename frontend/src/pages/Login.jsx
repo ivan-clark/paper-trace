@@ -1,19 +1,29 @@
-import React, { useState } from "react";
-import { CircularProgress } from '@mui/material';
-import Button from '@mui/material/Button';
+import { CircularProgress,
+    InputAdornment, TextField, 
+    IconButton} from "@mui/material";
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useNavigate } from "react-router-dom";
-import Link from "@mui/material/Link";
 import MainLogo from "../assets/MainLogo.svg";
-import Api from "../services/Api";
+import Button from "@mui/material/Button";
+import React, { useState } from "react";
+import Link from "@mui/material/Link";
 import Http from "../services/Http";
+import Api from "../services/Api";
 
 const Login = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false)
 
   const navigate = useNavigate();
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show)
+  const handleMouseDownPassword = (e) => {
+    e.preventDefault()
+  }
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -73,20 +83,39 @@ const Login = (props) => {
           </div>
 
           <div id="input-wrapper">
-            <input
+            <TextField
+              id="username"
               type="text"
-              placeholder="username"
-              onChange={(e) => setUsername(e.target.value)}
+              label="username"
               value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              // login using enter key
+              onKeyDown={(e) => e.key === "Enter" && handleLogin(e)}
             />
 
-            <input
-              type="password"
-              placeholder="password"
-              onChange={(e) => setPassword(e.target.value)}
+            <TextField
+              id="password"
+              type={showPassword ? "text" : "password"}
+              label="password"
               value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              // login using enter key
+              onKeyDown={(e) => e.key === "Enter" && handleLogin(e)}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      id="eye"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
-
             <div>
               {errorMessage && <div className="login-error">{errorMessage}</div>}
             </div>
@@ -99,7 +128,7 @@ const Login = (props) => {
             color="primary"
             id="login-button"
           >
-            {isLoading ? <CircularProgress size={20} color="inherit" /> : 'Login'}
+            {isLoading ? <CircularProgress size={20} color="inherit" /> : "Login"}
           </Button>
             <Link className="forgotPassLink" to="/forgot-password" >Forgot password?</Link>
           </div>

@@ -1,12 +1,12 @@
-import SentDetails from './SentDetails'
-import React from 'react'
-import './sent.scss'
+import SentDetails from "./SentDetails"
+import React from "react"
+import "./_sent.scss"
 
 function Sent() {
   return (
-    <div className='sent-wrapper'>
-      <div className='sent-header'>
-        <div className='inbox-header-header'>
+    <div className="sent-wrapper">
+      <div className="sent-header">
+        <div className="inbox-header-header">
           Documents sent
         </div>
       </div>

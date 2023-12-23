@@ -1,0 +1,82 @@
+.action-btns {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+}
+
+.users-edit,
+.users-delete {
+  --on-white-darker-hover: #d7d7d7;
+  --isChecked-bg-tooltip: #adc2e1;
+  padding: 0;
+  padding-block: 10px;
+  padding-inline: 12px;
+  background-color: transparent;
+  visibility: hidden;
+}
+
+.users-edit:hover,
+.users-delete:hover {
+  background-color: var(--on-white-darker-hover);
+}
+
+.MuiDataGrid-row.Mui-selected .users-edit:hover,
+.MuiDataGrid-row.Mui-selected .users-delete:hover {
+  background-color: var(--isChecked-bg-tooltip);
+}
+
+.MuiDataGrid-row:hover .users-edit,
+.MuiDataGrid-row:hover .users-delete{
+  visibility: visible;
+}
+
+.user-edit-dept { 
+  display: flex;
+  flex-direction: column;
+}
+.user-edit-dept label {
+  margin-bottom: 4px;
+}
+#user-table {
+  overflow-y: auto;
+}
+#dialog-text {
+  font-family: inherit;
+}
+#users-dialog {
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 18px;
+  display: flex;
+  padding-bottom: 4px;
+  justify-content: center;
+}
+#action-buttons {
+  display: flex;
+  flex-direction: row;
+  font-family: inherit;
+  justify-content: center;
+}
+#cancel-dialog,
+#delete-dialog {
+  width: 15em;
+}
+#cancel-dialog {
+  background-color: transparent;
+  box-shadow: none;
+  color: gray;
+}
+#cancel-dialog:hover {
+  background-color: var(--on-white-hover);
+}
+
+#delete-dialog {
+  background-color: rgb(211, 69, 69);
+  box-shadow: none;
+}
+#delete-dialog:hover {
+  background-color: rgb(183, 49, 49);
+}
+#alert-success {
+  background-color: rgb(79, 125, 79);
+}

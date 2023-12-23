@@ -1,7 +1,7 @@
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import Checkbox from '@mui/material/Checkbox';
-import Tooltip from '@mui/material/Tooltip';
-import React, { useState } from 'react'
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import Checkbox from "@mui/material/Checkbox";
+import Tooltip from "@mui/material/Tooltip";
+import React, { useState } from "react"
 
 function SentDetails() {
   const [isChecked, setIsChecked] = useState(false)
@@ -17,33 +17,33 @@ function SentDetails() {
   return (
     <table>
       <tbody>
-        <tr className={`sent-tbl-row ${isChecked ? 'checked' : ''}`}>
+        <tr className={`sent-tbl-row ${isChecked ? "checked" : ""}`}>
           <td>
             <Checkbox onChange={handleChecked}/>
           </td>
-          <td className='sender'>
-            <div className='text'>
+          <td className="sender">
+            <div className="text">
               <span>{`To: Student Affairs Office`}</span>
             </div>
           </td>
-          <td id='td-spacer'></td>
-          <td className='title-and-message'>
+          <td id="td-spacer"></td>
+          <td className="title-and-message">
             <div>
-              <span className='title'>Title - </span>
+              <span className="title">Title - </span>
               <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis et velit, quis earum id optio tenetur. Repellendus necessitatibus id sapiente culpa velit dolorum nostrum. Adipisci nobis necessitatibus quo quaerat tempora?</span>
             </div>
           </td>
-          <td id='td-spacer'></td>
-          <td className='date'>
+          <td id="td-spacer"></td>
+          <td className="date">
             <div>
               <span><strong>Nov 14</strong></span>
             </div>
           </td>
-          <div className={`sent-tr ${isChecked ? 'checked' : ''}`}>
-            <Tooltip title='Delete'>
-            <button onClick={handleDelete} className={`delete sent-delete ${isChecked ? 'checked' : ''}`}>
+          <div className={`sent-tr ${isChecked ? "checked" : ""}`}>
+            <Tooltip title="Delete">
+            <button onClick={handleDelete} className={`delete sent-delete ${isChecked ? "checked" : ""}`}>
                 <div>
-                  <DeleteOutlineOutlinedIcon fontSize='small'/>
+                  <DeleteOutlineOutlinedIcon fontSize="small"/>
                 </div>
               </button>
             </Tooltip>

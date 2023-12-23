@@ -1,18 +1,29 @@
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import EditIcon from '@mui/icons-material/Edit';
-import DateFormat from '../../components/common/DateFormat'
-import Tooltip from '@mui/material/Tooltip';
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import Button from "@mui/material/Button";
+import DialogTitle from '@mui/material/DialogTitle';
 import React, { useEffect, useState } from "react";
-import { CircularProgress } from '@mui/material';
+import { CircularProgress } from "@mui/material";
 import Table from "../../components/common/Table";
-import Api from "../../services/Api";
+import EditIcon from "@mui/icons-material/Edit";
+import Tooltip from "@mui/material/Tooltip";
+import DateFormat from "../../services/Util"
 import { useNavigate } from "react-router";
-import './users.scss'
+import Snackbar from '@mui/material/Snackbar';
+import { Alert } from "@mui/material";
+import Api from "../../services/Api";
+import "./_users.scss"
 
 const Users = () => {
   const controller = new AbortController();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [openDialog, setOpenDialog] = useState(false)
+  const [showSnackbar, setShowSnackbar] = useState(false)
+  const [userToDelete, setUserToDelete] = useState(null)
 
   const navigate = useNavigate();
 
@@ -32,39 +43,41 @@ const Users = () => {
       console.log(error);
     }).finally(() => {
       setLoading(false)
-      navigate('/users')
+      navigate("/users")
+      setShowSnackbar(false)
     })
   };
 
-  const handleDelete = (id) => {
-    console.log(id);
+  const handleOpenDialog = (id) => {
+    setOpenDialog(true)
+    setUserToDelete(id)
   };
 
   const columns = [
-    { field: 'id', headerName: '#', width: 70 },
+    { field: "id", headerName: "#", width: 70 },
     {
-      field: 'department',
-      headerName: 'Department',
+      field: "department",
+      headerName: "Department",
       width: 150
     },
     {
-      field: 'name',
-      headerName: 'Name',
+      field: "name",
+      headerName: "Name",
       width: 230
     },
     {
-      field: 'role',
-      headerName: 'Role',
+      field: "role",
+      headerName: "Role",
       width: 150
     },
     {
-      field: 'email',
-      headerName: 'Email',
+      field: "email",
+      headerName: "Email",
       width: 230
     },
     {
-      field: 'createdDate',
-      headerName: 'Date created',
+      field: "createdDate",
+      headerName: "Date created",
       width: 150
     },
     {
@@ -80,9 +93,11 @@ const Users = () => {
         };
 
         const handleDelete = (e) => {
-          console.log(params);
-          Api.deleteUser({id: params.row.id}).then(()=>{
+          console.log(userToDelete);
+          Api.deleteUser({id: userToDelete }).then(()=>{
             getUsers(controller);
+            setShowSnackbar(true)
+            setOpenDialog(false)
           }).catch((error)=>{
             console.log(error);
           })
@@ -90,13 +105,40 @@ const Users = () => {
         };
   
         return <>
-        <div className='action-btns'>
-          <Tooltip title='Edit'>
-            <button className='users-edit' onClick={handleEdit}><EditIcon fontSize='small'/></button>
+        <div className="action-btns">
+          <Tooltip disableFocusListener={true} title="Edit">
+            <button className="users-edit" onClick={handleEdit}><EditIcon fontSize="small"/></button>
           </Tooltip>
-          <Tooltip title='Delete'>
-            <button className='users-delete' onClick={handleDelete}><DeleteOutlineOutlinedIcon fontSize='small'/></button>
+          <Tooltip title="Delete">
+            <button className="users-delete" onClick={() => {handleOpenDialog(params.row.id)}}><DeleteOutlineOutlinedIcon fontSize="small"/></button>
           </Tooltip>
+          <Dialog
+            open={openDialog}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+            sx={{
+              background: 'rgba(0, 0, 0, 0.03)',
+              '& .MuiPaper-root': {
+                boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.03)', 
+              },
+              '& .MuiBackdrop-root': {
+                backgroundColor: 'transparent',
+              },
+            }}
+          > 
+            <DialogTitle id="users-dialog">
+              {`Delete User`}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="dialog-text">
+                Once deleted, the action cannot be undone, confirm?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions id="action-buttons">
+              <Button id="cancel-dialog" variant="contained" onClick={() => {setOpenDialog(false)}}>Cancel</Button>
+              <Button id="delete-dialog" variant="contained" onClick={handleDelete}>Delete</Button>
+            </DialogActions>
+          </Dialog>
         </div>
         </>;
       }
@@ -104,24 +146,25 @@ const Users = () => {
   ];
 
   const rows = data && data.map((d) => ({
-    id: d.id, 
-    department: d.department.name,
-    name: `${d.firstName} ${d.lastName}`,
-    role: d.role.name,
-    email: d.email,
-    createdDate: DateFormat({createdAt: d.createdDate})
+    id: d?.id, 
+    department: d?.department?.name,
+    name: `${d?.firstName} ${d?.lastName}`,
+    role: d?.role?.name,
+    email: d?.email,
+    createdDate: DateFormat({createdAt: d?.createdDate})
   }));
 
   return (
-    <div className='area'>
-      <div className="admin-header">
-        {loading && (
+    <div className="admin-header">
+      {loading && (
         <div className="circularProgress">
           <CircularProgress />
         </div>
-         )}
-         <Table columns={columns} rows={rows} handleDelete={handleDelete} />
-      </div>
+        )}
+        <Table stickyHeader aria-label="sticky table" columns={columns} rows={rows} />
+        <Snackbar open={showSnackbar} autoHideDuration={3000}>
+        <Alert variant="filled" severity="error">User deleted</Alert>
+      </Snackbar>
     </div>
   );
 };
