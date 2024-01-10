@@ -1,7 +1,6 @@
-import { Alert, Select, LinearProgress } from "@mui/material";
+import { Alert, LinearProgress } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom"
 import React, { useEffect, useState } from "react"
-import InputLabel from "@mui/material/InputLabel";
 import SendIcon from "@mui/icons-material/Send";
 import TextField from '@mui/material/TextField';
 import Snackbar from '@mui/material/Snackbar';
@@ -84,7 +83,7 @@ const Compose = (props) => {
               departments.map((dept) => (
                 <MenuItem key={dept.id} value={dept.id}>
                   {dept.name}
-                </MenuItem>
+                </MenuItem> 
               ))
             )}
           </TextField>

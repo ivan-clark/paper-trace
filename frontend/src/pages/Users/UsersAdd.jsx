@@ -1,8 +1,7 @@
-import { FormControl, useFormControlContext } from '@mui/base/FormControl';
-import { Alert, LinearProgress, Select } from "@mui/material";
+import { Alert, LinearProgress } from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import React, { useEffect, useState } from 'react'
-import InputLabel from "@mui/material/InputLabel";
+import TextField from '@mui/material/TextField';
 import Snackbar from '@mui/material/Snackbar';
 import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom'
@@ -105,8 +104,7 @@ function UsersAdd() {
             <>
               <div className='edit-input-wrapper'>
                 <div className='select'>
-                  <InputLabel id="select-label">Department</InputLabel>
-                  <Select label="Department" value={department} onChange={(e) => setDepartment(e.target.value)}>
+                  <TextField select label="Department" value={department} onChange={(e) => setDepartment(e.target.value)}>
                     {loading ? (
                       <LinearProgress />
                     ) : (
@@ -116,7 +114,7 @@ function UsersAdd() {
                         </MenuItem>
                         ))
                     )}
-                  </Select>
+                  </TextField>
                 </div>
                 <div className="two-input-inline">
                   <div className='input-flex-one'>

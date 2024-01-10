@@ -1,15 +1,13 @@
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { Link, useParams, useNavigate } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ShortcutIcon from '@mui/icons-material/Shortcut';
-import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import Tooltip from '@mui/material/Tooltip';
-import React, { useState, useEffect, useRef, useReducer } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
-function InboxViewMessage() {
-  const navigate = useNavigate()
+function InboxViewOutgoing() {
   const menuRef = useRef()
   const [open, setOpen] = useState(false)
 
@@ -67,13 +65,16 @@ function InboxViewMessage() {
                 <div className="time-sent"><span>10:48am (2hrs ago)</span></div>
               </div>
               <div className="to-me">
-                <span>to me</span>
-                <div>
-                  <Tooltip title="Show details" enterDelay={600}>
-                    <button onClick={() => {setOpen(!open)}} className="show-details-button">
-                      <ArrowDropDownIcon id="down-icon"/>
-                    </button>
-                  </Tooltip>
+                <div className="to-me-doc-urgency">
+                  <span>to me</span>
+                  <div>
+                    <Tooltip title="Show details" enterDelay={600}>
+                      <button onClick={() => {setOpen(!open)}} className="show-details-button">
+                        <ArrowDropDownIcon id="down-icon"/>
+                      </button>
+                    </Tooltip>
+                  </div>
+                  <div className='doc-urgency'>Urgent</div>
                 </div>
                 {open && (
                   <div ref={menuRef} className="show-details-modal">
@@ -106,13 +107,7 @@ function InboxViewMessage() {
                   <div>
                     <button className="decline">
                       <CloseIcon />
-                      <span>Decline</span>
-                    </button>
-                  </div>
-                  <div>
-                    <button className="accept">
-                      <CheckIcon />
-                      <span>Accept</span>
+                      <span>Cancel</span>
                     </button>
                   </div>
                 </div>
@@ -136,4 +131,4 @@ function InboxViewMessage() {
   )
 }
 
-export default InboxViewMessage
+export default InboxViewOutgoing

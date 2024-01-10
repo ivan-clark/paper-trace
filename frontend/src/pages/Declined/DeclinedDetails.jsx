@@ -3,7 +3,7 @@ import Checkbox from "@mui/material/Checkbox";
 import Tooltip from "@mui/material/Tooltip";
 import React, { useState } from "react"
 
-function AcceptedDetails() {
+function DeclinedDetails() {
   const [isChecked, setIsChecked] = useState(false)
 
   const handleChecked = () => {
@@ -54,4 +54,4 @@ function AcceptedDetails() {
   )
 }
 
-export default AcceptedDetails
+export default DeclinedDetails

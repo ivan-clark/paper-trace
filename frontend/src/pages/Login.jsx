@@ -4,7 +4,7 @@ import { CircularProgress,
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useNavigate } from "react-router-dom";
-import MainLogo from "../assets/MainLogo.svg";
+import LoginLogo from "../assets/LoginLogo.svg";
 import Button from "@mui/material/Button";
 import React, { useState } from "react";
 import Link from "@mui/material/Link";
@@ -77,9 +77,9 @@ const Login = (props) => {
       <div id="form-container">
         <div id="form-wrapper">
           <div id="login-header">
-            <img id="main-logo" alt="logo" src={MainLogo} />
-            <span id="span1">Login to PaperTrace</span>
-            <span id="span2">Use your <span id="span3">UCLM ID</span></span>
+            <img id="main-logo" alt="logo" src={LoginLogo} />
+            <span id="span1">Sign in</span>
+            <span id="span2">to continue to PaperTrace</span>
           </div>
 
           <div id="input-wrapper">

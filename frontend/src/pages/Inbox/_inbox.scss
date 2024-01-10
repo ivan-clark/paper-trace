@@ -132,7 +132,7 @@ table {
       white-space: nowrap;
     }
     .sender {
-      //width: 150px;
+      width: 100px;
     }
     .date {
       margin-right: 1em;
@@ -252,14 +252,23 @@ table {
     width: 100%;
     height: 100%;
     overflow-y: auto;
+
+    .doc-urgency {
+      font-size: 12px;
+      font-weight: 500;
+      color: white;
+      border-radius: 4px;
+      padding-inline: 4px;
+      padding-block: 2px;
+      background-color: rgb(221, 51, 39);
+    }
     
     .message-title-header {
       font-size: 24px;
       display: flex;
+      flex-direction: row;
       height: 48px;
       padding-left: 3em;
-      flex-direction: row;
-      align-items: center;
     }
     .message-and-footer {
       display: flex;
@@ -350,6 +359,11 @@ table {
           color: gray;
           display: flex;
           padding-bottom: 10px;
+          align-items: center;
+          flex-direction: row;
+        }
+        .to-me-doc-urgency {
+          display: flex;
           align-items: center;
           flex-direction: row;
         }

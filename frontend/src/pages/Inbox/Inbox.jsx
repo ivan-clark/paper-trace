@@ -31,8 +31,8 @@ function CustomTabPanel(props) {
 }
 
 function Inbox(props) {
-  let outgoing = 6
-  let upcoming = 0
+  let outgoing = 0
+  let upcoming = 6  
 
   const [value, setValue] = React.useState(0);
   
@@ -71,12 +71,12 @@ function Inbox(props) {
             }
             {...a11yProps(0)} />
           <Tab 
-            iconPosition="start" 
-            icon={<FileDownloadOutlinedIcon />} 
+            iconPosition="start"  
+            icon={<FileDownloadOutlinedIcon />}   
             label={
               <div className="tab-label">
                 <div className="tab-sub-wrapper">
-                  <span>Upcoming</span>
+                  <span>Incoming</span>
                   {upcoming !== 0 && <span className="notif">{`${upcoming} new`}</span>}
                 </div>
                 <span className="additional-label">docs from other departments</span>

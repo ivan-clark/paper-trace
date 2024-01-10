@@ -29,7 +29,7 @@ function InboxOutgoing(props) {
         isChecked: false
       }))
       console.log(response.data.data);
-      setTransactions(response.data.data);
+      setTransactions(transactionChecked);
     }).catch((error) => {
       console.log(error);
     }).finally(() => {
@@ -58,10 +58,10 @@ function InboxOutgoing(props) {
       <table>
         <tbody>
           {transactions.map((transaction, i) => (
-          <tr onClick={(e) => {
+            <tr onClick={(e) => {
               // this checks if checkbox is clicked or not, very useful
               if(!e.target.closest(".MuiCheckbox-root")) {
-                navigate(`/inbox/${transaction.id}`)
+                navigate(`/inbox/outgoing/${transaction.id}`)
               }
             }} 
             key={transaction.id} 
@@ -75,7 +75,7 @@ function InboxOutgoing(props) {
               </td>
               <td id="td-spacer"></td>
               <td className="title-and-message">
-                <span className="title">{transaction.subject} - </span>
+                <strong><span className="title">{transaction.subject} - </span></strong>
                 <span>{transaction.message}</span>
               </td>
               <td id="td-spacer"></td>

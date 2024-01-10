@@ -20,7 +20,8 @@ import Accepted from "./pages/Accepted/Accepted"
 import Departments from "./pages/Departments/Departments";
 import DepartmentAdd from "./pages/Departments/DepartmentsAdd"
 import DepartmentEdit from "./pages/Departments/DepartmentsEdit"
-import InboxViewMessage from "./pages/Inbox/InboxViewMessage";
+import InboxViewUpcoming from "./pages/Inbox/InboxViewUpcoming";
+import InboxViewOutgoing from "./pages/Inbox/InboxViewOutgoing";
 
 const Protected = ({ isLoggedIn, children }) => {
   return isLoggedIn ? children : <Navigate to="/" replace />;
@@ -70,7 +71,8 @@ const App = () => {
               <Route path="track" element={<Track />} />
               <Route path="compose" element={<Compose user={user}/>} />
               <Route path="inbox" element={<Inbox user={user}/>} />
-              <Route path="inbox/:id" element={<InboxViewMessage />} />
+              <Route path="inbox/outgoing/:id" element={<InboxViewOutgoing />} />
+              <Route path="inbox/upcoming/:id" element={<InboxViewUpcoming />} />
               <Route path="sent" element={<Sent />} />
               <Route path="accepted-docs" element={<Accepted />} />
               <Route path="declined-docs" element={<Declined />} />

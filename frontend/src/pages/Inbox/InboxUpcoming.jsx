@@ -61,7 +61,7 @@ function InboxUpcoming(props) {
             <tr onClick={(e) => {
                 // this checks if checkbox is clicked or not, very useful
                 if(!e.target.closest(".MuiCheckbox-root")) {
-                  navigate(`/inbox/${transaction.id}`)
+                  navigate(`/inbox/upcoming/${transaction.id}`)
                 }
               }} 
               key={transaction.id} 
@@ -77,7 +77,7 @@ function InboxUpcoming(props) {
               <td id="td-spacer"></td>
               <td className="title-and-message">
                 <td>
-                  <span className="title">{transaction.subject} - </span>
+                  <strong><span className="title">{transaction.subject} - </span></strong>
                   <span>{transaction.message}</span>
                 </td>
               </td>

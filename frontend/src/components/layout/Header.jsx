@@ -7,7 +7,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
-import MainLogo from "../../assets/MainLogo.svg";
+import HeaderLogo from "../../assets/HeaderLogo.svg";
 import Http from "../../services/Http";
 
 const Header = (props) => {
@@ -16,7 +16,13 @@ const Header = (props) => {
 
   const isUsersPath = location.pathname.includes("/users")
   const isComposePath = location.pathname.includes("/compose")
+  const isTrackPath = location.pathname.includes("/track")
   const iseDeptPath = location.pathname.includes("/departments")
+  const isSentPath = location.pathname.includes("/sent")
+  const isAcceptedPath = location.pathname.includes("/accepted")
+  const isDeclinedPath = location.pathname.includes("/declined")
+  const isTrashPath = location.pathname.includes("/trash")
+
 
   const [open, setOpen] = useState(false)
 
@@ -38,7 +44,7 @@ const Header = (props) => {
             </div>
             <div>
               <Link to="/inbox">
-                <img id="main-logo" src={MainLogo} alt="logo" />
+                <img id="main-logo" src={HeaderLogo} alt="logo" />
               </Link>
             </div>
           </div>
@@ -50,15 +56,26 @@ const Header = (props) => {
             <input
               disabled={true}
               type="text"
-              placeholder="Search inbox"
             />
             <button disabled={true}><SearchIcon /></button>
+          </>
+          ) : isTrackPath ? (
+          <>
+            <input
+              hidden={true}
+              type="text"
+            />
+            <button hidden={true}><SearchIcon /></button>
           </>
           ) : (
             <>
               <input
                 type="text"
-                placeholder="Search inbox"
+                placeholder={isSentPath ? "in:sent" 
+                            : isAcceptedPath ? "in:accepted" 
+                            : isDeclinedPath ? "in:declined" 
+                            : isTrashPath ? "in:trash" 
+                            : "Search inbox"}
               />
               <button><SearchIcon /></button>
             </>
