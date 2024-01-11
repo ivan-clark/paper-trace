@@ -44,7 +44,7 @@ const Sidebar = (props) => {
         cName: "sidebar-divider"
       },
       {
-        title: "Inbox",
+        title: "Mailbox",
         path: "/inbox",
         icon: <InboxOutlinedIcon />,
         activeIcon: <InboxIcon />,

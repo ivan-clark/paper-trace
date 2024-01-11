@@ -45,7 +45,7 @@ function InboxUpcoming(props) {
   }
 
   const handleDelete = (e) => {
-    e.preventDefault()
+    
   }
 
   return (

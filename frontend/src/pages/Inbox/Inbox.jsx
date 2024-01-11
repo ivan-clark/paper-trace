@@ -58,6 +58,19 @@ function Inbox(props) {
       <div className="inbox-header">
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
           <Tab 
+              iconPosition="start"  
+              icon={<FileDownloadOutlinedIcon />}   
+              label={
+                <div className="tab-label">
+                  <div className="tab-sub-wrapper">
+                    <span>Incoming</span>
+                    {upcoming !== 0 && <span className="notif">{`${upcoming} new`}</span>}
+                  </div>
+                  <span className="additional-label">docs from other departments</span>
+                </div>
+              }
+              {...a11yProps(1)} />
+          <Tab 
             iconPosition="start" 
             icon={<FileUploadOutlinedIcon />} 
             label={
@@ -70,29 +83,16 @@ function Inbox(props) {
               </div>
             }
             {...a11yProps(0)} />
-          <Tab 
-            iconPosition="start"  
-            icon={<FileDownloadOutlinedIcon />}   
-            label={
-              <div className="tab-label">
-                <div className="tab-sub-wrapper">
-                  <span>Incoming</span>
-                  {upcoming !== 0 && <span className="notif">{`${upcoming} new`}</span>}
-                </div>
-                <span className="additional-label">docs from other departments</span>
-              </div>
-            }
-            {...a11yProps(1)} />
         </Tabs>
       </div>
       <div className="inbox-outlet">
         <div className="inbox-outlet-wrapper">
           <div className="inbox-inbox">
             <CustomTabPanel value={value} index={0}>
-              <InboxOutgoing userId={props.user.id}/>
+              <InboxUpcoming departmentId={props.user.department.id}/>
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
-              <InboxUpcoming departmentId={props.user.department.id}/>
+              <InboxOutgoing userId={props.user.id}/>
             </CustomTabPanel>
           </div>
         </div>
