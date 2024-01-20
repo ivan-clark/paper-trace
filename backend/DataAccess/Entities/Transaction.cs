@@ -7,15 +7,11 @@ public partial class Transaction
 {
     public int Id { get; set; }
 
-    public int? SenderId { get; set; }
-
-    public int? RecepientId { get; set; }
-
-    public string? Subject { get; set; }
-
-    public string? Message { get; set; }
+    public int? DocumentId { get; set; }
 
     public int? StatusId { get; set; }
 
-    public DateTime? ModifiedDate { get; set; }
+    public bool Restricted { get; set; }
+
+    public DateTime? CreatedDate { get; set; }
 }

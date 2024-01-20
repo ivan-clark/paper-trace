@@ -23,27 +23,17 @@ namespace API.Services
             _transactionRepository.CreateTransaction(model);
         }
 
-        public List<TransactionModel> GetTransactions(int? senderId, int? recepientId, int? statusId)
+        public List<TransactionModel> GetTransactions()
         {
             var result = new List<TransactionModel>();
-            var transactions = _transactionRepository.GetTransactions().Where(t => t.StatusId == statusId);
-
-            if (senderId != null)
-                transactions = transactions.Where(t => t.SenderId == senderId).ToList();
-
-            if (recepientId != null)
-                transactions = transactions.Where(t => t.RecepientId == recepientId).ToList();
+            var transactions = _transactionRepository.GetTransactions();
 
             foreach (var transaction in transactions)
             {
                 result.Add(new TransactionModel
                 {
                     Id = transaction.Id,
-                    Sender = _userRepository.GetUserById(transaction.SenderId ?? 0),
-                    Recepient = _departmentRepository.GetDepartmentById(transaction.RecepientId ?? 0),
-                    Subject = transaction.Subject,
-                    Message = transaction.Message,
-                    ModifiedDate = transaction.ModifiedDate
+                    Restricted = transaction.Restricted
                 });
             }
 

@@ -12,11 +12,13 @@ public partial class PapertracedbContext : DbContext
 
     public virtual DbSet<Department> Departments { get; set; }
 
+    public virtual DbSet<Document> Documents { get; set; }
+
     public virtual DbSet<Role> Roles { get; set; }
 
-    public virtual DbSet<Status> Statuses { get; set; }
+    public virtual DbSet<Route> Routes { get; set; }
 
-    public virtual DbSet<Timeline> Timelines { get; set; }
+    public virtual DbSet<Status> Statuses { get; set; }
 
     public virtual DbSet<Transaction> Transactions { get; set; }
 
@@ -60,6 +62,23 @@ public partial class PapertracedbContext : DbContext
                 .HasColumnName("name");
         });
 
+        modelBuilder.Entity<Document>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("document");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Description)
+                .HasMaxLength(45)
+                .HasColumnName("description");
+            entity.Property(e => e.SenderId).HasColumnName("senderId");
+            entity.Property(e => e.Subject)
+                .HasMaxLength(45)
+                .HasColumnName("subject");
+            entity.Property(e => e.Urgent).HasColumnName("urgent");
+        });
+
         modelBuilder.Entity<Role>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
@@ -73,6 +92,21 @@ public partial class PapertracedbContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(45)
                 .HasColumnName("name");
+        });
+
+        modelBuilder.Entity<Route>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("route");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.RecepientId).HasColumnName("recepientId");
+            entity.Property(e => e.StatusId).HasColumnName("statusId");
+            entity.Property(e => e.TransactionId).HasColumnName("transactionId");
+            entity.Property(e => e.UpdatedDate)
+                .HasColumnType("datetime")
+                .HasColumnName("updatedDate");
         });
 
         modelBuilder.Entity<Status>(entity =>
@@ -90,20 +124,6 @@ public partial class PapertracedbContext : DbContext
                 .HasColumnName("name");
         });
 
-        modelBuilder.Entity<Timeline>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("timeline");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.CreatedDate)
-                .HasColumnType("datetime")
-                .HasColumnName("createdDate");
-            entity.Property(e => e.StatusId).HasColumnName("statusId");
-            entity.Property(e => e.TransactionId).HasColumnName("transactionId");
-        });
-
         modelBuilder.Entity<Transaction>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
@@ -111,18 +131,15 @@ public partial class PapertracedbContext : DbContext
             entity.ToTable("transaction");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Message)
-                .HasMaxLength(45)
-                .HasColumnName("message");
-            entity.Property(e => e.ModifiedDate)
+            entity.Property(e => e.CreatedDate)
                 .HasColumnType("datetime")
-                .HasColumnName("modifiedDate");
-            entity.Property(e => e.RecepientId).HasColumnName("recepientId");
-            entity.Property(e => e.SenderId).HasColumnName("senderId");
+                .HasColumnName("createdDate");
+            entity.Property(e => e.DocumentId).HasColumnName("documentId");
+            entity.Property(e => e.Restricted)
+                .HasDefaultValueSql("b'0'")
+                .HasColumnType("bit(1)")
+                .HasColumnName("restricted");
             entity.Property(e => e.StatusId).HasColumnName("statusId");
-            entity.Property(e => e.Subject)
-                .HasMaxLength(45)
-                .HasColumnName("subject");
         });
 
         modelBuilder.Entity<User>(entity =>
