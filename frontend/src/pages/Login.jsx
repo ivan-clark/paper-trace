@@ -4,7 +4,7 @@ import { CircularProgress,
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useNavigate } from "react-router-dom";
-import LoginLogo from "../assets/LoginLogo.svg";
+import LoginLogo from "../assets/LoginLogo.png";
 import Button from "@mui/material/Button";
 import React, { useState } from "react";
 import Link from "@mui/material/Link";
