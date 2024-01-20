@@ -3,7 +3,7 @@ import Checkbox from "@mui/material/Checkbox";
 import Tooltip from "@mui/material/Tooltip";
 import React, { useState } from "react"
 
-function SentDetails() {
+function DeclinedDetails() {
   const [isChecked, setIsChecked] = useState(false)
 
   const handleChecked = () => {
@@ -23,7 +23,7 @@ function SentDetails() {
           </td>
           <td className="sender">
             <div className="text">
-              <span>{`To: Student Affairs Office`}</span>
+              <span>{`From: Student Affairs Office`}</span>
             </div>
           </td>
           <td id="td-spacer"></td>
@@ -54,4 +54,4 @@ function SentDetails() {
   )
 }
 
-export default SentDetails
+export default DeclinedDetails

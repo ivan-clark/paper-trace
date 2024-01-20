@@ -96,6 +96,18 @@ hr {
   margin-block: 1em;
 }
 /*----------* login-section *----------*/
+#username,
+#password {
+  width: 264px;
+}
+#eye:hover {
+  background-color: var(--on-white-hover);
+}
+
+.login-error {
+  color: rgb(224, 42, 42);
+}
+
 #form-container {
   height: 100vh;
   display: flex;
@@ -117,7 +129,7 @@ hr {
   justify-content: center;
   border: solid 1px lightgray;
   border-radius: 10px;
-  padding: 48px 40px 48px;
+  padding: 48px 48px 48px;
   gap: 38px;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
 }
@@ -132,24 +144,12 @@ hr {
   font-weight: 500;
 }
 #form-container #form-wrapper #main-logo {
-  height: 64px;
+  height: 100px;
 }
 #form-container #form-wrapper #input-wrapper {
   display: flex;
   flex-direction: column;
   gap: 16px;
-}
-#form-container #form-wrapper #input-wrapper input {
-  font-size: 1em;
-  padding: 14px 20px;
-  width: 280px;
-  border: 1px solid lightgray;
-  background-color: var(--main-bg-color);
-  border-radius: 4px;
-}
-#form-container #form-wrapper #input-wrapper input:focus {
-  box-shadow: 0px 0px 2px rgba(45, 85, 148, 1);
-  outline: none;
 }
 #form-container #form-wrapper #input-wrapper ::placeholder {
   color: #a7a7a7;
@@ -199,7 +199,7 @@ hr {
   height: 64px;
 }
 #form-wrapper img {
-  margin-bottom: 32px;
+  margin-bottom: 16px;
 }
 #form-wrapper span {
   line-height: 1.5em;
@@ -207,19 +207,22 @@ hr {
 #form-wrapper a {
   font-weight: 500;
 }
+#span1 {
+  font-size: 20px;
+}
 #form-wrapper button {
-  font-size: 1em;
-  padding: 16px 48px;
-  border-radius: 10px;
-  border: none;
-  background-color: #2d5594;
-  color: white;
-  font-weight: 700;
-  transition: background-color 0.15s;
-  cursor: pointer;
+  // font-size: 1em;
+  // padding: 16px 48px;
+  // border-radius: 10px;
+  // border: none;
+  // background-color: #2d5594;
+  // color: white;
+  // font-weight: 700;
+  // transition: background-color 0.15s;
+  // cursor: pointer;
 }
 #form-wrapper button:hover {
-  background-color: #204682;
+  //background-color: #204682;
 }
 #form-wrapper #submit {
   color: #2d5594;
@@ -231,8 +234,8 @@ hr {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
   padding-inline: 1em;
+  justify-content: space-between;
 }
 #header #left-and-middle {
   width: 1000px;
@@ -258,7 +261,8 @@ hr {
   width: 203px;
 }
 #header #left-and-middle #main-logo, #header #left-wrapper #main-logo {
-  width: 80px;
+  width: 100px;
+  display: flex;
   cursor: pointer;
 }
 #header #left-and-middle button, #header #left-wrapper button {
@@ -466,6 +470,7 @@ hr {
   width: 100%;
   display: flex;
   overflow: hidden;
+  position: relative;
   margin-right: 1em;
   margin-bottom: 1em;
   flex-direction: row;

@@ -3,7 +3,7 @@ import Checkbox from "@mui/material/Checkbox";
 import Tooltip from "@mui/material/Tooltip";
 import React, { useState } from "react"
 
-function SentDetails() {
+function TrashDetails() {
   const [isChecked, setIsChecked] = useState(false)
 
   const handleChecked = () => {
@@ -22,8 +22,9 @@ function SentDetails() {
             <Checkbox onChange={handleChecked}/>
           </td>
           <td className="sender">
-            <div className="text">
-              <span>{`To: Student Affairs Office`}</span>
+            <div className="first-section">
+              <div><DeleteOutlineOutlinedIcon id="icon"/></div>
+              <span className="text">{`Student Affairs Office`}</span>
             </div>
           </td>
           <td id="td-spacer"></td>
@@ -54,4 +55,4 @@ function SentDetails() {
   )
 }
 
-export default SentDetails
+export default TrashDetails

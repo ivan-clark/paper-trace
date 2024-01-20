@@ -7,6 +7,7 @@ const Main = (props) => {
   const location = useLocation()
 
   const isComposePath = location.pathname.includes('/compose')
+  const isTrackPath = location.pathname.includes('/track')
 
   return (
     <div className="main-wrapper">
@@ -17,7 +18,7 @@ const Main = (props) => {
         <div className="sidebars">
           <Sidebar roleId={props.user.role.id} />
         </div>
-        {isComposePath ? (
+        {isComposePath || isTrackPath ? (
           <Outlet />
           ) : (
           <div className="content">

@@ -1,10 +1,10 @@
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { CircularProgress } from '@mui/material';
+import { MenuItem, Select, LinearProgress, Alert, CircularProgress } from "@mui/material";
 import { Link, useParams, useNavigate } from 'react-router-dom'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import React, { useEffect, useState } from 'react'
+import Snackbar from '@mui/material/Snackbar';
 import Api from "../../services/Api"
-import { MenuItem, Select } from "@mui/material";
-
+  
 function UsersEdit() {
   const controller = new AbortController();
 
@@ -16,6 +16,7 @@ function UsersEdit() {
   const [lastname, setLastname] = useState("")
   const [email, setEmail] = useState("")
   const [error, setError] = useState(null)
+  const [showSnackbar, setShowSnackbar] = useState(false)
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -55,8 +56,10 @@ function UsersEdit() {
     })
   };
 
-  const handleChange = (value) => {
-    console.log(value);
+  const handleClose = (e, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
   }
 
   const handleSave = () => {
@@ -73,8 +76,9 @@ function UsersEdit() {
         id: department
       }
     };
+    setShowSnackbar(true)
     Api.updateUser(model).then(() => {
-      alert("Successfully saved");
+      navigate('/users')
     }).catch((error) => {
       console.log(error)
     })
@@ -125,11 +129,15 @@ function UsersEdit() {
                     <div className='user-edit-dept'>
                       <label>Dept. Assigned</label>
                       <Select value={department} onChange={(e)=>setDepartment(e.target.value)}>
-                        {departments.map((dept) => (
-                          <MenuItem key={dept.id} value={dept.id}>
-                            {dept.name}
-                          </MenuItem>
-                        ))}
+                        {loading ? (
+                          <LinearProgress />
+                        ) : (
+                          departments.map((dept) => (
+                            <MenuItem key={dept.id} value={dept.id}>
+                              {dept.name}
+                            </MenuItem>
+                          ))
+                        )}
                       </Select>
                     </div>
                   </div>
@@ -178,6 +186,11 @@ function UsersEdit() {
           </div>
           )}
         </div>
+        <Snackbar open={showSnackbar} autoHideDuration={3000} onClose={handleClose}>
+          <Alert onClose={handleClose} variant="filled" severity="success">
+            User edited successfully!
+          </Alert>
+        </Snackbar>
       </div>
     </>
   )

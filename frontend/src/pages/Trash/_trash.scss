@@ -1,0 +1,16 @@
+.trash-icon svg{
+  display: flex;
+}
+
+.first-section {
+  display: flex;
+  flex-direction: row;
+  
+  #icon {
+    font-size: 20px;
+  }
+  .text {
+    display: flex;
+    align-items: center;
+  }
+}

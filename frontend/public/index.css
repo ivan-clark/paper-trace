@@ -17,6 +17,7 @@
 	 --secondary-bg: #cfd5df;
 	 --isClicked-bg: #C2DBFF;
 	 --main-bg-color: #f0f2f5;
+	 --secondary-bg-color: #e8eaef;
 	 --main-btn-color: #2d5594;
 	 --main-btn-hover: #204682;
 	 --sidebar-hover-color: #e2e6ed;
@@ -43,4 +44,12 @@
 	 padding: 0;
 	 font-size: 15px;
 	 font-weight: 500;
+}
+
+::-webkit-scrollbar {
+	width: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: var(--on-white-darker-hover);
 }

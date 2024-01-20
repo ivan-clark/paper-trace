@@ -1,11 +1,11 @@
-import MenuItem from '@mui/material/MenuItem';
+import { Alert, LinearProgress } from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Link } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from "react-router-dom";
+import TextField from '@mui/material/TextField';
+import Snackbar from '@mui/material/Snackbar';
+import MenuItem from '@mui/material/MenuItem';
+import { Link } from 'react-router-dom'
 import Api from "../../services/Api"
-import { Select } from "@mui/material";
-import { CircularProgress } from '@mui/material';
 
 
 function UsersAdd() {
@@ -13,17 +13,13 @@ function UsersAdd() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [departments, setDepartments] = useState([]);
-
   const [department, setDepartment] = useState(0);
   const [firstname, setFirstname] = useState('')
   const [lastname, setLastname] = useState('')
   const [email, setEmail] = useState('')
   const [uclmID, setUclmID] = useState('')
-  const [campus, setCampus] = useState('UCLM')
   const [error, setError] = useState(null)
-
-  const navigate = useNavigate();
-
+  const [showSnackbar, setShowSnackbar] = useState(false)
 
   useEffect(() => {
     setLoading(true);
@@ -41,17 +37,7 @@ function UsersAdd() {
       setLoading(false);
     })
   };
-
-  const getUsers = () => {
-    Api.getUsers(controller).then((response) => {
-      setData(response.data.data);
-    }).catch((error) => {
-      console.log(error);
-    }).finally(() => {
-      setLoading(false);
-    })
-  };
-
+  
   const handleSave = () => {
     let model = {
       firstName: firstname,
@@ -67,12 +53,34 @@ function UsersAdd() {
     };
 
     Api.createUser(model).then((response)=>{
+      setShowSnackbar(true)
       getUsers(controller)
-      navigate('/users')
+      setDepartment(" ")
+      setFirstname(" ")
+      setLastname(" ")
+      setEmail(" ")
     }).catch((error)=>{
       console.log(error);
     });
   }
+  const getUsers = () => {
+    Api.getUsers(controller).then((response) => {
+      setData(response.data.data);
+    }).catch((error) => {
+      console.log(error);
+    }).finally(() => {
+      setLoading(false);
+      setShowSnackbar(false)
+    })
+  };
+
+  const handleClose = (e, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setShowSnackbar(false);
+  };
 
   return (
     <div className="add-user-form-wrapper">
@@ -96,11 +104,9 @@ function UsersAdd() {
             <>
               <div className='edit-input-wrapper'>
                 <div className='select'>
-                  <Select value={department} onChange={(e) => setDepartment(e.target.value)}>
+                  <TextField select label="Department" value={department} onChange={(e) => setDepartment(e.target.value)}>
                     {loading ? (
-                      <div className="circularProgress">
-                        <CircularProgress size={16} thickness={6}/>
-                      </div>
+                      <LinearProgress />
                     ) : (
                     departments.map((dept, index) => (
                         <MenuItem key={index} value={dept.id}>
@@ -108,7 +114,7 @@ function UsersAdd() {
                         </MenuItem>
                         ))
                     )}
-                  </Select>
+                  </TextField>
                 </div>
                 <div className="two-input-inline">
                   <div className='input-flex-one'>
@@ -171,6 +177,9 @@ function UsersAdd() {
           </div>
         </div>
       </div>
+      <Snackbar open={showSnackbar} autoHideDuration={3000} onClose={handleClose}>
+        <Alert onClose={handleClose} id="alert-success" variant="filled" severity="success">User added successfully!</Alert>
+      </Snackbar>
     </div>
   )
 }
