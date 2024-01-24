@@ -20,6 +20,18 @@ namespace API.Controllers
             _transactionService = transactionService;
         }
 
+        public JsonResponse GetTransactionById(int id)
+        {
+            try
+            {
+                return new JsonResponse().Success().For(_transactionService.GetTransactionById(id));
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+            }
+        }
+
         [HttpGet]
         public JsonResponse GetTransactions()
         {
@@ -40,6 +52,35 @@ namespace API.Controllers
             try
             {
                 _transactionService.CreateTransaction(model);
+                return new JsonResponse().Success();
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
+
+        public JsonResponse DeleteTransaction(TransactionModel model)
+        {
+            try
+            {
+                _transactionService.DeleteTransaction(model.Id);
+                return new JsonResponse().Success();
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
+
+        [HttpPost]
+        public JsonResponse UpdateTransaction(TransactionModel model)
+        {
+            try
+            {
+                _transactionService.UpdateTransaction(model);
                 return new JsonResponse().Success();
             }
             catch (Exception ex)

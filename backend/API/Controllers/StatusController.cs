@@ -10,20 +10,21 @@ namespace API.Controllers
     [Authorize]
     [ApiController]
     [Route("api/[controller]/[action]")]
-    public class DepartmentController : ControllerBase
+    public class StatusController : ControllerBase
     {
-        private readonly DepartmentService _departmentService;
+        private readonly StatusService _statusService;
 
-        public DepartmentController(DepartmentService departmentService)
+        public StatusController(StatusService statusService)
         {
-            _departmentService = departmentService;
+            _statusService = statusService;
         }
 
-        public JsonResponse GetDepartmentById(int id)
+        [HttpGet]
+        public JsonResponse GetStatusById(int id)
         {
             try
             {
-                return new JsonResponse().Success().For(_departmentService.GetDepartmentById(id));
+                return new JsonResponse().Success().For(_statusService.GetStatusById(id));
             }
             catch (Exception ex)
             {
@@ -32,11 +33,11 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public JsonResponse GetDepartments()
+        public JsonResponse GetStatuses()
         {
             try
             {
-                return new JsonResponse().Success().For(_departmentService.GetDepartments());
+                return new JsonResponse().Success().For(_statusService.GetStatuses());
             }
             catch (Exception ex)
             {
@@ -45,11 +46,11 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public JsonResponse CreateDepartment(DepartmentModel model)
+        public JsonResponse CreateStatus(StatusModel model)
         {
             try
             {
-                _departmentService.CreateDepartment(model);
+                _statusService.CreateStatus(model);
                 return new JsonResponse().Success();
             }
             catch (Exception ex)
@@ -60,11 +61,11 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public JsonResponse DeleteDepartment(DepartmentModel model)
+        public JsonResponse DeleteStatus(StatusModel model)
         {
             try
             {
-                _departmentService.DeleteDepartment(model.Id);
+                _statusService.DeleteStatus(model.Id);
                 return new JsonResponse().Success();
             }
             catch (Exception ex)
@@ -75,11 +76,11 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public JsonResponse UpdateDepartment(DepartmentModel model)
+        public JsonResponse UpdateStatus(StatusModel model)
         {
             try
             {
-                _departmentService.UpdateDepartment(model);
+                _statusService.UpdateStatus(model);
                 return new JsonResponse().Success();
             }
             catch (Exception ex)

@@ -16,6 +16,19 @@ namespace API.Services
             _userRepository = userRepository;
         }
 
+        public DepartmentModel GetDepartmentById(int id)
+        {
+            var department = _departmentRepository.GetDepartmentById(id);
+
+            return new DepartmentModel
+            {
+                Id = department?.Id ?? 0,
+                Name = department?.Name,
+                Head = _userRepository.GetUserById(department?.HeadId ?? 0),
+                CreatedDate = department?.CreatedDate
+            };
+        }
+
         public List<DepartmentModel> GetDepartments()
         {
             var result = new List<DepartmentModel>();
@@ -40,9 +53,9 @@ namespace API.Services
             _departmentRepository.CreateDepartment(model);
         }
 
-        public void DeleteDepartment(int departmentID)
+        public void DeleteDepartment(int departmentId)
         {
-            _departmentRepository.DeleteDepartment(departmentID);
+            _departmentRepository.DeleteDepartment(departmentId);
         }
 
         public void UpdateDepartment(DepartmentModel model)
