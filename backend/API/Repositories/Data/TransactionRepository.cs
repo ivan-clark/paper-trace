@@ -15,10 +15,10 @@ namespace API.Repositories.Data
         public void CreateTransaction(TransactionModel model) {
             var transaction = new Transaction
             {
-                SenderId = model.Sender?.Id,
-                RecepientId = model.Recepient?.Id,
-                Subject = model.Subject,
-                Message = model.Message   
+                DocumentId = model.Document?.Id,
+                StatusId = model.Status?.Id,
+                Restricted = model.Restricted,
+                CreatedDate = DateTime.Now
             };
 
             _dbcontext.Transactions.Add(transaction);

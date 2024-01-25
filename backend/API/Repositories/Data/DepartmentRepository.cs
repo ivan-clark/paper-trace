@@ -37,7 +37,8 @@ namespace API.Repositories.Data
             var department = new Department
             {
                 Name = model.Name,
-                HeadId = model.Head?.Id
+                HeadId = model.Head?.Id,
+                CreatedDate = DateTime.Now
             };
 
             _dbcontext.Departments.Add(department);

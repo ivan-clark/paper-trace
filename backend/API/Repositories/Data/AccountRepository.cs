@@ -17,7 +17,8 @@ namespace API.Repositories.Data
             var account = new Account
             {
                 Username = accountModel.Username,
-                Password = accountModel.Password
+                Password = accountModel.Password,
+                UserId = accountModel.User?.Id
             };
 
             _dbcontext.Accounts.Add(account);

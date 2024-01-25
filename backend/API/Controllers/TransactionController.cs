@@ -25,7 +25,8 @@ namespace API.Controllers
         {
             try
             {
-                return new JsonResponse().Success().For(_transactionService.GetTransactions());
+                var transactions = _transactionService.GetTransactions();
+                return new JsonResponse().Success().For(transactions);
             }
             catch (Exception ex)
             {

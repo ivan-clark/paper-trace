@@ -19,6 +19,7 @@ namespace API.Services
 
         public void CreateTransaction(TransactionModel model)
         {
+            model.Status = new DataAccess.Entities.Status { Id = 1 };
             _transactionRepository.CreateTransaction(model);
         }
 
@@ -32,10 +33,7 @@ namespace API.Services
                 result.Add(new TransactionModel
                 {
                     Id = transaction.Id,
-                    Sender = _userRepository.GetUserById(transaction.SenderId ?? 0),
-                    Recepient = _departmentRepository.GetDepartmentById(transaction.RecepientId ?? 0),
-                    Subject = transaction.Subject,
-                    Message = transaction.Message
+                    Restricted = transaction.Restricted
                 });
             }
 
