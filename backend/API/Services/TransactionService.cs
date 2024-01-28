@@ -43,7 +43,7 @@ namespace API.Services
                 {
                     Id = transaction.Id,
                     Restricted = transaction.Restricted,
-                    Document = _documentRepository.GetDocumentById(transaction.Id),
+                    Document = _documentRepository.GetDocumentById(transaction?.DocumentId ?? 0),
                     Status = _statusRepository.GetStatusById(transaction?.StatusId ?? 0),
                     CreatedDate = transaction?.CreatedDate
                 });
