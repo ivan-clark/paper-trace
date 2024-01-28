@@ -1,14 +1,15 @@
 ﻿using API.Models;
 using DataAccess.Entities;
+using Route = DataAccess.Entities.Route;
 
 namespace API.Repositories
 {
     public interface IRouteRepository
     {
-        Document? GetDocumentById(int id);
-        List<Document> GetDocuments();
-        void DeleteDocument(int documentId);
-        int CreateDocument(DocumentModel model);
-        void UpdateDocument(DocumentModel model);
+        Route? GetRouteById(int id);
+        List<Route> GetRoutes();
+        void DeleteRoute(int routeId);
+        void CreateRoute(RouteModel model);
+        void UpdateRoute(RouteModel model);
     }
 }
