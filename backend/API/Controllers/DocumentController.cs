@@ -18,6 +18,7 @@ namespace API.Controllers
             _documentService = documentService;
         }
 
+        [HttpGet]
         public JsonResponse GetDocumentById(int id)
         {
             try

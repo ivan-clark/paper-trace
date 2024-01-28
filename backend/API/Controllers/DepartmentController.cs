@@ -19,6 +19,7 @@ namespace API.Controllers
             _departmentService = departmentService;
         }
 
+        [HttpGet]
         public JsonResponse GetDepartmentById(int id)
         {
             try

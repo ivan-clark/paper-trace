@@ -20,6 +20,7 @@ namespace API.Controllers
             _transactionService = transactionService;
         }
 
+        [HttpGet]
         public JsonResponse GetTransactionById(int id)
         {
             try
@@ -61,6 +62,7 @@ namespace API.Controllers
             }
         }
 
+        [HttpPost]
         public JsonResponse DeleteTransaction(TransactionModel model)
         {
             try
