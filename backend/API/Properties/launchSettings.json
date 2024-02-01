@@ -7,7 +7,7 @@
         "environmentVariables": {
             "ASPNETCORE_ENVIRONMENT": "Development",
             //"CONNECTION_STRING": "server=localhost;port=3306;uid=root;pwd=root;database=papertracedb",
-            "CONNECTION_STRING": "Server=aws.connect.psdb.cloud;Database=kurakudb;user=bm64pv36y4oepsvyik3k;password=pscale_pw_Gs4Ev2iWXADnWGIemXdFAHTuzt7bn5p0tWgD1gSHvS2;SslMode=VerifyFull;",
+            "CONNECTION_STRING": "Server=aws.connect.psdb.cloud;Database=kurakudb;user=3gtpqvwegrrujx9hxwv8;password=pscale_pw_qksRM6F1BXeFfHqi7pL1CrSkqHXXPGFLJh4mK5nYnJS;SslMode=VerifyFull;",
             "SMTP_KEY": "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",
             "JWT_KEY": "TheQuickBrownFoxJumpsOverTheLazyDog"
         },
