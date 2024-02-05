@@ -54,7 +54,7 @@ namespace API.Repositories.Data
                 transaction.Restricted = model.Restricted;
                 transaction.DocumentId = model.Document?.Id;
                 transaction.StatusId = model.Status?.Id;
-                transaction.CreatedDate = model.CreatedDate;
+                transaction.CreatedDate = DateTime.Now;
 
                 _dbcontext.SaveChanges();
             }

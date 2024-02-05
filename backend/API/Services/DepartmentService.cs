@@ -24,7 +24,7 @@ namespace API.Services
             {
                 Id = department?.Id ?? 0,
                 Name = department?.Name,
-                Head = _userRepository.GetUserById(department?.HeadId ?? 0),
+                HeadId = _userRepository.GetUserById(department?.HeadId ?? 0),
                 CreatedDate = department?.CreatedDate
             };
         }
@@ -40,7 +40,7 @@ namespace API.Services
                 {
                     Id = department.Id,
                     Name = department.Name,
-                    Head = _userRepository.GetUserById(department.HeadId ?? 0),
+                    HeadId = _userRepository.GetUserById(department.HeadId ?? 0),
                     CreatedDate = department.CreatedDate
                 });
             }
