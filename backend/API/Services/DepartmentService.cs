@@ -16,9 +16,9 @@ namespace API.Services
             _userRepository = userRepository;
         }
 
-        public DepartmentModel GetDepartmentById(int id)
+        public DepartmentModel GetDepartmentById(DepartmentModel model)
         {
-            var department = _departmentRepository.GetDepartmentById(id);
+            var department = _departmentRepository.GetDepartmentById(model);
 
             return new DepartmentModel
             {

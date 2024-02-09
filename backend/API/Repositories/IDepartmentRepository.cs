@@ -5,7 +5,7 @@ namespace API.Repositories
 {
     public interface IDepartmentRepository
     {
-        Department? GetDepartmentById(int id);
+        Department? GetDepartmentById(DepartmentModel model);
         List<Department> GetDepartments();
         void DeleteDepartment(int departmentId);
         void CreateDepartment(DepartmentModel model);

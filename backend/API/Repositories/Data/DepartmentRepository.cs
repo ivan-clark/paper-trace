@@ -13,9 +13,9 @@ namespace API.Repositories.Data
             _dbcontext = dbcontext;
         }
 
-        public Department? GetDepartmentById(int id)
+        public Department? GetDepartmentById(DepartmentModel model)
         {
-            return _dbcontext.Departments.FirstOrDefault(d => d.Id == id);
+            return _dbcontext.Departments.FirstOrDefault(d => d.Id == model.Id);
         }
 
         public List<Department> GetDepartments()
