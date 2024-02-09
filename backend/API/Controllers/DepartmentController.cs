@@ -20,11 +20,11 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public JsonResponse GetDepartmentById(int id)
+        public JsonResponse GetDepartmentById(DepartmentModel model)
         {
             try
             {
-                return new JsonResponse().Success().For(_departmentService.GetDepartmentById(id));
+                return new JsonResponse().Success().For(_departmentService.GetDepartmentById(model.Id));
             }
             catch (Exception ex)
             {
