@@ -20,11 +20,11 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public JsonResponse GetRouteById(int id)
+        public JsonResponse GetRouteById(RouteModel model)
         {
             try
             {
-                return new JsonResponse().Success().For(_routeService.GetRouteById(id));
+                return new JsonResponse().Success().For(_routeService.GetRouteById(model.Id));
             }
             catch (Exception ex)
             {

@@ -19,11 +19,11 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public JsonResponse GetDocumentById(int id)
+        public JsonResponse GetDocumentById(DocumentModel model)
         {
             try
             {
-                return new JsonResponse().Success().For(_documentService.GetDocumentById(id));
+                return new JsonResponse().Success().For(_documentService.GetDocumentById(model.Id));
             }
             catch (Exception ex)
             {

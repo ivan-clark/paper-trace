@@ -20,11 +20,11 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public JsonResponse GetStatusById(int id)
+        public JsonResponse GetStatusById(StatusModel model)
         {
             try
             {
-                return new JsonResponse().Success().For(_statusService.GetStatusById(id));
+                return new JsonResponse().Success().For(_statusService.GetStatusById(model.Id));
             }
             catch (Exception ex)
             {

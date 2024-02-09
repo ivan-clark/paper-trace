@@ -22,11 +22,11 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public JsonResponse GetUserById(int id)
+        public JsonResponse GetUserById(UserModel model)
         {
             try
             {
-                return new JsonResponse().Success().For(_userService.GetUserById(id));
+                return new JsonResponse().Success().For(_userService.GetUserById(model.Id));
             }
             catch (Exception ex)
             {

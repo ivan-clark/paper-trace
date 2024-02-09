@@ -21,11 +21,11 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public JsonResponse GetTransactionById(int id)
+        public JsonResponse GetTransactionById(TransactionModel model)
         {
             try
             {
-                return new JsonResponse().Success().For(_transactionService.GetTransactionById(id));
+                return new JsonResponse().Success().For(_transactionService.GetTransactionById(model.Id));
             }
             catch (Exception ex)
             {
