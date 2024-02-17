@@ -11,13 +11,15 @@ namespace API.Services
         private readonly ITransactionRepository _transactionRepository;
         private readonly IDepartmentRepository _departmentRepository;
         private readonly IStatusRepository _statusRepository;
-       
-        public RouteService(IRouteRepository routeRepository, ITransactionRepository transactionRepository, IDepartmentRepository departmentRepository, IStatusRepository statusRepository)
+        private readonly TransactionService _transactionService;
+
+        public RouteService(IRouteRepository routeRepository, ITransactionRepository transactionRepository, IDepartmentRepository departmentRepository, IStatusRepository statusRepository, TransactionService transactionService)
         {
             _routeRepository = routeRepository;
             _transactionRepository = transactionRepository;
             _statusRepository = statusRepository;
             _departmentRepository = departmentRepository;
+            _transactionService = transactionService;
         }
 
         public RouteModel GetRouteById(int id)
@@ -27,7 +29,7 @@ namespace API.Services
             return new RouteModel
             {
                 Id = route?.Id ?? 0,
-                TransactionId = _transactionRepository.GetTransactionById(route?.TransactionId ?? 0),
+                Transaction = _transactionService.GetTransactionById(route?.TransactionId ?? 0),
                 RecepientId = _departmentRepository.GetDepartmentById(route?.RecepientId ?? 0),
                 StatusId = _statusRepository.GetStatusById(route?.StatusId ?? 0),
                 UpdatedDate = route?.UpdatedDate
@@ -44,7 +46,7 @@ namespace API.Services
                 result.Add(new RouteModel
                 {
                     Id = route.Id,
-                    TransactionId = _transactionRepository.GetTransactionById(route.TransactionId ?? 0),
+                    Transaction = _transactionService.GetTransactionById(route.TransactionId ?? 0),
                     RecepientId = _departmentRepository.GetDepartmentById(route.RecepientId ?? 0),
                     StatusId = _statusRepository.GetStatusById(route?.StatusId ?? 0),
                     UpdatedDate = route?.UpdatedDate

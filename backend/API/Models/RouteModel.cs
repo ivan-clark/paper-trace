@@ -6,7 +6,7 @@ namespace API.Models
     {
         public int Id { get; set; }
 
-        public Transaction? TransactionId { get; set; }
+        public TransactionModel? Transaction { get; set; }
 
         public Department? RecepientId { get; set; }
 

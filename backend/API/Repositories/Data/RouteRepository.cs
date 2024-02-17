@@ -22,7 +22,7 @@ namespace API.Repositories.Data
         {
             var route = new Route
             {
-                TransactionId = model.TransactionId?.Id,
+                TransactionId = model.Transaction?.Id,
                 RecepientId = model.RecepientId?.Id,
                 StatusId = model.StatusId?.Id,
                 UpdatedDate = DateTime.Now
@@ -54,7 +54,7 @@ namespace API.Repositories.Data
             if (route != null)
             {
 
-                route.TransactionId = model.TransactionId?.Id;
+                route.TransactionId = model.Transaction?.Id;
                 route.RecepientId = model.RecepientId?.Id;
                 route.StatusId = model.StatusId?.Id;
                 route.UpdatedDate = model.UpdatedDate;
