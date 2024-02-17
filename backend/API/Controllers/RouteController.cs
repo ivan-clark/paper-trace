@@ -89,6 +89,32 @@ namespace API.Controllers
 
             }
         }
+
+        [HttpGet]
+        public JsonResponse GetIncoming(RouteModel model)
+        {
+            try
+            {
+                return new JsonResponse().Success().For(_routeService.GetIncoming(model.Id));
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        public JsonResponse GetOutgoing(DocumentModel model)
+        {
+            try
+            {
+                return new JsonResponse().Success().For(_routeService.GetOutgoing(model.Id));
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+            }
+        }
     }
 }
 
