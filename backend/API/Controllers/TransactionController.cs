@@ -21,11 +21,11 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public JsonResponse GetTransactionById(TransactionModel model)
+        public JsonResponse GetTransactionById(int id)
         {
             try
             {
-                return new JsonResponse().Success().For(_transactionService.GetTransactionById(model.Id));
+                return new JsonResponse().Success().For(_transactionService.GetTransactionById(id));
             }
             catch (Exception ex)
             {
@@ -63,11 +63,11 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public JsonResponse DeleteTransaction(TransactionModel model)
+        public JsonResponse DeleteTransaction(int id)
         {
             try
             {
-                _transactionService.DeleteTransaction(model.Id);
+                _transactionService.DeleteTransaction(id);
                 return new JsonResponse().Success();
             }
             catch (Exception ex)

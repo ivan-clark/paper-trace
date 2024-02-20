@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Authorize]
+   // [Authorize]
     [ApiController]
     [Route("api/[controller]/[action]")]
     public class RouteController : ControllerBase
@@ -20,11 +20,11 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public JsonResponse GetRouteById(RouteModel model)
+        public JsonResponse GetRouteById(int id)
         {
             try
             {
-                return new JsonResponse().Success().For(_routeService.GetRouteById(model.Id));
+                return new JsonResponse().Success().For(_routeService.GetRouteById(id));
             }
             catch (Exception ex)
             {
@@ -61,11 +61,11 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public JsonResponse DeleteRoute(RouteModel model)
+        public JsonResponse DeleteRoute(int id)
         {
             try
             {
-                _routeService.DeleteRoute(model.Id);
+                _routeService.DeleteRoute(id);
                 return new JsonResponse().Success();
             }
             catch (Exception ex)
@@ -91,11 +91,11 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public JsonResponse GetIncoming(RouteModel model)
+        public JsonResponse GetIncoming(int id)
         {
             try
             {
-                return new JsonResponse().Success().For(_routeService.GetIncoming(model.Id));
+                return new JsonResponse().Success().For(_routeService.GetIncoming(id));
             }
             catch (Exception ex)
             {
@@ -104,11 +104,11 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public JsonResponse GetOutgoing(DocumentModel model)
+        public JsonResponse GetOutgoing(int id)
         {
             try
             {
-                return new JsonResponse().Success().For(_routeService.GetOutgoing(model.Id));
+                return new JsonResponse().Success().For(_routeService.GetOutgoing(id));
             }
             catch (Exception ex)
             {

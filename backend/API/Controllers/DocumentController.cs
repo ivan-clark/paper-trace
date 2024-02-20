@@ -19,11 +19,11 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public JsonResponse GetDocumentById(DocumentModel model)
+        public JsonResponse GetDocumentById(int id)
         {
             try
             {
-                return new JsonResponse().Success().For(_documentService.GetDocumentById(model.Id));
+                return new JsonResponse().Success().For(_documentService.GetDocumentById(id));
             }
             catch (Exception ex)
             {
@@ -60,11 +60,11 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public JsonResponse DeleteDocument(DocumentModel model)
+        public JsonResponse DeleteDocument(int id)
         {
             try
             {
-                _documentService.DeleteDocument(model.Id);
+                _documentService.DeleteDocument(id);
                 return new JsonResponse().Success();
             }
             catch (Exception ex)

@@ -22,11 +22,11 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public JsonResponse GetUserById(UserModel model)
+        public JsonResponse GetUserById(int id)
         {
             try
             {
-                return new JsonResponse().Success().For(_userService.GetUserById(model.Id));
+                return new JsonResponse().Success().For(_userService.GetUserById(id));
             }
             catch (Exception ex)
             {
@@ -70,11 +70,11 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public JsonResponse DeleteUser(UserModel model)
+        public JsonResponse DeleteUser(int id)
         {
             try
             {
-                _userService.DeleteUser(model.Id);
+                _userService.DeleteUser(id);
                 return new JsonResponse().Success();
             }
             catch (Exception ex)

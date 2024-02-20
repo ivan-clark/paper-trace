@@ -20,11 +20,11 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public JsonResponse GetStatusById(StatusModel model)
+        public JsonResponse GetStatusById(int id)
         {
             try
             {
-                return new JsonResponse().Success().For(_statusService.GetStatusById(model.Id));
+                return new JsonResponse().Success().For(_statusService.GetStatusById(id));
             }
             catch (Exception ex)
             {
@@ -61,11 +61,11 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public JsonResponse DeleteStatus(StatusModel model)
+        public JsonResponse DeleteStatus(int id)
         {
             try
             {
-                _statusService.DeleteStatus(model.Id);
+                _statusService.DeleteStatus(id);
                 return new JsonResponse().Success();
             }
             catch (Exception ex)
