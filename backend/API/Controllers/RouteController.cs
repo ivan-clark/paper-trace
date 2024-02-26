@@ -115,6 +115,21 @@ namespace API.Controllers
                 return new JsonResponse().Error().Msg(ex.Message);
             }
         }
+
+        [HttpPost]
+        public JsonResponse CreateUserTransmittal(UserTransmitalModel request)
+        {
+            try
+            {
+                _routeService.CreateUserTransmittal(request.DocumentModel, request.TransactionModel, request.RouteModel);
+                return new JsonResponse().Success();
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
     }
 }
 

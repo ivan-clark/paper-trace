@@ -119,5 +119,17 @@ namespace API.Services
 
             return result;
         }
+
+        public void CreateUserTransmittal(DocumentModel documentModel,TransactionModel transactionModel, RouteModel routeModel)
+        {
+            _documentRepository.CreateDocument(documentModel);
+
+            transactionModel.Status = new DataAccess.Entities.Status { Id = 1 };
+            _transactionRepository.CreateTransaction(transactionModel);
+
+            routeModel.StatusId = new DataAccess.Entities.Status { Id = 1 };
+            _routeRepository.CreateRoute(routeModel);
+        }
+
     }
 }
