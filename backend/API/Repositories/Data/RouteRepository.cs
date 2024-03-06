@@ -64,5 +64,12 @@ namespace API.Repositories.Data
 
         }
 
+        public int GetMaxRouteId()
+        {
+            int maxRouteId = _dbcontext.Routes.Max(t => t.Id);
+
+            return maxRouteId;
+        }
+
     }
 }

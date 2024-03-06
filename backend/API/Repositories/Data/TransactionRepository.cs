@@ -59,5 +59,12 @@ namespace API.Repositories.Data
                 _dbcontext.SaveChanges();
             }
         }
+
+        public int GetMaxTransactionId()
+        {
+            int maxTransactionId = _dbcontext.Transactions.Max(t => t.Id);
+
+            return maxTransactionId;
+        }
     }
 }

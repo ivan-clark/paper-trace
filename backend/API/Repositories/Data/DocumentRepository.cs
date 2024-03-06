@@ -63,5 +63,12 @@ namespace API.Repositories.Data
             }
         }
 
+        public int GetMaxDocumentId()
+        {
+            int maxDocumentId = _dbcontext.Documents.Max(t => t.Id);
+
+            return maxDocumentId;
+        }
+
     }
 }

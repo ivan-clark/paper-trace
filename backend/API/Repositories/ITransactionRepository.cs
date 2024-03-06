@@ -10,5 +10,6 @@ namespace API.Repositories
         Transaction? GetTransactionById(int id);
         void DeleteTransaction(int transactionID);
         void UpdateTransaction(TransactionModel model);
+        int GetMaxTransactionId();
     }
 }

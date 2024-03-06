@@ -10,5 +10,6 @@ namespace API.Repositories
         void DeleteDocument(int documentId);
         int CreateDocument(DocumentModel model);
         void UpdateDocument(DocumentModel model);
+        int GetMaxDocumentId();
     }
 }

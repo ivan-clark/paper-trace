@@ -122,13 +122,38 @@ namespace API.Services
 
         public void CreateUserTransmittal(DocumentModel documentModel,TransactionModel transactionModel, RouteModel routeModel)
         {
+            int maxDocumentId = _documentRepository.GetMaxDocumentId();
+            int maxTransactionId = _transactionRepository.GetMaxTransactionId();
+            int maxRouteId = _routeRepository.GetMaxRouteId();
+
             _documentRepository.CreateDocument(documentModel);
 
-            transactionModel.Status = new DataAccess.Entities.Status { Id = 1 };
+            transactionModel.Document = new DataAccess.Entities.Document { Id = maxDocumentId + 1 };
+            transactionModel.Status = new DataAccess.Entities.Status { Id = 2 };
             _transactionRepository.CreateTransaction(transactionModel);
 
-            routeModel.StatusId = new DataAccess.Entities.Status { Id = 1 };
+            var transactionUpdate = new API.Models.TransactionModel
+            {
+                Id = maxTransactionId,
+                Document = new DataAccess.Entities.Document { Id = maxDocumentId + 1 },
+            };
+            _transactionRepository.UpdateTransaction(transactionUpdate);
+
+            
+
+            routeModel.Transaction = new API.Models.TransactionModel{ Id = maxTransactionId + 1 };       
+            routeModel.StatusId = new DataAccess.Entities.Status { Id = 2 };
             _routeRepository.CreateRoute(routeModel);
+
+            var routeUpdate = new API.Models.RouteModel
+            {
+                Id = maxRouteId,
+                Transaction = new API.Models.TransactionModel
+                {
+                    Id = maxTransactionId + 1,
+                },
+            };
+            _routeRepository.UpdateRoute(routeUpdate);
         }
 
     }

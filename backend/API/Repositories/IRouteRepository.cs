@@ -11,5 +11,6 @@ namespace API.Repositories
         void DeleteRoute(int routeId);
         void CreateRoute(RouteModel model);
         void UpdateRoute(RouteModel model);
+        int GetMaxRouteId();
     }
 }
