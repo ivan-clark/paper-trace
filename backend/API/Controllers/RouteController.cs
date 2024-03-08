@@ -117,6 +117,21 @@ namespace API.Controllers
         }
 
         [HttpPost]
+        public JsonResponse ForTestingDeleteRoute()
+        {
+            try
+            {
+                _routeService.ForTestingDeleteRoute();
+                return new JsonResponse().Success();
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
+
+        [HttpPost]
         public JsonResponse CreateUserTransmittal(UserTransmitalModel request)
         {
             try

@@ -91,5 +91,20 @@ namespace API.Controllers
 
             }
         }
+
+        [HttpPost]
+        public JsonResponse ForTestingDeleteTransaction()
+        {
+            try
+            {
+                _transactionService.ForTestingDeleteTransaction();
+                return new JsonResponse().Success();
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
     }
 }

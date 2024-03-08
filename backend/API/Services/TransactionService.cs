@@ -67,5 +67,13 @@ namespace API.Services
         {
             _transactionRepository.UpdateTransaction(model);
         }
+        public void ForTestingDeleteTransaction() 
+        {
+            var maxTransactionId = _transactionRepository.GetMaxTransactionId();
+            for (int i = 0; i < maxTransactionId; i++)
+            {
+                _transactionRepository.DeleteTransaction(i);
+            }
+        }
     }
 }

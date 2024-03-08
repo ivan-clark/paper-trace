@@ -1,7 +1,9 @@
 ﻿using API.Models;
 using API.Repositories;
 using API.Repositories.Data;
+using API.Utils;
 using DataAccess.Entities;
+using Microsoft.AspNetCore.Mvc;
 
 namespace API.Services
 {
@@ -65,6 +67,7 @@ namespace API.Services
         }
 
         public void DeleteRoute(int routeId)
+
         {
             _routeRepository.DeleteRoute(routeId);
         }
@@ -120,6 +123,15 @@ namespace API.Services
             return result;
         }
 
+        public void ForTestingDeleteRoute()
+        {
+            var maxRouteId = _routeRepository.GetMaxRouteId();
+            for (int i = 0; i < maxRouteId; i++)
+            {
+                _routeRepository.DeleteRoute(i);
+            }
+        }
+
         public void CreateUserTransmittal(DocumentModel documentModel,TransactionModel transactionModel, RouteModel routeModel)
         {
             int maxDocumentId = _documentRepository.GetMaxDocumentId();
@@ -129,7 +141,7 @@ namespace API.Services
             _documentRepository.CreateDocument(documentModel);
 
             transactionModel.Document = new DataAccess.Entities.Document { Id = maxDocumentId + 1 };
-            transactionModel.Status = new DataAccess.Entities.Status { Id = 2 };
+            transactionModel.Status = new DataAccess.Entities.Status { Id = 1 };
             _transactionRepository.CreateTransaction(transactionModel);
 
             var transactionUpdate = new API.Models.TransactionModel
@@ -139,10 +151,8 @@ namespace API.Services
             };
             _transactionRepository.UpdateTransaction(transactionUpdate);
 
-            
-
             routeModel.Transaction = new API.Models.TransactionModel{ Id = maxTransactionId + 1 };       
-            routeModel.StatusId = new DataAccess.Entities.Status { Id = 2 };
+            routeModel.StatusId = new DataAccess.Entities.Status { Id = 1 };
             _routeRepository.CreateRoute(routeModel);
 
             var routeUpdate = new API.Models.RouteModel

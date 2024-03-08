@@ -65,5 +65,13 @@ namespace API.Services
             _documentRepository.UpdateDocument(model);
         }
 
+        public void ForTestingDeleteDocument()
+        {
+            var maxDocumentId = _documentRepository.GetMaxDocumentId();
+            for (int i = 0; i < maxDocumentId; i++)
+            {
+                _documentRepository.DeleteDocument(i);
+            }
+        }
     }
 }

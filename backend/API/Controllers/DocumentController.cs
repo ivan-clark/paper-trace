@@ -88,5 +88,20 @@ namespace API.Controllers
 
             }
         }
+
+        [HttpPost]
+        public JsonResponse ForTestingDeleteDocument()
+        {
+            try
+            {
+                _documentService.ForTestingDeleteDocument();
+                return new JsonResponse().Success();
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
     }
 }
