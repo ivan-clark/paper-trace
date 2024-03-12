@@ -12,7 +12,7 @@ namespace API.Repositories.Data
             _dbcontext = dbcontext;
         }
 
-        public void CreateTransaction(TransactionModel model) {
+        public int CreateTransaction(TransactionModel model) {
             var transaction = new Transaction
             {
                 DocumentId = model.Document?.Id,
@@ -21,8 +21,10 @@ namespace API.Repositories.Data
                 CreatedDate = DateTime.Now
             };
 
-            _dbcontext.Transactions.Add(transaction);
+            var result = _dbcontext.Transactions.Add(transaction);
             _dbcontext.SaveChanges();
+
+            return result.Entity.Id;   
         }
 
         public List<Transaction> GetTransactions()

@@ -9,7 +9,7 @@ namespace API.Repositories
         Route? GetRouteById(int id);
         List<Route> GetRoutes();
         void DeleteRoute(int routeId);
-        void CreateRoute(RouteModel model);
+        int CreateRoute(RouteModel model);
         void UpdateRoute(RouteModel model);
         int GetMaxRouteId();
     }

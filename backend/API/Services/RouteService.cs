@@ -131,39 +131,18 @@ namespace API.Services
                 _routeRepository.DeleteRoute(i);
             }
         }
-
+        
         public void CreateUserTransmittal(DocumentModel documentModel,TransactionModel transactionModel, RouteModel routeModel)
         {
-            int maxDocumentId = _documentRepository.GetMaxDocumentId();
-            int maxTransactionId = _transactionRepository.GetMaxTransactionId();
-            int maxRouteId = _routeRepository.GetMaxRouteId();
-
-            _documentRepository.CreateDocument(documentModel);
-
-            transactionModel.Document = new DataAccess.Entities.Document { Id = maxDocumentId + 1 };
+            var newDocumentId = _documentRepository.CreateDocument(documentModel);
+            transactionModel.Document = new DataAccess.Entities.Document { Id = newDocumentId };
             transactionModel.Status = new DataAccess.Entities.Status { Id = 1 };
-            _transactionRepository.CreateTransaction(transactionModel);
 
-            var transactionUpdate = new API.Models.TransactionModel
-            {
-                Id = maxTransactionId,
-                Document = new DataAccess.Entities.Document { Id = maxDocumentId + 1 },
-            };
-            _transactionRepository.UpdateTransaction(transactionUpdate);
-
-            routeModel.Transaction = new API.Models.TransactionModel{ Id = maxTransactionId + 1 };       
+            var newTransactionId = _transactionRepository.CreateTransaction(transactionModel);
+            routeModel.Transaction = new API.Models.TransactionModel{ Id = newTransactionId };       
             routeModel.StatusId = new DataAccess.Entities.Status { Id = 1 };
-            _routeRepository.CreateRoute(routeModel);
 
-            var routeUpdate = new API.Models.RouteModel
-            {
-                Id = maxRouteId,
-                Transaction = new API.Models.TransactionModel
-                {
-                    Id = maxTransactionId + 1,
-                },
-            };
-            _routeRepository.UpdateRoute(routeUpdate);
+            _routeRepository.CreateRoute(routeModel);         
         }
 
     }
