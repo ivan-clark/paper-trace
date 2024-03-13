@@ -121,17 +121,19 @@ table {
 
   .tbl-row {
     display: flex;
-    align-items: center;
-    position: relative;
-    font-size: 14px;
-    border-bottom: solid 1px #e6e6e6;
     cursor: pointer;
-
+    font-size: 14px;
+    position: relative;
+    align-items: center;
+    border-bottom: solid 1px #e6e6e6;
+    
     .sender,
     .date {
       white-space: nowrap;
     }
     .sender {
+      display: flex;
+      align-items: center;
       width: 100px;
     }
     .date {
@@ -165,7 +167,7 @@ table {
   }
 
   #td-spacer {
-    padding-inline: 2em;
+    padding-inline: 6em;
   }
 
 }
@@ -444,8 +446,8 @@ table {
   }
   .decline:hover {
     color: white;
-    background-color: red;
-    box-shadow: inset 0px 0px 0px 2px red;
+    background-color: #c51212;
+    box-shadow: inset 0px 0px 0px 2px #c51212;
   }
   .accept {
     color: white;
@@ -467,3 +469,41 @@ table {
     font-size: 20px;
   }
 }  
+
+.isEmpty {
+  gap: 4px;
+  display: flex;
+  font-size: 16px;
+  align-items: center;
+  flex-direction: column;
+  color: hsl(0, 0%, 86%);
+
+  #h1 {
+    font-size: 20px;
+    font-weight: 500;
+  }
+}
+
+.urgent,
+    .non-urgent {
+      opacity: 70%;
+      font-size: 8px;
+      font-weight: 500;
+      margin-right: 1.4em;
+      border-radius: 2em;
+      flex-direction: column;
+      padding: 3px 6px 3px 6px;
+      color: var(--on-white-hover);
+    }
+
+    .urgent {
+      opacity: 60%;
+      background-color: #d42626;
+    }
+    .non-urgent {
+      background-color: rgb(173, 173, 173);
+    }
+
+.bold {
+  font-weight: normal;
+}

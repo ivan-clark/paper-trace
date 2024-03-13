@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import InboxOutgoing from "./InboxOutgoing"
 import InboxUpcoming from "./InboxUpcoming"
-import Typography from "@mui/material/Typography";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import React from "react"
@@ -23,7 +22,7 @@ function CustomTabPanel(props) {
     >
       {value === index && (
         <Box sx={{ p: 0 }}>
-          <Typography>{children}</Typography>
+          <span>{children}</span>
         </Box>
       )}
     </div>
@@ -31,8 +30,8 @@ function CustomTabPanel(props) {
 }
 
 function Inbox(props) {
-  let outgoing = 0
-  let upcoming = 6  
+  let outgoing = 0;
+  let upcoming = 0  
 
   const [value, setValue] = React.useState(0);
   
@@ -89,10 +88,10 @@ function Inbox(props) {
         <div className="inbox-outlet-wrapper">
           <div className="inbox-inbox">
             <CustomTabPanel value={value} index={0}>
-              <InboxUpcoming departmentId={props.user.department.id}/>
-            </CustomTabPanel>
+              <InboxUpcoming recipientId={props.user.department.id} senderId={props.user.id}/>
+            </CustomTabPanel> 
             <CustomTabPanel value={value} index={1}>
-              <InboxOutgoing userId={props.user.id}/>
+              <InboxOutgoing senderId={props.user.id}/>
             </CustomTabPanel>
           </div>
         </div>

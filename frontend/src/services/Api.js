@@ -58,22 +58,58 @@ class Api {
   static updateDepartment(model) {
     return Http.post("/api/Department/UpdateDepartment", model);
   }
+  
+  static createDocument(model) {
+    return Http.post("/api/Document/CreateDocument", model);
+  }
 
-  static getTransactions(senderId, recepientId, statusId, controller) {
+  static createUserTransmittal(model) {
+    return Http.post("/api/Route/CreateUserTransmittal", model)
+  }
+  
+  static getDocuments(senderId, recepientId, statusId, controller) {
     const params = new URLSearchParams();
 
-    senderId && params.append('senderId', senderId);
-    recepientId && params.append('recepientId', recepientId);
-    statusId && params.append('statusId', statusId);
+    senderId && params.append("senderId", senderId);
+    recepientId && params.append("recepientId", recepientId);
+    statusId && params.append("statusId", statusId);
   
-    const url = `/api/Transaction/GetTransactions?${params.toString()}`;
+    const url = `/api/Document/GetDocuments?${params.toString()}`;
 
     return Http.get(url, { signal: controller?.signal });
   }
 
-  static createTransaction(model) {
-    return Http.post("/api/Transaction/CreateTransaction", model);
+  static getDocumentById(id, controller) {
+    return Http.get(`/api/Document/GetDocumentById?id=${id}`, { signal: controller?.signal });
   }
-}
+
+  static getRoutes(controller) {
+    return Http.get("api/Route/GetRoutes", {signal: controller?.signal})
+  }
+
+  static createRoute(model) {
+    return Http.post("/api/Route/CreateRoute", model)
+  }
+
+  static getIncoming(recipientId) { 
+    return Http.get(`/api/Route/GetIncoming?id=${recipientId}`, )
+  }
+
+  static getOutgoing(senderId) {
+    return Http.get(`/api/Route/GetOutgoing?id=${senderId}`)
+  }
+  
+  static getTransactionById(id, controller) {
+    return Http.get(`/api/Transaction/GetTransactionById?id=${id}`, {signal: controller?.signal});
+  }
+
+  static getTransactions(controller) {
+    return Http.get(`api/Transaction/GetTransactions`, {signal: controller?.signal});
+  }
+
+  static getRouteById(id, controller) {
+    return Http.get(`api/Route/GetRouteById?id=${id}`, {signal: controller?.signal},)
+  }
+} 
 
 export default Api;

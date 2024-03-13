@@ -32,9 +32,7 @@
     border-radius: 12px 12px 0px 0px;
     background-color: var(--sidebar-active-color);
   }
-  .MuiInputBase-root {
-    height: 40px;
-  }
+ 
 
   .send-body-wrapper {
     height: 100%;
@@ -52,29 +50,32 @@
    font-size: 14px; 
   }
 
+
   .body-body {
-    padding-top: 1em;
+    padding-top: .4em;
   }
 
   .subject {
-    font-size: 14px;
-    width: calc(100% - 1.6em);
+    font-size: 16px;
     margin-top: 1em;
-    padding-top: .6em;
-    padding-bottom: 1em;
-    padding-inline: .6em;
     border-radius: 0;
-    border-bottom: solid 1px var(--border-bottom-onwhite);
+    padding-bottom: .6em;
   }
   .body-body {
     height: 100%;
+    width: 100%;
   }
 
   textarea {
+    padding: 1em;
     resize: none;
-    height: calc(100% - 10px);
     border: none;
-    width: calc(100% - 8px);
+    width: calc(100% - 2em);
+    height: calc(100% - 2em);
+    background-color: rgb(248, 248, 248);
+  }
+  textarea::placeholder{
+    color: rgb(208, 208, 208);
   }
   textarea:focus {
     outline: none;
@@ -123,3 +124,4 @@
     background-color: var(--on-white-darker-hover); 
   }
 }
+

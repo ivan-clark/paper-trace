@@ -1,16 +1,60 @@
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { Link, useParams } from 'react-router-dom'
+import React, { useState, useEffect, useRef } from 'react'
+import { LinearProgress } from "@mui/material";
+import DateFormatLong from '../../services/Format';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
 import ShortcutIcon from '@mui/icons-material/Shortcut';
+import DialogTitle from '@mui/material/DialogTitle';
+import FormControl from '@mui/material/FormControl';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
+import { Link, useParams } from 'react-router-dom'
+import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
-import React, { useState, useEffect, useRef } from 'react'
+import Dialog from '@mui/material/Dialog';
+import Api from "../../services/Api"
+import { Button } from '@mui/material';
 
 function InboxViewMessage() {
+  const controller = new AbortController()
   const menuRef = useRef()
+  const { id } = useParams()
+  const [name, setName] = useState("")
   const [open, setOpen] = useState(false)
+  const [urgent, setUrgent] = useState("")
+  const [subject, setSubject] = useState("")
+  const [createdDate, setCreatedDate] = useState("")
+  const [senderId, setSenderId] = useState(0)
+  const [isLoading, setIsLoading] = useState(true)
+  const [description, setDescription] = useState("")
+  const [openDialog, setOpenDialog] = useState(false)
+
+  const [firstname, setFirstname] = useState("")
+  const [lastname, setLastname] = useState("")
+  const [department, setDepartment] = useState("")
+  const [role, setRole] = useState("")
+
+  const handleClickOpen = () => {
+    setOpenDialog(true)
+  }
+  const handleClose = () => {
+    setOpenDialog(false)
+  }
+
+  useEffect(() => {
+    setIsLoading(true);
+    getRouteById(controller);
+    if(senderId !== 0) {
+      getUser(controller)
+    }
+
+    return () => {
+      controller.abort();
+    }
+  }, [senderId])
 
   useEffect(() => {
     let handler = (e) => {
@@ -24,6 +68,33 @@ function InboxViewMessage() {
       document.removeEventListener("mousedown", handler)
     }
   }, [menuRef])
+
+  const getRouteById = () => {
+    Api.getRouteById(id, controller).then((res) => {
+      const data = res.data.data;
+      setSubject(data.transaction.document?.subject);
+      setDescription(data.transaction.document?.description);
+      setUrgent(data.transaction.document?.urgent);
+      setSenderId(data.transaction.document?.senderId)
+      setName(data.recepientId?.name)
+      setCreatedDate(data.transaction?.createdDate)
+      console.log(res.data.data)
+    }).catch((error) =>{
+      console.log(error)
+    }).finally(() => {
+      setIsLoading(false)
+    })
+  }
+
+  const getUser = () => {
+    Api.getUserById(senderId, controller).then((res) => {
+      const data = res.data.data;
+      setFirstname(data.firstName?.charAt(0).toUpperCase() + data.firstName?.slice(1))
+      setLastname(data.lastName?.charAt(0).toUpperCase() + data.lastName?.slice(1))
+      setRole(data.role?.name.charAt(0).toUpperCase() + data.role?.name.slice(1))
+      setDepartment(data.department?.name)
+    })
+  }
 
   return (
     <div className="view-message-wrapper">
@@ -43,27 +114,33 @@ function InboxViewMessage() {
         </Tooltip>
         </div>
       </div>
+      {isLoading ? (
+        <LinearProgress />
+      ) : (
       <div className="scrollable-area">
         <div className="message-title-header">
           <div>
-            message title go here
+            {subject}
           </div>
         </div>
        <div className="message-and-footer">
         <div className="message-body">
             <div className="sender-profile">
               <div className="profile">
-                <span>JT</span>
+                <span>
+                  {firstname?.charAt(0).toUpperCase()}
+                  {lastname?.charAt(0).toUpperCase()}
+                </span>
               </div>
             </div>
             <div className="sender-message-body">
               <div className="top-section">
                 <div>
-                  <span><strong>Sender Fullname</strong></span>
-                  <span> Department</span>
-                  <span> Role</span>
+                  <span><strong>{firstname} {lastname} </strong></span>
+                  <span>{name}</span>
+                  <span>{role}</span>
                 </div>
-                <div className="time-sent"><span>10:48am (2hrs ago)</span></div>
+                <div className="time-sent"><span>{DateFormatLong({ createdDate: createdDate })}</span></div>
               </div>
               <div className="to-me">
                 <div className="to-me-doc-urgency">
@@ -75,7 +152,7 @@ function InboxViewMessage() {
                       </button>
                     </Tooltip>
                   </div>
-                  <div className='doc-urgency'>Urgent</div>
+                  <div className={urgent === 1 ? "urgent" : "non-urgent"}>{urgent === 1 ? "HIGH" : "LOW"}</div>
                 </div>
                 {open && (
                   <div ref={menuRef} className="show-details-modal">
@@ -87,11 +164,11 @@ function InboxViewMessage() {
                     <span>sent by:</span>
                   </div>
                   <div className="second-section">
-                    <span>{`CCS Department`}</span>
-                    <span>{`CCS Department`}</span>
-                    <span>{`December 23, 2023 12:00AM`}</span>
-                    <span>{`Message title goes here`}</span>
-                    <span>{`Sender fullname uclmID and role`}</span>
+                    <span>{name} Department</span>
+                    <span>{department} Department</span>
+                    <span>{DateFormatLong({ createdDate: createdDate })}</span>
+                    <span>{subject}</span>
+                    <span>{firstname} {lastname} <strong>{name} {role}</strong></span>
                   </div>
                 </div>
               )}  
@@ -99,17 +176,72 @@ function InboxViewMessage() {
               <div className="message-cont">
                 <div className="message-text">
                   <span>
-                    Message goes here
-                  </span>
+                    {description}
+                  </span> 
                 </div>
               </div>
               <div className="footer-button-section">
                 <div className="left-section-button">
                   <div>
-                    <button className="decline">
+                    <button onClick={handleClickOpen} className="decline">
                       <CloseIcon />
                       <span>Decline</span>
                     </button>
+                    <FormControl sx={{ mt: 2, minWidth: 120 }}>
+                      <Dialog
+                        fullWidth
+                        sx={{maxWidth: 420, margin: "auto"}}
+                        open={openDialog}
+                        onClose={handleClose}
+                        PaperProps={{
+                          component: "form",
+                          onSubmit: (e) => {
+                            e.preventDefault()
+                            handleClose()
+                          }
+                        }}
+                      >
+                        <DialogTitle 
+                          sx={{ fontFamily: "Inter" }}
+                        >{`Decline`}</DialogTitle>
+                        <DialogContent>
+                          <TextField
+                            autoFocus
+                            required
+                            fullWidth
+                            name="note"
+                            type="text"
+                            margin="dense"
+                            variant="standard"
+                            label="Write a note"
+                            sx={{ 
+                              fontFamily: "Inter", 
+                            }}
+                            placeholder="Write a note to let them know"
+                          />
+                        </DialogContent>
+                        <DialogActions>
+                          <Button
+                            variant="outlined" 
+                            sx={{
+                              borderRadius: 10,
+                              paddingInline: 2,
+                              fontFamily: "Inter",
+                              textTransform: "none",
+                              border: "none",
+                              bgcolor: "#b50000",
+                              color: "white",
+                              "&:hover": {
+                                bgcolor: "#9c0606",
+                                border: "none"
+                              },
+                            }}
+                          >
+                            <span>Confirm Decline</span>
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
+                    </FormControl>
                   </div>
                   <div>
                     <button className="accept">
@@ -134,6 +266,7 @@ function InboxViewMessage() {
           </div>
        </div>
       </div>
+    )}
     </div>
   )
 }

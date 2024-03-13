@@ -53,6 +53,11 @@ const Users = () => {
     setUserToDelete(id)
   };
 
+  const handleCloseDialog = () => {
+    setOpenDialog(false)
+    setUserToDelete(null)
+  }
+
   const columns = [
     { field: "id", headerName: "#", width: 70 },
     {
@@ -105,40 +110,42 @@ const Users = () => {
         };
   
         return <>
-        <div className="action-btns">
-          <Tooltip disableFocusListener={true} title="Edit">
-            <button className="users-edit" onClick={handleEdit}><EditIcon fontSize="small"/></button>
-          </Tooltip>
-          <Tooltip title="Delete">
-            <button className="users-delete" onClick={() => {handleOpenDialog(params.row.id)}}><DeleteOutlineOutlinedIcon fontSize="small"/></button>
-          </Tooltip>
-          <Dialog
-            open={openDialog}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-            sx={{
-              background: 'rgba(0, 0, 0, 0.03)',
-              '& .MuiPaper-root': {
-                boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.03)', 
-              },
-              '& .MuiBackdrop-root': {
-                backgroundColor: 'transparent',
-              },
-            }}
-          > 
-            <DialogTitle id="users-dialog">
-              {`Delete User`}
-            </DialogTitle>
-            <DialogContent>
-              <DialogContentText id="dialog-text">
-                Once deleted, the action cannot be undone, confirm?
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions id="action-buttons">
-              <Button id="cancel-dialog" variant="contained" onClick={() => {setOpenDialog(false)}}>Cancel</Button>
-              <Button id="delete-dialog" variant="contained" onClick={handleDelete}>Delete</Button>
-            </DialogActions>
-          </Dialog>
+        <div className="row-wrapper">
+          <div className="action-btns">
+            <Tooltip disableFocusListener={true} title="Edit">
+              <button className="users-edit" onClick={handleEdit}><EditIcon fontSize="small"/></button>
+            </Tooltip>
+            <Tooltip title="Delete">
+              <button className="users-delete" onClick={() => {handleOpenDialog(params.row.id)}}><DeleteOutlineOutlinedIcon fontSize="small"/></button>
+            </Tooltip>
+            <Dialog
+              open={openDialog}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+              sx={{
+                background: 'rgba(0, 0, 0, 0.03)',
+                '& .MuiPaper-root': {
+                  boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.03)', 
+                },
+                '& .MuiBackdrop-root': {
+                  backgroundColor: 'transparent',
+                },
+              }}
+            > 
+              <DialogTitle id="users-dialog">
+                {`Delete User`}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="dialog-text">
+                  Once deleted, the action cannot be undone, confirm?
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions id="action-buttons">
+                <Button id="cancel-dialog" variant="contained" onClick={handleCloseDialog}>Cancel</Button>
+                <Button id="delete-dialog" variant="contained" onClick={handleDelete}>Delete</Button>
+              </DialogActions>
+            </Dialog>
+          </div>
         </div>
         </>;
       }
@@ -151,7 +158,7 @@ const Users = () => {
     name: `${d?.firstName} ${d?.lastName}`,
     role: d?.role?.name,
     email: d?.email,
-    createdDate: DateFormat({createdAt: d?.createdDate})
+    createdDate: DateFormat({createdDate: d?.createdDate})
   }));
 
   return (
@@ -163,8 +170,8 @@ const Users = () => {
         )}
         <Table stickyHeader aria-label="sticky table" columns={columns} rows={rows} />
         <Snackbar open={showSnackbar} autoHideDuration={3000}>
-        <Alert variant="filled" severity="error">User deleted</Alert>
-      </Snackbar>
+          <Alert variant="filled" severity="error">User deleted</Alert>
+        </Snackbar>
     </div>
   );
 };

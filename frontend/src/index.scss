@@ -24,6 +24,23 @@ input:focus {
   align-items: center;
   flex-direction: column;
   justify-content: center;
+  gap: 1em;
+
+  .go-back {
+    padding-inline: 1em;
+    padding-block: .8em;
+    font-weight: 500;
+    color: white;
+    border-radius: .4em;
+    background-color: #204682;
+  }
+  .go-back:hover {
+    background-color: hsl(217, 59%, 26%);
+  }
+
+  h1 {
+    margin: 0;
+  }
 }
 /*----------* collapsable-sidebar-section *----------*/
 .sidebars {
@@ -96,6 +113,16 @@ hr {
   margin-block: 1em;
 }
 /*----------* login-section *----------*/
+.show-password {
+  display: flex;
+  cursor: pointer;
+  justify-content: end;
+}
+.show-password span{
+  display: flex;
+  font-size: 14px;
+  align-items: center;
+}
 #username,
 #password {
   width: 264px;
@@ -105,14 +132,15 @@ hr {
 }
 
 .login-error {
+  font-size: 14px;
+  padding-block: .4em;
   color: rgb(224, 42, 42);
 }
-
 #form-container {
   height: 100vh;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; 
 }
 #form-container a {
   text-decoration: none;
@@ -122,6 +150,12 @@ hr {
 #form-container a:hover {
   color: #2d5594;
 }
+.input-form {
+  gap: .6em;
+}
+#form-container #form-wrapper input {
+  width: 330px;
+}
 #form-container #form-wrapper {
   display: flex;
   flex-direction: column;
@@ -129,7 +163,8 @@ hr {
   justify-content: center;
   border: solid 1px lightgray;
   border-radius: 10px;
-  padding: 48px 48px 48px;
+  padding: 48px 38px 48px;
+  width: 330px;
   gap: 38px;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
 }
@@ -139,6 +174,12 @@ hr {
   flex-direction: column;
   gap: 4px;
 }
+.username-input {
+  margin-bottom: 1em;
+}
+.error {
+  border-color: red;
+}
 #form-container #form-wrapper #login-header #span3 {
   color: #2d5594;
   font-weight: 500;
@@ -146,10 +187,15 @@ hr {
 #form-container #form-wrapper #main-logo {
   height: 100px;
 }
+#input-wrapper div {
+  display: flex;
+  flex-direction: column;
+  gap: .6em;
+}
 #form-container #form-wrapper #input-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  //gap: 16px;
 }
 #form-container #form-wrapper #input-wrapper ::placeholder {
   color: #a7a7a7;

@@ -1,6 +1,6 @@
 
-export const DateFormat = ({ createdAt }) => {
-  const createdAtDate = new Date(createdAt);
+export const DateFormat = ({ createdDate }) => {
+  const createdAtDate = new Date(createdDate);
   const currentTime = new Date();
 
   let formattedTime;
@@ -20,3 +20,4 @@ export const DateFormat = ({ createdAt }) => {
 };
 
 export default DateFormat
+

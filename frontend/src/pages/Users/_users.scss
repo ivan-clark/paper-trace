@@ -1,9 +1,12 @@
-.action-btns {
-  display: flex;
-  flex-direction: row;
-  gap: 1em;
+.row-wrapper {
+  position: relative;
 }
-
+.action-btns {
+  position: absolute;
+  top: -22px;
+  left: 0;
+  right: 0;
+}
 .users-edit,
 .users-delete {
   --on-white-darker-hover: #d7d7d7;
