@@ -156,5 +156,16 @@ namespace API.Services
             var routeModel = GetRouteById(RouteId);
             _routeRepository.DeclineDocument(routeModel);
         }
+
+        public void MultipleCompose(DocumentModel documentModel, TransactionModel transactionModel, List<RouteModel> routeModel)
+        {
+            var newDocumentId = _documentRepository.CreateDocument(documentModel);
+            transactionModel.Document = new DataAccess.Entities.Document { Id = newDocumentId };
+            transactionModel.Status = new DataAccess.Entities.Status { Id = 1 };
+
+            var newTransactionId = _transactionRepository.CreateTransaction(transactionModel);
+ 
+            _routeRepository.CreateMultipleRoute(routeModel, newTransactionId);
+        }
     }
 }
