@@ -145,5 +145,16 @@ namespace API.Services
             _routeRepository.CreateRoute(routeModel);         
         }
 
+        public void AcceptDocument(int RouteId) 
+        {
+            var routeModel = GetRouteById(RouteId);
+            _routeRepository.AcceptDocument(routeModel);
+        }
+
+        public void DeclineDocument(int RouteId)
+        {
+            var routeModel = GetRouteById(RouteId);
+            _routeRepository.DeclineDocument(routeModel);
+        }
     }
 }

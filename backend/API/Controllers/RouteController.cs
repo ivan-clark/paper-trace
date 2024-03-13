@@ -145,6 +145,36 @@ namespace API.Controllers
 
             }
         }
+
+        [HttpPost]
+        public JsonResponse AcceptDocument(int RouteId)
+        {
+            try
+            {
+                _routeService.AcceptDocument(RouteId);
+                return new JsonResponse().Success();
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
+
+        [HttpPost]
+        public JsonResponse DeclineDocument(int RouteId)
+        {
+            try
+            {
+                _routeService.DeclineDocument(RouteId);
+                return new JsonResponse().Success();
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
     }
 }
 
