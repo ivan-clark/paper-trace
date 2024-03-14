@@ -12,5 +12,7 @@ namespace API.Repositories
         int CreateRoute(RouteModel model);
         void UpdateRoute(RouteModel model);
         int GetMaxRouteId();
+        void AcceptDocument(RouteModel model);
+        void DeclineDocument(RouteModel model);
     }
 }

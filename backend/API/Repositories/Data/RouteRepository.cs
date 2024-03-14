@@ -72,5 +72,46 @@ namespace API.Repositories.Data
             return maxRouteId;
         }
 
+        public void AcceptDocument(RouteModel model) 
+        {
+            var route = _dbcontext.Routes.SingleOrDefault(u => u.Id == model.Id);
+
+            if (route != null)
+            {
+                if (model.Transaction != null)
+                    route.TransactionId = model.Transaction.Id;
+
+                if (model.RecepientId != null)
+                    route.RecepientId = model.RecepientId.Id;
+
+                if (model.StatusId != null)
+                    route.StatusId = 2;
+
+                route.UpdatedDate = model.UpdatedDate;
+
+                _dbcontext.SaveChanges();
+            }
+        }
+
+        public void DeclineDocument(RouteModel model)
+        {
+            var route = _dbcontext.Routes.SingleOrDefault(u => u.Id == model.Id);
+
+            if (route != null)
+            {
+                if (model.Transaction != null)
+                    route.TransactionId = model.Transaction.Id;
+
+                if (model.RecepientId != null)
+                    route.RecepientId = model.RecepientId.Id;
+
+                if (model.StatusId != null)
+                    route.StatusId = 3;
+
+                route.UpdatedDate = model.UpdatedDate;
+
+                _dbcontext.SaveChanges();
+            }
+        }
     }
 }
