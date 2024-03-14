@@ -13,5 +13,9 @@ public partial class Document
 
     public string? Description { get; set; }
 
+    public bool? Doctype { get; set; }
+
+    public DateTime? CreatedDate { get; set; }
+
     public sbyte? Urgent { get; set; }
 }

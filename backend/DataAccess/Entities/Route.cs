@@ -7,6 +7,8 @@ public partial class Route
 {
     public int Id { get; set; }
 
+    public string? UniId { get; set; }
+
     public int? TransactionId { get; set; }
 
     public int? RecepientId { get; set; }

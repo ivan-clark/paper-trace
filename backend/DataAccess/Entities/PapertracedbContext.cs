@@ -69,9 +69,13 @@ public partial class PapertracedbContext : DbContext
             entity.ToTable("document");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Description)
-                .HasMaxLength(45)
-                .HasColumnName("description");
+            entity.Property(e => e.CreatedDate)
+                .HasColumnType("datetime")
+                .HasColumnName("createdDate");
+            entity.Property(e => e.Description).HasColumnName("description");
+            entity.Property(e => e.Doctype)
+                .HasColumnType("bit(1)")
+                .HasColumnName("doctype");
             entity.Property(e => e.SenderId).HasColumnName("senderId");
             entity.Property(e => e.Subject)
                 .HasMaxLength(45)
@@ -104,6 +108,9 @@ public partial class PapertracedbContext : DbContext
             entity.Property(e => e.RecepientId).HasColumnName("recepientId");
             entity.Property(e => e.StatusId).HasColumnName("statusId");
             entity.Property(e => e.TransactionId).HasColumnName("transactionId");
+            entity.Property(e => e.UniId)
+                .HasMaxLength(45)
+                .HasColumnName("uniId");
             entity.Property(e => e.UpdatedDate)
                 .HasColumnType("datetime")
                 .HasColumnName("updatedDate");
