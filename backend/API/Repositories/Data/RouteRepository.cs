@@ -34,6 +34,29 @@ namespace API.Repositories.Data
             return result.Entity.Id;
         }
 
+        public List<int> CreateMultipleRoute(List<RouteModel> models, int transactionId)
+        {
+            List<int> createdRouteIds = new List<int>();
+
+            foreach (var model in models)
+            {
+                var route = new Route
+                {
+                    TransactionId = transactionId,
+                    RecepientId = model.RecepientId?.Id,
+                    StatusId = 1,
+                    UpdatedDate = DateTime.Now
+                };
+
+                var result = _dbcontext.Routes.Add(route);
+                _dbcontext.SaveChanges();
+
+                createdRouteIds.Add(route.Id);
+            }
+
+            return createdRouteIds;
+        }
+
         public List<Route> GetRoutes()
         {
             return _dbcontext.Routes.ToList();
@@ -112,6 +135,11 @@ namespace API.Repositories.Data
 
                 _dbcontext.SaveChanges();
             }
+        }
+
+        public void MultipleCompose(RouteModel model) 
+        {
+            
         }
     }
 }

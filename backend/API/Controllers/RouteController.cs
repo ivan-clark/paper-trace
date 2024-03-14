@@ -147,6 +147,21 @@ namespace API.Controllers
         }
 
         [HttpPost]
+        public JsonResponse MulitipleCompose(MulitipleComposeModel request)
+        {
+            try
+            {
+                _routeService.MultipleCompose(request.DocumentModel, request.TransactionModel, request.RouteModel);
+                return new JsonResponse().Success();
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
+
+        [HttpPost]
         public JsonResponse AcceptDocument(int RouteId)
         {
             try
