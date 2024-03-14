@@ -5,7 +5,7 @@ namespace API.Repositories
 {
     public interface ITransactionRepository
     {
-        void CreateTransaction(TransactionModel model);
+        int CreateTransaction(TransactionModel model);
         List<Transaction> GetTransactions();
         Transaction? GetTransactionById(int id);
         void DeleteTransaction(int transactionID);

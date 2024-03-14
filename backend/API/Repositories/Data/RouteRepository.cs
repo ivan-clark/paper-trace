@@ -18,7 +18,7 @@ namespace API.Repositories.Data
             return _dbcontext.Routes.FirstOrDefault(u => u.Id == id);
         }
 
-        public void CreateRoute(RouteModel model)
+        public int CreateRoute(RouteModel model)
         {
             var route = new Route
             {
@@ -28,9 +28,10 @@ namespace API.Repositories.Data
                 UpdatedDate = DateTime.Now
             };
 
-            _dbcontext.Routes.Add(route);
+            var result = _dbcontext.Routes.Add(route);
             _dbcontext.SaveChanges();
 
+            return result.Entity.Id;
         }
 
         public List<Route> GetRoutes()
