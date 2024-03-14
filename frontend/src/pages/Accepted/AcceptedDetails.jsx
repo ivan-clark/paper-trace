@@ -19,35 +19,31 @@ function AcceptedDetails() {
       <tbody>
         <tr className={`sent-tbl-row ${isChecked ? "checked" : ""}`}>
           <td>
-            <Checkbox onChange={handleChecked}/>
+            <Checkbox 
+              sx={{ paddingRight: 3 }}
+              size="small"
+              onChange={handleChecked}
+            />
           </td>
           <td className="sender">
-            <div className="text">
-              <span>{`From: Student Affairs Office`}</span>
-            </div>
+            <span>{`From: Student Affairs Office`}</span>
           </td>
           <td id="td-spacer"></td>
           <td className="title-and-message">
-            <div>
-              <span className="title">Title - </span>
-              <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis et velit, quis earum id optio tenetur. Repellendus necessitatibus id sapiente culpa velit dolorum nostrum. Adipisci nobis necessitatibus quo quaerat tempora?</span>
-            </div>
+            <span className="title">Title - </span>
+            <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis et velit, quis earum id optio tenetur. Repellendus necessitatibus id sapiente culpa velit dolorum nostrum. Adipisci nobis necessitatibus quo quaerat tempora?</span>
           </td>
           <td id="td-spacer"></td>
           <td className="date">
-            <div>
-              <span><strong>Nov 14</strong></span>
-            </div>
+            <span><strong>Nov 14</strong></span>
           </td>
-          <div className={`sent-tr ${isChecked ? "checked" : ""}`}>
+          <td className={`sent-tr ${isChecked ? "checked" : ""}`}>
             <Tooltip title="Delete">
-            <button onClick={handleDelete} className={`delete sent-delete ${isChecked ? "checked" : ""}`}>
-                <div>
-                  <DeleteOutlineOutlinedIcon fontSize="small"/>
-                </div>
+              <button onClick={handleDelete} className={`delete sent-delete ${isChecked ? "checked" : ""}`}>
+                <DeleteOutlineOutlinedIcon fontSize="small"/>
               </button>
             </Tooltip>
-          </div>
+          </td>
         </tr>
       </tbody>
     </table>

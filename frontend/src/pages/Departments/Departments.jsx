@@ -91,40 +91,42 @@ const Departments = () => {
         };
   
         return <>
-        <div className="action-btns">
-          <Tooltip title="Edit">
-            <button className="users-edit" onClick={handleEdit}><EditIcon fontSize="small"/></button>
-          </Tooltip>
-          <Tooltip title="Delete">
-            <button className="users-delete" onClick={() => {handleOpenDialog(params.row.id)}}><DeleteOutlineOutlinedIcon fontSize="small"/></button>
-          </Tooltip>
-          <Dialog
-            open={openDialog}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-            sx={{
-              background: 'rgba(0, 0, 0, 0.03)',
-              '& .MuiPaper-root': {
-                boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.03)', 
-              },
-              '& .MuiBackdrop-root': {
-                backgroundColor: 'transparent',
-              },
-            }}
-          > 
-            <DialogTitle id="users-dialog">
-              {"Delete Department"}
-            </DialogTitle>
-            <DialogContent>
-              <DialogContentText id="dialog-text">
-                Once deleted, the action cannot be undone, confirm?
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions id="action-buttons">
-              <Button id="cancel-dialog" variant="contained" onClick={() => {setOpenDialog(false)}}>Cancel</Button>
-              <Button id="delete-dialog" variant="contained" onClick={handleDelete}>Delete</Button>
-            </DialogActions>
-          </Dialog>
+        <div className="row-wrapper">          
+          <div className="action-btns">
+            <Tooltip title="Edit">
+              <button className="users-edit" onClick={handleEdit}><EditIcon fontSize="small"/></button>
+            </Tooltip>
+            <Tooltip title="Delete">
+              <button className="users-delete" onClick={() => {handleOpenDialog(params.row.id)}}><DeleteOutlineOutlinedIcon fontSize="small"/></button>
+            </Tooltip>
+            <Dialog
+              open={openDialog}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+              sx={{
+                background: 'rgba(0, 0, 0, 0.03)',
+                '& .MuiPaper-root': {
+                  boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.03)', 
+                },
+                '& .MuiBackdrop-root': {
+                  backgroundColor: 'transparent',
+                },
+              }}
+            > 
+              <DialogTitle id="users-dialog">
+                {"Delete Department"}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="dialog-text">
+                  Once deleted, the action cannot be undone, confirm?
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions id="action-buttons">
+                <Button id="cancel-dialog" variant="contained" onClick={() => {setOpenDialog(false)}}>Cancel</Button>
+                <Button id="delete-dialog" variant="contained" onClick={handleDelete}>Delete</Button>
+              </DialogActions>
+            </Dialog>
+          </div>
         </div>
         </>;
       }
@@ -135,7 +137,7 @@ const Departments = () => {
     id: d.id, 
     department: d.name,
     //name: `${d.head?.firstname} ${d.head?.lastname}`,
-    createdDate: DateFormat({createdAt: d.createdDate})
+    createdDate: DateFormat({createdDate: d?.createdDate})
   }));
 
   return (

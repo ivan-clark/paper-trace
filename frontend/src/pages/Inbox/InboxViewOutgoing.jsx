@@ -1,16 +1,41 @@
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { Link, useParams } from 'react-router-dom'
+import React, { useState, useEffect, useRef } from 'react'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ShortcutIcon from '@mui/icons-material/Shortcut';
+import { Link, useParams } from 'react-router-dom'
 import CloseIcon from '@mui/icons-material/Close';
+import { LinearProgress } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
-import React, { useState, useEffect, useRef } from 'react'
+import Api from "../../services/Api"
 
 function InboxViewOutgoing() {
-  const menuRef = useRef()
-  const [open, setOpen] = useState(false)
+  const controller = new AbortController()
 
+  const { id } = useParams()
+  const menuRef = useRef()
+  const [name, setName] = useState("")
+  const [open, setOpen] = useState(false)
+  const [urgent, setUrgent] = useState("")
+  const [subject, setSubject] = useState("")
+  const [senderId, setSenderId] = useState(0)
+  const [isLoading, setIsLoading] = useState(true)
+  const [description, setDescription] = useState("")
+
+  const [firstname, setFirstname] = useState("")
+  const [lastname, setLastname] = useState("")
+  const [department, setDepartment] = useState("")
+  const [role, setRole] = useState("")
+
+  useEffect(() => {
+    setIsLoading(true)
+    getDocument(controller)
+
+    return () => {
+      controller.abort()
+    }
+  }, [senderId])
+  
   useEffect(() => {
     let handler = (e) => {
       if(menuRef.current && !menuRef.current?.contains(e.target)) {
@@ -23,6 +48,32 @@ function InboxViewOutgoing() {
       document.removeEventListener("mousedown", handler)
     }
   }, [menuRef])
+
+  const getDocument = () => {
+    Api.getDocumentById(id, controller).then((res) => {
+      const data = res.data.data;
+      setName(data.senderId?.name)
+      setUrgent(data.urgent)
+      setSubject(data.subject)
+      setSenderId(data.senderId?.id)
+      setDescription(data.description)
+      console.log(res.data.data)
+    }).catch((error) => {
+      console.log(error)
+    }).finally(() => {
+      setIsLoading(false)
+    })
+  }
+
+  const getUser = () => {
+    Api.getUserById(senderId, controller).then((res) => {
+      const data = res.data.data;
+      setFirstname(data.firstName)
+      setLastname(data.lastName)
+      setDepartment(data.department?.name)
+      setRole(data.role?.name)
+    })
+  }
 
   return (
     <div className="view-message-wrapper">
@@ -42,31 +93,37 @@ function InboxViewOutgoing() {
         </Tooltip>
         </div>
       </div>
-      <div className="scrollable-area">
+      {isLoading ? (
+        <LinearProgress />
+      ) : (
+        <div className="scrollable-area">
         <div className="message-title-header">
           <div>
-            message title go here
+            {subject}
           </div>
         </div>
        <div className="message-and-footer">
         <div className="message-body">
             <div className="sender-profile">
               <div className="profile">
-                <span>JT</span>
+                <span>
+                  {firstname?.charAt(0).toUpperCase()}
+                  {lastname?.charAt(0).toUpperCase()}
+                </span>
               </div>
             </div>
             <div className="sender-message-body">
               <div className="top-section">
                 <div>
-                  <span><strong>Sender Fullname</strong></span>
-                  <span> Department</span>
-                  <span> Role</span>
+                  <span><strong>{firstname} {lastname} </strong></span>
+                  <span>{name}</span>
+                  <span> {role}</span>
                 </div>
                 <div className="time-sent"><span>10:48am (2hrs ago)</span></div>
               </div>
               <div className="to-me">
                 <div className="to-me-doc-urgency">
-                  <span>to me</span>
+                  <span>to {name}</span>
                   <div>
                     <Tooltip title="Show details" enterDelay={600}>
                       <button onClick={() => {setOpen(!open)}} className="show-details-button">
@@ -74,7 +131,7 @@ function InboxViewOutgoing() {
                       </button>
                     </Tooltip>
                   </div>
-                  <div className='doc-urgency'>Urgent</div>
+                  <div className={urgent === 1 ? "urgent" : "non-urgent"}>{urgent === 1 ? "HIGH" : "LOW"}</div>
                 </div>
                 {open && (
                   <div ref={menuRef} className="show-details-modal">
@@ -86,11 +143,11 @@ function InboxViewOutgoing() {
                     <span>sent by:</span>
                   </div>
                   <div className="second-section">
-                    <span>{`CCS Department`}</span>
-                    <span>{`CCS Department`}</span>
+                    <span>{name} Department</span>
+                    <span>{department} Department</span>
                     <span>{`December 23, 2023 12:00AM`}</span>
-                    <span>{`Message title goes here`}</span>
-                    <span>{`Sender fullname uclmID and role`}</span>
+                    <span>{subject}</span>
+                    <span>{firstname} {lastname} <strong>{role}</strong></span>
                   </div>
                 </div>
               )}  
@@ -98,7 +155,7 @@ function InboxViewOutgoing() {
               <div className="message-cont">
                 <div className="message-text">
                   <span>
-                    Message goes here
+                    {description}
                   </span>
                 </div>
               </div>
@@ -127,6 +184,7 @@ function InboxViewOutgoing() {
           </div>
        </div>
       </div>
+      )}
     </div>
   )
 }

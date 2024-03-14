@@ -1,11 +1,17 @@
-import { MenuItem, Select, LinearProgress, Alert, CircularProgress } from "@mui/material";
+import { MenuItem, 
+        LinearProgress, 
+        Alert, 
+        CircularProgress,
+        Box,
+        TextField,
+        FormControl } from "@mui/material";
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import React, { useEffect, useState } from 'react'
 import Snackbar from '@mui/material/Snackbar';
 import Api from "../../services/Api"
   
-function UsersEdit() {
+function UsersEdit(props) {
   const controller = new AbortController();
 
   const [loading, setLoading] = useState(true);
@@ -70,7 +76,7 @@ function UsersEdit() {
       email: email,
       sendEmail: false,
       role: {
-        id: role
+        id: 2
       },
       department: {
         id: department
@@ -105,10 +111,10 @@ function UsersEdit() {
                 </div>
                 <div>
                   <div>
-                    {'Ivan'} {`Clark`}
+                    {props.user?.firstname} {props.user?.lastname}
                   </div>
                   <div id='role-text'>
-                    {`ADMIN`}
+                    {props.user?.role.name}
                   </div>
                 </div>
               </div>
@@ -123,65 +129,122 @@ function UsersEdit() {
           ) : (
           <div className="edit-content-wrapper">
             <div className='edit-content-border'>
-              <div className='edit-content'>
-                <>
-                  <div className='two-input-inline'>
-                    <div className='user-edit-dept'>
-                      <label>Dept. Assigned</label>
-                      <Select value={department} onChange={(e)=>setDepartment(e.target.value)}>
+              <>
+                <FormControl sx={{ width: "100%" }}>
+                  <Box
+                    sx={{
+                      width: "100%",
+                      height: "100%",
+                      display: "flex",
+                      flexDirection:"column",
+                      gap: 1.4
+                    }}
+                    >
+                    <Box 
+                      sx={{ 
+                        width: "100%",
+                        display: "flex", 
+                        flexDirection: "row", 
+                        gap: 1.5 
+                      }}
+                      >
+                      <TextField 
+                        sx={{
+                          width: "100%",
+                          flex: 2
+                        }}
+                        select label="Department" 
+                        value={department} 
+                        onChange={(e) => setDepartment(e.target.value)}>
                         {loading ? (
                           <LinearProgress />
                         ) : (
-                          departments.map((dept) => (
-                            <MenuItem key={dept.id} value={dept.id}>
-                              {dept.name}
+                        departments.map((dept, index) => (
+                            <MenuItem key={index} value={dept.id}>
+                            {dept.name}
                             </MenuItem>
-                          ))
+                            ))
                         )}
-                      </Select>
-                    </div>
-                  </div>
-                  <div className='two-input-inline'>
-                    <div className='input-flex-one'>
-                      <label>Firstname</label>
-                      <input
-                        type="text"
-                        onChange={(e) => setFirstname(e.target.value)}
-                        value={firstname}
-                      />
-                    </div>
-                    <div className='input-flex-one'>
-                      <label>Lastname</label>
-                      <input
-                        type="text"
-                        onChange={(e) => setLastname(e.target.value)}
-                        value={lastname}
-                      />
-                    </div>
-                  </div>
-                  <div className='two-input-inline'>
-                    <div className="input-flex-one">
-                      <div>
-                        <label>Email</label>
-                        <input
-                          type="text"
-                          onChange={(e) => setEmail(e.target.value)}
-                          value={email}
+                      </TextField>
+                      <TextField 
+                          sx={{
+                            width: "100%",
+                            flex: 1
+                          }}
+                          label="Role" 
+                          variant="outlined"  
+                          value={"Department Head"}
                         />
-                      </div>
-                    </div>
+                    </Box>
+                    <Box  
+                      sx={{ 
+                        width: "100%",
+                        display: "flex", 
+                        flexDirection: "row", 
+                        gap: 1.5 
+                      }}
+                      >
+                      <TextField 
+                          sx={{
+                            width: "100%",
+                            flex: 1
+                          }}
+                          label="First name" 
+                          variant="outlined"  
+                          value={firstname}
+                          onChange={(e) => setFirstname(e.target.value)}
+                        />
+                        <TextField 
+                          sx={{
+                            width: "100%",
+                            flex: 1
+                          }}
+                          label="Last name" 
+                          variant="outlined"  
+                          value={lastname}
+                          onChange={(e) => setLastname(e.target.value)}
+                        />
+                    </Box>
+                    <Box
+                      sx={{ 
+                        width: "100%",
+                        display: "flex", 
+                        flexDirection: "row", 
+                        gap: 1.5 
+                      }}
+                      >
+                    <TextField 
+                        sx={{
+                          width: "100%",
+                          flex: 2
+                        }}
+                        label="Email" 
+                        variant="outlined"  
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+                      <TextField 
+                        sx={{
+                          width: "100%",
+                          flex: 1
+                        }}
+                        label="UCLM ID" 
+                        variant="outlined" 
+                        disabled={true}
+                      />
+                    </Box>
+                  </Box>
+                </FormControl>
+                <div className='admin-edit-buttons'>
+                  <div>
+                    <Link to='/users' className='cancel'>Cancel</Link>
                   </div>
-                  <div className='admin-edit-buttons'>
-                    <div>
-                      <Link to='/users' className='cancel'>Cancel</Link>
-                    </div>
-                    <div>
-                      <button className='save' onClick={() => handleSave()}>Save</button>
-                      {error && <div id='admin-add-user-error'>{error}</div>}
-                    </div>
+                  <div>
+                    <button className='save' onClick={() => handleSave()}>Save</button>
+                    {error && <div id='admin-add-user-error'>{error}</div>}
                   </div>
-                </>
-              </div>
+                </div>
+              </>
             </div>
           </div>
           )}

@@ -72,7 +72,7 @@ const App = () => {
               <Route path="compose" element={<Compose user={user}/>} />
               <Route path="inbox" element={<Inbox user={user}/>} />
               <Route path="inbox/outgoing/:id" element={<InboxViewOutgoing />} />
-              <Route path="inbox/upcoming/:id" element={<InboxViewUpcoming />} />
+              <Route path="inbox/incoming/:id" element={<InboxViewUpcoming />} />
               <Route path="sent" element={<Sent />} />
               <Route path="accepted-docs" element={<Accepted />} />
               <Route path="declined-docs" element={<Declined />} />

@@ -1,8 +1,8 @@
-import { CircularProgress,
-    InputAdornment, TextField, 
-    IconButton} from "@mui/material";
-import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { CircularProgress,TextField} from "@mui/material";
+import Visibility from '@mui/icons-material/Visibility';
+import IconButton from '@mui/material/IconButton';
+import FormControl from "@mui/material/FormControl";
 import { useNavigate } from "react-router-dom";
 import LoginLogo from "../assets/LoginLogo.png";
 import Button from "@mui/material/Button";
@@ -20,10 +20,10 @@ const Login = (props) => {
 
   const navigate = useNavigate();
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show)
-  const handleMouseDownPassword = (e) => {
-    e.preventDefault()
-  }
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -52,9 +52,9 @@ const Login = (props) => {
           props.setIsLoggedIn(true);
           props.setUser(user);
 
-          if (user.role.id === 1)
+          if (user.role?.id === 1)
             navigate("users");
-          else if (user.role.id === 2)
+          else if (user.role?.id === 2)
             navigate("inbox");
           else
             navigate("inbox");
@@ -62,7 +62,8 @@ const Login = (props) => {
         } else {
           setErrorMessage("Username or password is incorrect");
           return false;
-        }
+        } 
+        console.log(response.data)
       })
       .catch(function (error) {
         console.error("Error during login:", error);
@@ -77,49 +78,55 @@ const Login = (props) => {
       <div id="form-container">
         <div id="form-wrapper">
           <div id="login-header">
-            <img id="main-logo" alt="logo" src={LoginLogo} />
+            <img draggable="false" id="main-logo" alt="logo" src={LoginLogo} />
             <span id="span1">Sign in</span>
             <span id="span2">to continue to PaperTrace</span>
           </div>
 
-          <div id="input-wrapper">
-            <TextField
-              id="username"
-              type="text"
-              label="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              // login using enter key
-              onKeyDown={(e) => e.key === "Enter" && handleLogin(e)}
-            />
+          <FormControl fullWidth sx={{ m: 1 }}>
+            <FormControl className="input-form">
+              <TextField
+                sx={{ '& .MuiInputBase-root': { width: 330 } }}
+                error={isLoading ? null : Boolean(errorMessage)}
+                disabled={isLoading}
+                fullWidth
+                className="username-input"
+                id="username"
+                type="text"
+                label="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                // login using enter key
+                onKeyDown={(e) => e.key === "Enter" && handleLogin(e)}
+                onClick={() => setErrorMessage(null)} 
+                />
 
-            <TextField
-              id="password"
-              type={showPassword ? "text" : "password"}
-              label="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              // login using enter key
-              onKeyDown={(e) => e.key === "Enter" && handleLogin(e)}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
+              <TextField
+                error={isLoading ? null : Boolean(errorMessage)}
+                disabled={isLoading}
+                id="password"
+                label="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                // login using enter key  
+                onKeyDown={(e) => e.key === "Enter" && handleLogin(e)}
+                onClick={() => setErrorMessage(null)}
+                type={showPassword ? 'text' : 'password'}
+                InputProps={{
+                    endAdornment: 
                     <IconButton
-                      id="eye"
+                      aria-label="toggle password visibility"
                       onClick={handleClickShowPassword}
                       onMouseDown={handleMouseDownPassword}
                       edge="end"
                     >
-                      {showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <div>
-              {errorMessage && <div className="login-error">{errorMessage}</div>}
-            </div>
-          </div>
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>,
+                }}
+                />
+              </FormControl>
+              {isLoading ? null : errorMessage && <div className="login-error">{errorMessage}</div>}
+          </FormControl>
           <div id="button-link-wrapper">
           <Button
             disabled={isLoading}

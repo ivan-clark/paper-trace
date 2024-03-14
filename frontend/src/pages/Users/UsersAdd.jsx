@@ -1,11 +1,13 @@
 import { Alert, LinearProgress } from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import FormControl from "@mui/material/FormControl";
 import React, { useEffect, useState } from 'react'
 import TextField from '@mui/material/TextField';
 import Snackbar from '@mui/material/Snackbar';
 import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom'
 import Api from "../../services/Api"
+import Box from '@mui/system/Box';
 
 
 function UsersAdd() {
@@ -54,6 +56,7 @@ function UsersAdd() {
 
     Api.createUser(model).then((response)=>{
       setShowSnackbar(true)
+      console.log(response.data.data)
       getUsers(controller)
       setDepartment(" ")
       setFirstname(" ")
@@ -100,81 +103,124 @@ function UsersAdd() {
       </div>
       <div className="edit-content-wrapper">
         <div className='edit-content-border'>
-          <div className='edit-content'>
-            <>
-              <div className='edit-input-wrapper'>
-                <div className='select'>
-                  <TextField select label="Department" value={department} onChange={(e) => setDepartment(e.target.value)}>
-                    {loading ? (
-                      <LinearProgress />
-                    ) : (
-                    departments.map((dept, index) => (
-                        <MenuItem key={index} value={dept.id}>
-                        {dept.name}
-                        </MenuItem>
-                        ))
-                    )}
-                  </TextField>
-                </div>
-                <div className="two-input-inline">
-                  <div className='input-flex-one'>
-                    <label>Role</label>
-                    <input
-                      type="text"
-                      disabled={true}
-                      value={"Department Head"}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className='two-input-inline'>
-                <div className='input-flex-one'>
-                  <label>First name</label>
-                  <input
-                    type="text"
-                    onChange={(e) => setFirstname(e.target.value)}
+          <>
+            <FormControl sx={{ width: "100%" }}>
+            <Box
+              sx={{
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                flexDirection:"column",
+                gap: 1.4
+              }}
+              >
+              <Box 
+                sx={{ 
+                  width: "100%",
+                  display: "flex", 
+                  flexDirection: "row", 
+                  gap: 1.5 
+                }}
+                >
+                <TextField 
+                  sx={{
+                    width: "100%",
+                    flex: 2
+                  }}
+                  select label="Department" 
+                  value={department} 
+                  onChange={(e) => setDepartment(e.target.value)}>
+                  {loading ? (
+                    <LinearProgress />
+                  ) : (
+                  departments.map((dept, index) => (
+                      <MenuItem key={index} value={dept.id}>
+                      {dept.name}
+                      </MenuItem>
+                      ))
+                  )}
+                </TextField>
+                <TextField 
+                    sx={{
+                      width: "100%",
+                      flex: 1
+                    }}
+                    label="Role" 
+                    variant="outlined"  
+                    value={"Department Head"}
+                  />
+              </Box>
+              <Box  
+                sx={{ 
+                  width: "100%",
+                  display: "flex", 
+                  flexDirection: "row", 
+                  gap: 1.5 
+                }}
+                >
+                <TextField 
+                    sx={{
+                      width: "100%",
+                      flex: 1
+                    }}
+                    label="First name" 
+                    variant="outlined"  
                     value={firstname}
+                    onChange={(e) => setFirstname(e.target.value)}
                   />
-                </div>
-                <div className='input-flex-one'>
-                  <label>Last name</label>
-                  <input
-                    type="text"
-                    onChange={(e) => setLastname(e.target.value)}
+                  <TextField 
+                    sx={{
+                      width: "100%",
+                      flex: 1
+                    }}
+                    label="Last name" 
+                    variant="outlined"  
                     value={lastname}
+                    onChange={(e) => setLastname(e.target.value)}
                   />
-                </div>
+              </Box>
+              <Box
+                sx={{ 
+                  width: "100%",
+                  display: "flex", 
+                  flexDirection: "row", 
+                  gap: 1.5 
+                }}
+                >
+              <TextField 
+                  sx={{
+                    width: "100%",
+                    flex: 2
+                  }}
+                  label="Email" 
+                  variant="outlined"  
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <TextField 
+                  sx={{
+                    width: "100%",
+                    flex: 1
+                  }}
+                  label="UCLM ID" 
+                  variant="outlined" 
+                  disabled={true}
+                  onChange={(e) => setUclmID(e.target.value)}
+                  value={uclmID}
+                />
+              </Box>
+            </Box>
+            </FormControl>
+            <div className='admin-edit-buttons'>
+              <div>
+                <Link to='/users' className='cancel'>Cancel</Link>
               </div>
-              <div className='two-input-inline'>
-                <div className='input-flex-one'>
-                  <label>Email</label>
-                  <input
-                    type="text"
-                    onChange={(e) => setEmail(e.target.value)}
-                    value={email}
-                  />
-                </div>
-                <div className='input-flex-one'>
-                  <label>UCLM ID#</label>
-                  <input
-                    disabled={true}
-                    type="text"
-                    onChange={(e) => setUclmID(e.target.value)}
-                    value={uclmID}
-                  />
-                </div>
+              <div>
+                <button className='save' onClick={()=>handleSave()}>Save</button>
               </div>
-              <div className='admin-edit-buttons'>
-                <div>
-                  <Link to='/users' className='cancel'>Cancel</Link>
-                </div>
-                <div>
-                  <button className='save' onClick={()=>handleSave()}>Save</button>
-                </div>
-              </div>
-              {error && <div id='admin-add-user-error'>{error}</div>}
-            </>
-          </div>
+            </div>
+            {error && <div id='admin-add-user-error'>{error}</div>}
+          </>
         </div>
       </div>
       <Snackbar open={showSnackbar} autoHideDuration={3000} onClose={handleClose}>
