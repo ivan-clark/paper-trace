@@ -16,4 +16,6 @@ public partial class Route
     public int? StatusId { get; set; }
 
     public DateTime? UpdatedDate { get; set; }
+
+    public string? Note { get; set; }
 }

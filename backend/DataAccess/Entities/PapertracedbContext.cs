@@ -105,6 +105,7 @@ public partial class PapertracedbContext : DbContext
             entity.ToTable("route");
 
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Note).HasColumnName("note");
             entity.Property(e => e.RecepientId).HasColumnName("recepientId");
             entity.Property(e => e.StatusId).HasColumnName("statusId");
             entity.Property(e => e.TransactionId).HasColumnName("transactionId");
