@@ -20,6 +20,19 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        public JsonResponse GetDepartmentById(int id)
+        {
+            try
+            {
+                return new JsonResponse().Success().For(_departmentService.GetDepartmentById(id));
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+            }
+        }
+
+        [HttpGet]
         public JsonResponse GetDepartments()
         {
             try
@@ -48,11 +61,11 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public JsonResponse DeleteDepartment(DepartmentModel model)
+        public JsonResponse DeleteDepartment(int id)
         {
             try
             {
-                _departmentService.DeleteDepartment(model.Id);
+                _departmentService.DeleteDepartment(id);
                 return new JsonResponse().Success();
             }
             catch (Exception ex)

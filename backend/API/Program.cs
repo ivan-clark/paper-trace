@@ -45,12 +45,18 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+builder.Services.AddScoped<IStatusRepository, StatusRepository>();
+builder.Services.AddScoped<IDocumentRepository, DocumentRepository>();
+builder.Services.AddScoped<IRouteRepository, RouteRepository>();
 
 // Services
 builder.Services.AddScoped<AccountService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<DepartmentService>();
 builder.Services.AddScoped<TransactionService>();
+builder.Services.AddScoped<StatusService>();
+builder.Services.AddScoped<DocumentService>();
+builder.Services.AddScoped<RouteService>();
 
 var app = builder.Build();
 

@@ -37,7 +37,7 @@ namespace API.Repositories.Data
             var department = new Department
             {
                 Name = model.Name,
-                HeadId = model.Head?.Id,
+                HeadId = model.HeadId?.Id,
                 CreatedDate = DateTime.Now
             };
 
@@ -48,11 +48,12 @@ namespace API.Repositories.Data
         public void UpdateDepartment(DepartmentModel model)
         {
             var department = _dbcontext.Departments.SingleOrDefault(u => u.Id == model.Id);
-
+           
             if (department != null)
             {
                 department.Name = model.Name;
-                department.HeadId = model.Head?.Id;
+                department.HeadId = model.HeadId?.Id;
+                department.CreatedDate = DateTime.Now;
 
                 _dbcontext.SaveChanges();
             }

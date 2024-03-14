@@ -10,22 +10,21 @@ namespace API.Controllers
     [Authorize]
     [ApiController]
     [Route("api/[controller]/[action]")]
-    
-    public class TransactionController : ControllerBase
+    public class StatusController : ControllerBase
     {
-        private readonly TransactionService _transactionService;
+        private readonly StatusService _statusService;
 
-        public TransactionController(TransactionService transactionService)
+        public StatusController(StatusService statusService)
         {
-            _transactionService = transactionService;
+            _statusService = statusService;
         }
 
         [HttpGet]
-        public JsonResponse GetTransactionById(int id)
+        public JsonResponse GetStatusById(int id)
         {
             try
             {
-                return new JsonResponse().Success().For(_transactionService.GetTransactionById(id));
+                return new JsonResponse().Success().For(_statusService.GetStatusById(id));
             }
             catch (Exception ex)
             {
@@ -34,12 +33,11 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public JsonResponse GetTransactions()
+        public JsonResponse GetStatuses()
         {
             try
             {
-                var transactions = _transactionService.GetTransactions();
-                return new JsonResponse().Success().For(transactions);
+                return new JsonResponse().Success().For(_statusService.GetStatuses());
             }
             catch (Exception ex)
             {
@@ -48,11 +46,11 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public JsonResponse CreateTransaction(TransactionModel model)
+        public JsonResponse CreateStatus(StatusModel model)
         {
             try
             {
-                _transactionService.CreateTransaction(model);
+                _statusService.CreateStatus(model);
                 return new JsonResponse().Success();
             }
             catch (Exception ex)
@@ -63,11 +61,11 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public JsonResponse DeleteTransaction(int id)
+        public JsonResponse DeleteStatus(int id)
         {
             try
             {
-                _transactionService.DeleteTransaction(id);
+                _statusService.DeleteStatus(id);
                 return new JsonResponse().Success();
             }
             catch (Exception ex)
@@ -78,26 +76,11 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public JsonResponse UpdateTransaction(TransactionModel model)
+        public JsonResponse UpdateStatus(StatusModel model)
         {
             try
             {
-                _transactionService.UpdateTransaction(model);
-                return new JsonResponse().Success();
-            }
-            catch (Exception ex)
-            {
-                return new JsonResponse().Error().Msg(ex.Message);
-
-            }
-        }
-
-        [HttpPost]
-        public JsonResponse ForTestingDeleteTransaction()
-        {
-            try
-            {
-                _transactionService.ForTestingDeleteTransaction();
+                _statusService.UpdateStatus(model);
                 return new JsonResponse().Success();
             }
             catch (Exception ex)

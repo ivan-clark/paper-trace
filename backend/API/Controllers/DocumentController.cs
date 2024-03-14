@@ -10,22 +10,20 @@ namespace API.Controllers
     [Authorize]
     [ApiController]
     [Route("api/[controller]/[action]")]
-    
-    public class TransactionController : ControllerBase
+    public class DocumentController : ControllerBase
     {
-        private readonly TransactionService _transactionService;
-
-        public TransactionController(TransactionService transactionService)
+        private readonly DocumentService _documentService;
+        public DocumentController(DocumentService documentService)
         {
-            _transactionService = transactionService;
+            _documentService = documentService;
         }
 
         [HttpGet]
-        public JsonResponse GetTransactionById(int id)
+        public JsonResponse GetDocumentById(int id)
         {
             try
             {
-                return new JsonResponse().Success().For(_transactionService.GetTransactionById(id));
+                return new JsonResponse().Success().For(_documentService.GetDocumentById(id));
             }
             catch (Exception ex)
             {
@@ -34,12 +32,11 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public JsonResponse GetTransactions()
+        public JsonResponse GetDocuments()
         {
             try
             {
-                var transactions = _transactionService.GetTransactions();
-                return new JsonResponse().Success().For(transactions);
+                return new JsonResponse().Success().For(_documentService.GetDocuments());
             }
             catch (Exception ex)
             {
@@ -48,11 +45,11 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public JsonResponse CreateTransaction(TransactionModel model)
+        public JsonResponse CreateDocument(DocumentModel model)
         {
             try
             {
-                _transactionService.CreateTransaction(model);
+                _documentService.CreateDocument(model);
                 return new JsonResponse().Success();
             }
             catch (Exception ex)
@@ -63,11 +60,11 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public JsonResponse DeleteTransaction(int id)
+        public JsonResponse DeleteDocument(int id)
         {
             try
             {
-                _transactionService.DeleteTransaction(id);
+                _documentService.DeleteDocument(id);
                 return new JsonResponse().Success();
             }
             catch (Exception ex)
@@ -78,11 +75,11 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public JsonResponse UpdateTransaction(TransactionModel model)
+        public JsonResponse UpdateDocument(DocumentModel model)
         {
             try
             {
-                _transactionService.UpdateTransaction(model);
+                _documentService.UpdateDocument(model);
                 return new JsonResponse().Success();
             }
             catch (Exception ex)
@@ -93,11 +90,11 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public JsonResponse ForTestingDeleteTransaction()
+        public JsonResponse ForTestingDeleteDocument()
         {
             try
             {
-                _transactionService.ForTestingDeleteTransaction();
+                _documentService.ForTestingDeleteDocument();
                 return new JsonResponse().Success();
             }
             catch (Exception ex)

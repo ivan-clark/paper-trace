@@ -7,5 +7,9 @@ namespace API.Repositories
     {
         void CreateTransaction(TransactionModel model);
         List<Transaction> GetTransactions();
+        Transaction? GetTransactionById(int id);
+        void DeleteTransaction(int transactionID);
+        void UpdateTransaction(TransactionModel model);
+        int GetMaxTransactionId();
     }
 }

@@ -70,11 +70,11 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public JsonResponse DeleteUser(UserModel model)
+        public JsonResponse DeleteUser(int id)
         {
             try
             {
-                _userService.DeleteUser(model.Id);
+                _userService.DeleteUser(id);
                 return new JsonResponse().Success();
             }
             catch (Exception ex)

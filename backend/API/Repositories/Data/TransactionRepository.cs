@@ -29,5 +29,42 @@ namespace API.Repositories.Data
         {
             return _dbcontext.Transactions.ToList();
         }
+
+        public Transaction? GetTransactionById(int id) 
+        {
+            return _dbcontext.Transactions.FirstOrDefault(u => u.Id == id);
+        }
+
+        public void DeleteTransaction(int id) 
+        {
+            var transaction = new Transaction { Id = id };
+
+            _dbcontext.Transactions.Attach(transaction);
+            _dbcontext.Transactions.Remove(transaction);
+            _dbcontext.SaveChanges();
+        }
+
+        public void UpdateTransaction(TransactionModel model)
+        {
+            var transaction = _dbcontext.Transactions.SingleOrDefault(u => u.Id == model.Id);
+
+            if (transaction != null)
+            {
+                
+                transaction.Restricted = model.Restricted;
+                transaction.DocumentId = model.Document?.Id;
+                transaction.StatusId = model.Status?.Id;
+                transaction.CreatedDate = DateTime.Now;
+
+                _dbcontext.SaveChanges();
+            }
+        }
+
+        public int GetMaxTransactionId()
+        {
+            int maxTransactionId = _dbcontext.Transactions.Max(t => t.Id);
+
+            return maxTransactionId;
+        }
     }
 }
