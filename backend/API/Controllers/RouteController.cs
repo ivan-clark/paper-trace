@@ -190,6 +190,35 @@ namespace API.Controllers
 
             }
         }
+
+        [HttpPost]
+        public JsonResponse ApproveDocument(int RouteId)
+        {
+            try
+            {
+                _routeService.ApproveDocument(RouteId);
+                return new JsonResponse().Success();
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
+
+        [HttpGet]
+        public JsonResponse TrackingDocument(string uniId)
+        {
+            try
+            {
+                return new JsonResponse().Success().For(_routeService.TrackingDocument(uniId));
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
     }
 }
 

@@ -178,6 +178,32 @@ namespace API.Services
             _routeRepository.ApproveDocument(routeModel);
         }
 
+        public List<RouteModel> TrackingDocument(string uniId) 
+        {
+            var result = new List<RouteModel>();
+            var routes = _routeRepository.GetRoutes();
+
+            foreach (var route in routes)
+            {
+                if (route.UniId == uniId)
+                {
+                    result.Add(new RouteModel
+                    {
+                        Id = route.Id,
+                        UniId = route.UniId,
+                        Transaction = _transactionService.GetTransactionById(route.TransactionId ?? 0),
+                        RecepientId = _departmentRepository.GetDepartmentById(route.RecepientId ?? 0),
+                        StatusId = _statusRepository.GetStatusById(route?.StatusId ?? 0),
+                        RecievedBy = _userRepository.GetUserById(route?.RecievedBy ?? 0),
+                        Note = route?.Note ?? "",
+                        UpdatedDate = route?.UpdatedDate
+                    });
+                }
+            }
+
+            return result;
+        }
+
         public void MultipleCompose(DocumentModel documentModel, TransactionModel transactionModel, List<RouteModel> routeModel)
         {
             var newDocumentId = _documentRepository.CreateDocument(documentModel);

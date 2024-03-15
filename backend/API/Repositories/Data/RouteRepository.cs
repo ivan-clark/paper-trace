@@ -165,7 +165,7 @@ namespace API.Repositories.Data
                     route.RecepientId = model.RecepientId.Id;
 
                 if (model.StatusId != null)
-                    route.StatusId = 2;
+                    route.StatusId = 5;
 
                 if (model.Note != null)
                     route.Note = "Your Document Has Been Approved";
