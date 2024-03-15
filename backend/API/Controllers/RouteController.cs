@@ -206,6 +206,35 @@ namespace API.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResponse TrashDocument(int RouteId)
+        {
+            try
+            {
+                _routeService.TrashDocument(RouteId);
+                return new JsonResponse().Success();
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
+
+        [HttpGet]
+        public JsonResponse GetAcceptedDocuments(int id)
+        {
+            try
+            {
+                return new JsonResponse().Success().For(_routeService.GetAcceptedDocuments(id));
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
+
         [HttpGet]
         public JsonResponse TrackingDocument(string uniId)
         {

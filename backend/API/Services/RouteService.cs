@@ -138,6 +138,32 @@ namespace API.Services
             return result;
         }
 
+        public List<RouteModel> GetAcceptedDocuments(int id)
+        {
+            var result = new List<RouteModel>();
+            var routes = _routeRepository.GetRoutes();
+
+            foreach (var route in routes)
+            {
+                if (route.RecievedBy == id)
+                {
+                    result.Add(new RouteModel
+                    {
+                        Id = route.Id,
+                        UniId = route.UniId,
+                        Transaction = _transactionService.GetTransactionById(route.TransactionId ?? 0),
+                        RecepientId = _departmentRepository.GetDepartmentById(route.RecepientId ?? 0),
+                        StatusId = _statusRepository.GetStatusById(route?.StatusId ?? 0),
+                        RecievedBy = _userRepository.GetUserById(route?.RecievedBy ?? 0),
+                        Note = route?.Note ?? "",
+                        UpdatedDate = route?.UpdatedDate
+                    });
+                }
+            }
+
+            return result;
+        }
+
         public void ForTestingDeleteRoute()
         {
             var maxRouteId = _routeRepository.GetMaxRouteId();
@@ -173,6 +199,12 @@ namespace API.Services
         }
 
         public void ApproveDocument(int RouteId)
+        {
+            var routeModel = GetRouteById(RouteId);
+            _routeRepository.ApproveDocument(routeModel);
+        }
+
+        public void TrashDocument(int RouteId) 
         {
             var routeModel = GetRouteById(RouteId);
             _routeRepository.ApproveDocument(routeModel);

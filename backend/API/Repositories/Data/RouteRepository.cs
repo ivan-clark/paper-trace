@@ -176,6 +176,30 @@ namespace API.Repositories.Data
             }
         }
 
+        public void TrashDocument(RouteModel model)
+        {
+            var route = _dbcontext.Routes.SingleOrDefault(u => u.Id == model.Id);
+
+            if (route != null)
+            {
+                if (model.Transaction != null)
+                    route.TransactionId = model.Transaction.Id;
+
+                if (model.RecepientId != null)
+                    route.RecepientId = model.RecepientId.Id;
+
+                if (model.StatusId != null)
+                    route.StatusId = 4;
+
+                if (model.Note != null)
+                    route.Note = "The document is on trash";
+
+                route.UpdatedDate = model.UpdatedDate;
+
+                _dbcontext.SaveChanges();
+            }
+        }
+
         public string UniqueIdGenerator(string DeptName, bool Urgency, bool docType)
         {
             string newDeptName = DeptName.Substring(0, Math.Min(DeptName.Length, 3)).ToUpper();

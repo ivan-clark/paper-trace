@@ -16,6 +16,7 @@ namespace API.Repositories
         void AcceptDocument(RouteModel model);
         void DeclineDocument(RouteModel model);
         void ApproveDocument(RouteModel model);
+        void TrashDocument(RouteModel model);
         string UniqueIdGenerator(string DeptName, bool Urgency, bool docType);
     }
 }
