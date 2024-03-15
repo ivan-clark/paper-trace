@@ -164,8 +164,12 @@ namespace API.Services
             transactionModel.Status = new DataAccess.Entities.Status { Id = 1 };
 
             var newTransactionId = _transactionRepository.CreateTransaction(transactionModel);
- 
-            _routeRepository.CreateMultipleRoute(routeModel, newTransactionId);
+            var ReturnedDocModel= _documentRepository.GetDocumentById(newDocumentId);
+            var DocUrgency = ReturnedDocModel?.Urgent; 
+            var DocType = ReturnedDocModel?.Doctype;
+            
+                
+           // _routeRepository.CreateMultipleRoute(routeModel, newTransactionId, DocUrgency, DocType);
         }
     }
 }

@@ -7,10 +7,12 @@ namespace API.Repositories.Data
 {
     public class RouteRepository :IRouteRepository
     {
+        private readonly IDepartmentRepository _departmentRepository;
         private readonly PapertracedbContext _dbcontext;
-        public RouteRepository(PapertracedbContext dbcontext)
+        public RouteRepository(PapertracedbContext dbcontext, IDepartmentRepository departmentRepository)
         {
             _dbcontext = dbcontext;
+            _departmentRepository = departmentRepository;
         }
 
         public Route? GetRouteById(int id)
@@ -34,15 +36,20 @@ namespace API.Repositories.Data
             return result.Entity.Id;
         }
 
-        public List<int> CreateMultipleRoute(List<RouteModel> models, int transactionId)
+        public List<int> CreateMultipleRoute(List<RouteModel> models, int transactionId, bool urgency, bool doctype)
         {
             List<int> createdRouteIds = new List<int>();
-
+            
             foreach (var model in models)
             {
+                var departmentId = model.RecepientId?.Id ?? 0;
+                var department = _departmentRepository.GetDepartmentById(departmentId);
+                var DeptName = department?.Name;
+                //UniqueIdGenerator();
                 var route = new Route
                 {
                     TransactionId = transactionId,
+                    UniId = "asfasdflk",
                     RecepientId = model.RecepientId?.Id,
                     StatusId = 1,
                     UpdatedDate = DateTime.Now
@@ -137,7 +144,7 @@ namespace API.Repositories.Data
             }
         }
 
-        public void MultipleCompose(RouteModel model) 
+        public void UniqueIdGenerator(int DeptName, bool Urgency, bool docType)
         {
             
         }
