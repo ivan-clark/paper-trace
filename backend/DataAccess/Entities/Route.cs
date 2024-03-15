@@ -13,6 +13,8 @@ public partial class Route
 
     public int? RecepientId { get; set; }
 
+    public int? RecievedBy { get; set; }
+
     public int? StatusId { get; set; }
 
     public DateTime? UpdatedDate { get; set; }

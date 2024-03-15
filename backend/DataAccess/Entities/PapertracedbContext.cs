@@ -107,6 +107,7 @@ public partial class PapertracedbContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Note).HasColumnName("note");
             entity.Property(e => e.RecepientId).HasColumnName("recepientId");
+            entity.Property(e => e.RecievedBy).HasColumnName("recievedBy");
             entity.Property(e => e.StatusId).HasColumnName("statusId");
             entity.Property(e => e.TransactionId).HasColumnName("transactionId");
             entity.Property(e => e.UniId)

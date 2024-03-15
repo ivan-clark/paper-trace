@@ -13,5 +13,9 @@ namespace API.Models
         public string? Description { get; set; }
 
         public sbyte? Urgent { get; set; }
+
+        public bool? Doctype { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
     }
 }
