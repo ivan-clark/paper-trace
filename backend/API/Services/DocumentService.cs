@@ -26,6 +26,8 @@ namespace API.Services
                 SenderId = _departmentRepository.GetDepartmentById(document?.SenderId ?? 0),
                 Subject = document?.Subject,
                 Description = document?.Description,
+                Doctype = document?.Doctype,
+                CreatedDate = document?.CreatedDate,
                 Urgent = document?.Urgent
             };
         }
@@ -43,6 +45,8 @@ namespace API.Services
                     SenderId = _departmentRepository.GetDepartmentById(document?.SenderId ?? 0),
                     Subject = document?.Subject,
                     Description = document?.Description,
+                    Doctype = document?.Doctype,
+                    CreatedDate = document?.CreatedDate,
                     Urgent = document?.Urgent
                 });
             }

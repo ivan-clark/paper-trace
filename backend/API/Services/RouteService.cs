@@ -4,6 +4,7 @@ using API.Repositories.Data;
 using API.Utils;
 using DataAccess.Entities;
 using Microsoft.AspNetCore.Mvc;
+using sib_api_v3_sdk.Model;
 
 namespace API.Services
 {
@@ -13,16 +14,19 @@ namespace API.Services
         private readonly ITransactionRepository _transactionRepository;
         private readonly IDepartmentRepository _departmentRepository;
         private readonly IStatusRepository _statusRepository;
-        private readonly TransactionService _transactionService;
         private readonly IDocumentRepository _documentRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly TransactionService _transactionService;
+        
 
-        public RouteService(IRouteRepository routeRepository, ITransactionRepository transactionRepository, IDepartmentRepository departmentRepository, IStatusRepository statusRepository, TransactionService transactionService, IDocumentRepository documentRepository)
+        public RouteService(IRouteRepository routeRepository, ITransactionRepository transactionRepository, IDepartmentRepository departmentRepository, IUserRepository userRepository, IStatusRepository statusRepository, TransactionService transactionService, IDocumentRepository documentRepository)
         {
             _routeRepository = routeRepository;
             _transactionRepository = transactionRepository;
             _statusRepository = statusRepository;
             _departmentRepository = departmentRepository;
             _transactionService = transactionService;
+            _userRepository = userRepository;
             _documentRepository = documentRepository;
         }
 
@@ -33,9 +37,11 @@ namespace API.Services
             return new RouteModel
             {
                 Id = route?.Id ?? 0,
+                UniId = route?.UniId,
                 Transaction = _transactionService.GetTransactionById(route?.TransactionId ?? 0),
                 RecepientId = _departmentRepository.GetDepartmentById(route?.RecepientId ?? 0),
                 StatusId = _statusRepository.GetStatusById(route?.StatusId ?? 0),
+                RecievedBy = _userRepository.GetUserById(route?.RecievedBy ?? 0),
                 UpdatedDate = route?.UpdatedDate
             };
         }
@@ -50,11 +56,15 @@ namespace API.Services
                 result.Add(new RouteModel
                 {
                     Id = route.Id,
+                    UniId = route.UniId,
                     Transaction = _transactionService.GetTransactionById(route.TransactionId ?? 0),
                     RecepientId = _departmentRepository.GetDepartmentById(route.RecepientId ?? 0),
                     StatusId = _statusRepository.GetStatusById(route?.StatusId ?? 0),
+                    RecievedBy = _userRepository.GetUserById(route?.RecievedBy ?? 0),
+                    Note = route?.Note ?? "",
                     UpdatedDate = route?.UpdatedDate
-                });
+                    
+            });
             }
 
             return result;
@@ -89,9 +99,12 @@ namespace API.Services
                     result.Add(new RouteModel
                     {
                         Id = route.Id,
+                        UniId = route.UniId,
                         Transaction = _transactionService.GetTransactionById(route.TransactionId ?? 0),
                         RecepientId = _departmentRepository.GetDepartmentById(route.RecepientId ?? 0),
                         StatusId = _statusRepository.GetStatusById(route?.StatusId ?? 0),
+                        RecievedBy = _userRepository.GetUserById(route?.RecievedBy ?? 0),
+                        Note = route?.Note ?? "",
                         UpdatedDate = route?.UpdatedDate
                     });
                 }
@@ -115,6 +128,8 @@ namespace API.Services
                         SenderId = _departmentRepository.GetDepartmentById(document?.SenderId ?? 0),
                         Subject = document?.Subject,
                         Description = document?.Description,
+                        Doctype = document?.Doctype,
+                        CreatedDate = document?.CreatedDate,
                         Urgent = document?.Urgent
                     });
                 }
@@ -157,6 +172,12 @@ namespace API.Services
             _routeRepository.DeclineDocument(routeModel);
         }
 
+        public void ApproveDocument(int RouteId)
+        {
+            var routeModel = GetRouteById(RouteId);
+            _routeRepository.ApproveDocument(routeModel);
+        }
+
         public void MultipleCompose(DocumentModel documentModel, TransactionModel transactionModel, List<RouteModel> routeModel)
         {
             var newDocumentId = _documentRepository.CreateDocument(documentModel);
@@ -164,8 +185,20 @@ namespace API.Services
             transactionModel.Status = new DataAccess.Entities.Status { Id = 1 };
 
             var newTransactionId = _transactionRepository.CreateTransaction(transactionModel);
- 
-            _routeRepository.CreateMultipleRoute(routeModel, newTransactionId);
+
+            var docModel = _documentRepository.GetDocumentById(newDocumentId);
+            var docsenderID = docModel?.SenderId;
+            var SenderID = _userRepository.GetUserById(docsenderID ?? 0);
+            var SenderDeptID = SenderID?.DepartmentId;
+            var SenderDeptModel = _departmentRepository.GetDepartmentById(SenderDeptID ?? 0);
+            var SenderDeptName = SenderDeptModel?.Name;
+            var deptName = SenderDeptName ?? "";
+
+            var ReturnedDocModel = _documentRepository.GetDocumentById(newDocumentId);
+            var DocUrgency = ReturnedDocModel?.Urgent ?? false; 
+            var DocType = ReturnedDocModel?.Doctype ?? false;
+                           
+            _routeRepository.CreateMultipleRoute(routeModel, deptName, newTransactionId, DocUrgency, DocType);
         }
     }
 }
