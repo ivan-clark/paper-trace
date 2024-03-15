@@ -39,6 +39,8 @@ namespace API.Repositories.Data
                 SenderId = model.SenderId?.Id,
                 Subject = model.Subject,
                 Description = model.Description,
+                Doctype = model.Doctype,
+                CreatedDate = DateTime.Now,
                 Urgent = model.Urgent
             };
 
@@ -57,6 +59,7 @@ namespace API.Repositories.Data
                 document.SenderId = model.SenderId?.Id;
                 document.Subject = model.Subject;
                 document.Description = model.Description;
+                document.Doctype = model.Doctype;
                 document.Urgent = model.Urgent;
 
                 _dbcontext.SaveChanges();

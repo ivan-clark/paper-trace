@@ -10,11 +10,12 @@ namespace API.Repositories
         List<Route> GetRoutes();
         void DeleteRoute(int routeId);
         int CreateRoute(RouteModel model);
-        List<int> CreateMultipleRoute(List<RouteModel> models ,int transactionId);
+        List<int> CreateMultipleRoute(List<RouteModel> models, string deptName, int transactionId, bool urgency, bool doctype);
         void UpdateRoute(RouteModel model);
         int GetMaxRouteId();
         void AcceptDocument(RouteModel model);
         void DeclineDocument(RouteModel model);
-        void MultipleCompose(RouteModel model);
+        void ApproveDocument(RouteModel model);
+        string UniqueIdGenerator(string DeptName, bool Urgency, bool docType);
     }
 }
