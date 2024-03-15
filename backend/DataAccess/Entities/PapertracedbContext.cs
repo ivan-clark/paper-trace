@@ -80,7 +80,9 @@ public partial class PapertracedbContext : DbContext
             entity.Property(e => e.Subject)
                 .HasMaxLength(45)
                 .HasColumnName("subject");
-            entity.Property(e => e.Urgent).HasColumnName("urgent");
+            entity.Property(e => e.Urgent)
+                .HasColumnType("bit(1)")
+                .HasColumnName("urgent");
         });
 
         modelBuilder.Entity<Role>(entity =>
