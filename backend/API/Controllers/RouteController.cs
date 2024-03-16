@@ -248,6 +248,20 @@ namespace API.Controllers
 
             }
         }
+
+        [HttpGet]
+        public JsonResponse GenerateReport(int uniId)
+        {
+            try
+            {
+                return new JsonResponse().Success().For(_routeService.GenerateReport(uniId));
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
     }
 }
 

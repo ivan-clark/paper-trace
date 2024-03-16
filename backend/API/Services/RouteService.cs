@@ -66,6 +66,7 @@ namespace API.Services
                     
             });
             }
+            result = result.OrderByDescending(r => r.UpdatedDate).ToList();
 
             return result;
         }
@@ -109,6 +110,7 @@ namespace API.Services
                     });
                 }
             }
+            result = result.OrderByDescending(r => r.UpdatedDate).ToList();
 
             return result;
         }
@@ -134,6 +136,7 @@ namespace API.Services
                     });
                 }
             }
+            result = result.OrderByDescending(r => r.CreatedDate).ToList();
 
             return result;
         }
@@ -160,6 +163,7 @@ namespace API.Services
                     });
                 }
             }
+            result = result.OrderByDescending(r => r.UpdatedDate).ToList();
 
             return result;
         }
@@ -257,6 +261,31 @@ namespace API.Services
             var DocType = ReturnedDocModel?.Doctype ?? false;
                            
             _routeRepository.CreateMultipleRoute(routeModel, deptName, newTransactionId, DocUrgency, DocType);
+        }
+
+        public List<ReportItemModel> GenerateReport(int id)
+        {
+            var allItems = new List<ReportItemModel>();
+
+            var outgoingDocuments = GetOutgoing(id);
+            foreach (var document in outgoingDocuments)
+            {
+                allItems.Add(new ReportItemModel { Document = document });
+            }
+
+            var incomingRoutes = GetIncoming(id);
+            foreach (var route in incomingRoutes)
+            {
+                allItems.Add(new ReportItemModel { Route = route });
+            }
+
+            var acceptedDocuments = GetAcceptedDocuments(id);
+            foreach (var route in acceptedDocuments)
+            {
+                allItems.Add(new ReportItemModel { Route = route });
+            }
+
+            return allItems;
         }
     }
 }
