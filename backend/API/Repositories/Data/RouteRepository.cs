@@ -189,5 +189,11 @@ namespace API.Repositories.Data
 
             return uniId;
         }
+
+        public List<Route>? GetRouteByTransactionId(int id)
+        {
+            List<Route> result = _dbcontext.Routes.Where(u => u.TransactionId == id).ToList();
+            return result;
+        }
     }
 }

@@ -287,5 +287,30 @@ namespace API.Services
 
             return allItems;
         }
+
+        public List<RouteModel> GetRouteByTransactionId(int id) 
+        {
+            var routes = _routeRepository.GetRouteByTransactionId(id);
+            var routeModels = new List<RouteModel>();
+
+            foreach (var route in routes)
+            {
+                var routeModel = new RouteModel
+                {
+                    Id = route.Id,
+                    UniId = route.UniId,
+                    Transaction = _transactionService.GetTransactionById(route.TransactionId ?? 0),
+                    RecepientId = _departmentRepository.GetDepartmentById(route.RecepientId ?? 0),
+                    StatusId = _statusRepository.GetStatusById(route?.StatusId ?? 0),
+                    RecievedBy = _userRepository.GetUserById(route?.RecievedBy ?? 0),
+                    Note = route?.Note ?? "",
+                    UpdatedDate = route?.UpdatedDate
+                };
+
+                routeModels.Add(routeModel);
+            }
+
+            return routeModels;
+        }
     }
 }

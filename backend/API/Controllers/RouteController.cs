@@ -261,6 +261,20 @@ namespace API.Controllers
 
             }
         }
+
+        [HttpGet]
+        public JsonResponse GetRouteByTransactionId(int id)
+        {
+            try
+            {
+                return new JsonResponse().Success().For(_routeService.GetRouteByTransactionId(id));
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
     }
 }
 
