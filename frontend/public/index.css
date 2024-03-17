@@ -28,6 +28,8 @@
 	 --border-bottom-onwhite: #dfdfdf;
 	 --secondary-font-color: #969696;
 	 --error-color: #dd3d3d;
+	 --declined: #c51212;
+	 --accepted: rgb(51, 161, 51);
 }
  html body {
 	 font-family: 'Inter', 'Arial', sans-serif;

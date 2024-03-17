@@ -533,3 +533,24 @@ hr {
  top: 4px;
  right: 6px;
 }
+
+.ongoing,
+.accepted,
+.declined {
+  font-size: 18px;
+  font-weight: 500;
+  color: white;
+  margin-right: .8em;
+  border-radius: 6px;
+  padding: 4px 8px 4px 8px;
+}
+
+.ongoing {
+  background-color: gray;
+}
+.accepted {
+  background-color: var(--accepted);
+}
+.declined {
+  background-color: var(--declined);
+} 

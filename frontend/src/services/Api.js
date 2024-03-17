@@ -63,8 +63,8 @@ class Api {
     return Http.post("/api/Document/CreateDocument", model);
   }
 
-  static createUserTransmittal(model) {
-    return Http.post("/api/Route/CreateUserTransmittal", model)
+  static multipleCompose(model) {
+    return Http.post("/api/Route/MulitipleCompose", model)
   }
   
   static getDocuments(senderId, recepientId, statusId, controller) {
@@ -110,6 +110,13 @@ class Api {
   static getRouteById(id, controller) {
     return Http.get(`api/Route/GetRouteById?id=${id}`, {signal: controller?.signal},)
   }
-} 
 
+  static acceptDocument(RouteId, recievebyId) {
+    return Http.post(`/api/Route/AcceptDocument?RouteId=${RouteId}&recievebyId=${recievebyId}`, {
+      RouteId: RouteId, 
+      recievebyId: recievebyId
+    })
+  }
+} 
+  
 export default Api;

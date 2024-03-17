@@ -83,7 +83,9 @@
   .send-button-wrapper {
     display: flex;
     padding-top: 1em;
-    justify-content: end;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
   }
   .cancel {
     font-size: 1em;
@@ -124,4 +126,6 @@
     background-color: var(--on-white-darker-hover); 
   }
 }
-
+.checkboxes {
+  padding-left: 4px;
+}

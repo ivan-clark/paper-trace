@@ -1,9 +1,10 @@
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import React, { useState, useEffect, useRef } from 'react'
-import { LinearProgress } from "@mui/material";
+import { Alert, LinearProgress, CircularProgress } from "@mui/material";
 import DateFormatLong from '../../services/Format';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import DocStatus from '../../components/common/DocStatus';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import ShortcutIcon from '@mui/icons-material/Shortcut';
@@ -11,32 +12,40 @@ import DialogTitle from '@mui/material/DialogTitle';
 import FormControl from '@mui/material/FormControl';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useNavigate } from 'react-router-dom'
 import TextField from '@mui/material/TextField';
+import Snackbar from "@mui/material/Snackbar";
 import Tooltip from '@mui/material/Tooltip';
 import Dialog from '@mui/material/Dialog';
-import Api from "../../services/Api"
 import { Button } from '@mui/material';
+import Api from "../../services/Api"
 
-function InboxViewMessage() {
+function InboxViewMessage(props) {
   const controller = new AbortController()
   const menuRef = useRef()
   const { id } = useParams()
+  const navigate = useNavigate()
   const [name, setName] = useState("")
   const [open, setOpen] = useState(false)
   const [urgent, setUrgent] = useState("")
+  const [status, setStatus] = useState("")
   const [subject, setSubject] = useState("")
-  const [createdDate, setCreatedDate] = useState("")
   const [senderId, setSenderId] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
+  const [createdDate, setCreatedDate] = useState("")
   const [description, setDescription] = useState("")
+  const [declineNote, setDeclineNote] = useState("")
   const [openDialog, setOpenDialog] = useState(false)
+  const [errorMessage, setErrorMessage] = useState("")
+  const [isAccepting, setIsAccepting] = useState(false)
+  const [showSnackbar, setShowSnackbar] = useState(false)
+  const [receivedBy, setReceivedBy] = useState("")
 
-  const [firstname, setFirstname] = useState("")
-  const [lastname, setLastname] = useState("")
-  const [department, setDepartment] = useState("")
   const [role, setRole] = useState("")
-
+  const [lastname, setLastname] = useState("")
+  const [firstname, setFirstname] = useState("")
+  const [department, setDepartment] = useState("")
+  
   const handleClickOpen = () => {
     setOpenDialog(true)
   }
@@ -47,7 +56,7 @@ function InboxViewMessage() {
   useEffect(() => {
     setIsLoading(true);
     getRouteById(controller);
-    if(senderId !== 0) {
+    if (senderId !== 0) {
       getUser(controller)
     }
 
@@ -72,12 +81,13 @@ function InboxViewMessage() {
   const getRouteById = () => {
     Api.getRouteById(id, controller).then((res) => {
       const data = res.data.data;
-      setSubject(data.transaction.document?.subject);
-      setDescription(data.transaction.document?.description);
-      setUrgent(data.transaction.document?.urgent);
-      setSenderId(data.transaction.document?.senderId)
       setName(data.recepientId?.name)
+      setUrgent(data.transaction.document?.urgent);
       setCreatedDate(data.transaction?.createdDate)
+      setSubject(data.transaction.document?.subject);
+      setSenderId(data.transaction.document?.senderId)
+      setDescription(data.transaction.document?.description);
+      setStatus(data.statusId?.name.charAt(0).toUpperCase() + data.statusId?.name.slice(1))
       console.log(res.data.data)
     }).catch((error) =>{
       console.log(error)
@@ -89,11 +99,41 @@ function InboxViewMessage() {
   const getUser = () => {
     Api.getUserById(senderId, controller).then((res) => {
       const data = res.data.data;
-      setFirstname(data.firstName?.charAt(0).toUpperCase() + data.firstName?.slice(1))
-      setLastname(data.lastName?.charAt(0).toUpperCase() + data.lastName?.slice(1))
-      setRole(data.role?.name.charAt(0).toUpperCase() + data.role?.name.slice(1))
       setDepartment(data.department?.name)
+      setRole(data.role?.name.charAt(0).toUpperCase() + data.role?.name.slice(1))
+      setLastname(data.lastName?.charAt(0).toUpperCase() + data.lastName?.slice(1))
+      setFirstname(data.firstName?.charAt(0).toUpperCase() + data.firstName?.slice(1))
+    }).catch((error) => {
+      console.log(error)
     })
+  }
+
+  const handleAccept = () => {
+    setIsAccepting(true)
+
+    const statusId = id 
+    Api.acceptDocument(statusId, props.user.id).then((res) => {
+      setShowSnackbar(true)
+    }).catch((error) => {
+      console.log(error)
+    }).finally(() => {
+      getRouteById(controller)
+      setShowSnackbar(true)
+      setTimeout(() => {  
+        setShowSnackbar(false);
+        setIsAccepting(false); 
+        //navigate("/inbox"); 
+      }, 1300);
+    })
+  }
+
+  const handleDecline = () => {
+    
+
+    if(!declineNote.trim()) {
+      setErrorMessage("Note is required")
+      return false;
+    }
   }
 
   return (
@@ -119,17 +159,16 @@ function InboxViewMessage() {
       ) : (
       <div className="scrollable-area">
         <div className="message-title-header">
-          <div>
-            {subject}
-          </div>
+          <span>{subject}</span>
+          <DocStatus status={status}/>
         </div>
        <div className="message-and-footer">
         <div className="message-body">
             <div className="sender-profile">
               <div className="profile">
                 <span>
-                  {firstname?.charAt(0).toUpperCase()}
-                  {lastname?.charAt(0).toUpperCase()}
+                  {firstname.toUpperCase().charAt(0)}
+                  {lastname.toUpperCase().charAt(0)}
                 </span>
               </div>
             </div>
@@ -137,10 +176,12 @@ function InboxViewMessage() {
               <div className="top-section">
                 <div>
                   <span><strong>{firstname} {lastname} </strong></span>
-                  <span>{name}</span>
+                  <span>{name} </span>
                   <span>{role}</span>
                 </div>
-                <div className="time-sent"><span>{DateFormatLong({ createdDate: createdDate })}</span></div>
+                <div className="time-sent">
+                  <span>{DateFormatLong({ createdDate: createdDate })}</span>
+                </div>
               </div>
               <div className="to-me">
                 <div className="to-me-doc-urgency">
@@ -164,11 +205,11 @@ function InboxViewMessage() {
                     <span>sent by:</span>
                   </div>
                   <div className="second-section">
-                    <span>{name} Department</span>
                     <span>{department} Department</span>
+                    <span>{name} Department</span>
                     <span>{DateFormatLong({ createdDate: createdDate })}</span>
                     <span>{subject}</span>
-                    <span>{firstname} {lastname} <strong>{name} {role}</strong></span>
+                    <span>{firstname} {lastname} <strong>{department} {role}</strong></span>
                   </div>
                 </div>
               )}  
@@ -187,7 +228,17 @@ function InboxViewMessage() {
                       <CloseIcon />
                       <span>Decline</span>
                     </button>
-                    <FormControl sx={{ mt: 2, minWidth: 120 }}>
+                  </div>
+                  <div>
+                    <button 
+                    disabled={isAccepting}
+                    onClick={handleAccept} 
+                    className="accept">
+                      <CheckIcon />
+                      {isAccepting ? <CircularProgress size={20} color="inherit" /> : "Accept"}
+                    </button>
+                  </div>
+                  <FormControl sx={{ mt: 2, minWidth: 120 }}>
                       <Dialog
                         fullWidth
                         sx={{maxWidth: 420, margin: "auto"}}
@@ -203,7 +254,7 @@ function InboxViewMessage() {
                       >
                         <DialogTitle 
                           sx={{ fontFamily: "Inter" }}
-                        >{`Decline`}</DialogTitle>
+                        >{`Decline document?`}</DialogTitle>
                         <DialogContent>
                           <TextField
                             autoFocus
@@ -213,7 +264,11 @@ function InboxViewMessage() {
                             type="text"
                             margin="dense"
                             variant="standard"
-                            label="Write a note"
+                            value={declineNote}
+                            error={isLoading ? null : Boolean(errorMessage)}
+                            onClick={() => setErrorMessage(null)}
+                            onChange={(e) => setDeclineNote(e.target.value)}
+                            label={isLoading ? "Write a note" : errorMessage ? errorMessage : "Write a note to let them know"}
                             sx={{ 
                               fontFamily: "Inter", 
                             }}
@@ -222,6 +277,7 @@ function InboxViewMessage() {
                         </DialogContent>
                         <DialogActions>
                           <Button
+                            onClick={handleDecline}
                             variant="outlined" 
                             sx={{
                               borderRadius: 10,
@@ -242,13 +298,6 @@ function InboxViewMessage() {
                         </DialogActions>
                       </Dialog>
                     </FormControl>
-                  </div>
-                  <div>
-                    <button className="accept">
-                      <CheckIcon />
-                      <span>Accept</span>
-                    </button>
-                  </div>
                 </div>
                 <div className="right-section-button">
                   <div>
@@ -264,6 +313,11 @@ function InboxViewMessage() {
           <div className="spacer">
                 
           </div>
+        <Snackbar open={showSnackbar}>
+          <Alert onClose={handleClose} variant="filled" severity="success">
+            {`Document Accepted`}
+          </Alert>
+        </Snackbar>
        </div>
       </div>
     )}

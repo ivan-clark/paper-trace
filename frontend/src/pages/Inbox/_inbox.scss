@@ -269,8 +269,10 @@ table {
       font-size: 24px;
       display: flex;
       flex-direction: row;
-      height: 48px;
+      height: 38px;
       padding-left: 3em;
+      justify-content: space-between;
+      align-items: center;
     }
     .message-and-footer {
       display: flex;
@@ -320,6 +322,7 @@ table {
         .top-section {
           display: flex;
           padding-top: 10px;
+          padding-bottom: 2px;
           flex-direction: row;
           padding-inline: 12px;
           justify-content: space-between;
@@ -421,6 +424,7 @@ table {
     gap: 1.2em;
     display: flex;
     flex-direction: row;
+    align-items: center;
   }
   .decline,
   .accept,
@@ -446,7 +450,7 @@ table {
   }
   .decline:hover {
     color: white;
-    background-color: #c51212;
+    background-color: var(--declined);
     box-shadow: inset 0px 0px 0px 2px #c51212;
   }
   .accept {
@@ -456,7 +460,7 @@ table {
     background-color: gray;
   }
   .accept:hover {
-    background-color: rgb(51, 161, 51);
+    background-color: var(--accepted);
   }
   .forward:hover {
     background-color: rgb(222, 222, 222);
