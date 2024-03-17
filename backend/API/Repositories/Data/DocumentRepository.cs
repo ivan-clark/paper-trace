@@ -77,6 +77,11 @@ namespace API.Repositories.Data
         {
             return _dbcontext.Documents.FirstOrDefault(u => u.Subject.StartsWith(docSubject));
         }
-        
+
+        public List<Document> GetDocumentsBySubject(string docSubject)
+        {
+            var result = _dbcontext.Documents.Where(u => u.Subject.StartsWith(docSubject)).ToList();
+            return result;
+        }
     }
 }

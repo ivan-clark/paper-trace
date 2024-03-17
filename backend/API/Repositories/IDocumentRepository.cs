@@ -12,5 +12,6 @@ namespace API.Repositories
         void UpdateDocument(DocumentModel model);
         int GetMaxDocumentId();
         Document? GetDocumentBySubject(string docSubject);
+        List<Document> GetDocumentsBySubject(string docSubject);
     }
 }
