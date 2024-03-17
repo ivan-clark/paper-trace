@@ -77,5 +77,20 @@ namespace API.Services
                 _documentRepository.DeleteDocument(i);
             }
         }
+        public DocumentModel GetDocumentBySubject(string docSubject)
+        {
+            var document = _documentRepository.GetDocumentBySubject(docSubject);
+
+            return new DocumentModel
+            {
+                Id = document?.Id ?? 0,
+                SenderId = _departmentRepository.GetDepartmentById(document?.SenderId ?? 0),
+                Subject = document?.Subject,
+                Description = document?.Description,
+                Doctype = document?.Doctype,
+                CreatedDate = document?.CreatedDate,
+                Urgent = document?.Urgent
+            };
+        }
     }
 }

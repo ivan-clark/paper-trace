@@ -110,8 +110,8 @@ namespace API.Repositories.Data
 
             if (route != null)
             {
-                    route.TransactionId = model.Transaction.Id;  
-                    route.RecepientId = model.RecepientId.Id;
+                    route.TransactionId = model.Transaction?.Id;  
+                    route.RecepientId = model.RecepientId?.Id;
                     route.StatusId = 2;
                     route.RecievedBy = recievebyId;
                     route.Note = "Your Document Has Been Accepted";
@@ -128,8 +128,8 @@ namespace API.Repositories.Data
 
             if (route != null)
             {
-                    route.TransactionId = model.Transaction.Id;
-                    route.RecepientId = model.RecepientId.Id;
+                    route.TransactionId = model.Transaction?.Id;
+                    route.RecepientId = model.RecepientId?.Id;
                     route.StatusId = 3;
                     route.RecievedBy = recievebyId;
                     route.Note = note;
@@ -147,8 +147,8 @@ namespace API.Repositories.Data
             if (route != null)
             {
                 
-                    route.TransactionId = model.Transaction.Id;
-                    route.RecepientId = model.RecepientId.Id;   
+                    route.TransactionId = model.Transaction?.Id;
+                    route.RecepientId = model.RecepientId?.Id;   
                     route.StatusId = 5;
                     route.RecievedBy = recievebyId;
                     route.Note = "Your Document Has Been Approved";
@@ -165,8 +165,8 @@ namespace API.Repositories.Data
 
             if (route != null)
             {
-                    route.TransactionId = model.Transaction.Id;
-                    route.RecepientId = model.RecepientId.Id;
+                    route.TransactionId = model.Transaction?.Id;
+                    route.RecepientId = model.RecepientId?.Id;
                     route.StatusId = 4;
                     route.Note = "The document is on Trash";
 

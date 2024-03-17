@@ -73,6 +73,10 @@ namespace API.Repositories.Data
             return maxDocumentId;
         }
 
+        public Document? GetDocumentBySubject(string docSubject)
+        {
+            return _dbcontext.Documents.FirstOrDefault(u => u.Subject.StartsWith(docSubject));
+        }
         
     }
 }

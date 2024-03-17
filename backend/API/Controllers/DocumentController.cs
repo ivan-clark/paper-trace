@@ -103,5 +103,18 @@ namespace API.Controllers
 
             }
         }
+
+        [HttpGet]
+        public JsonResponse GetDocumentBySubject(string subject)
+        {
+            try
+            {
+                return new JsonResponse().Success().For(_documentService.GetDocumentBySubject(subject));
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+            }
+        }
     }
 }
