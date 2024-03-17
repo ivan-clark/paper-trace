@@ -26,6 +26,8 @@ namespace API.Services
                 SenderId = _departmentRepository.GetDepartmentById(document?.SenderId ?? 0),
                 Subject = document?.Subject,
                 Description = document?.Description,
+                Doctype = document?.Doctype,
+                CreatedDate = document?.CreatedDate,
                 Urgent = document?.Urgent
             };
         }
@@ -43,6 +45,8 @@ namespace API.Services
                     SenderId = _departmentRepository.GetDepartmentById(document?.SenderId ?? 0),
                     Subject = document?.Subject,
                     Description = document?.Description,
+                    Doctype = document?.Doctype,
+                    CreatedDate = document?.CreatedDate,
                     Urgent = document?.Urgent
                 });
             }
@@ -72,6 +76,45 @@ namespace API.Services
             {
                 _documentRepository.DeleteDocument(i);
             }
+        }
+        public DocumentModel GetDocumentBySubject(string docSubject)
+        {
+            var document = _documentRepository.GetDocumentBySubject(docSubject);
+
+            return new DocumentModel
+            {
+                Id = document?.Id ?? 0,
+                SenderId = _departmentRepository.GetDepartmentById(document?.SenderId ?? 0),
+                Subject = document?.Subject,
+                Description = document?.Description,
+                Doctype = document?.Doctype,
+                CreatedDate = document?.CreatedDate,
+                Urgent = document?.Urgent
+            };
+        }
+
+        public List<DocumentModel> GetDocumentsBySubject(string docSubject)
+        {
+            var documents = _documentRepository.GetDocumentsBySubject(docSubject); 
+            var documentModels = new List<DocumentModel>();
+
+            foreach (var document in documents)
+            {
+                var documentModel = new DocumentModel
+                {
+                    Id = document?.Id ?? 0,
+                    SenderId = _departmentRepository.GetDepartmentById(document?.SenderId ?? 0),
+                    Subject = document?.Subject,
+                    Description = document?.Description,
+                    Doctype = document?.Doctype,
+                    CreatedDate = document?.CreatedDate,
+                    Urgent = document?.Urgent
+                };
+
+                documentModels.Add(documentModel);
+            }
+
+            return documentModels;
         }
     }
 }
