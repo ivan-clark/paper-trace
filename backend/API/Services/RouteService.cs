@@ -133,6 +133,7 @@ namespace API.Services
                         Doctype = document?.Doctype,
                         CreatedDate = document?.CreatedDate,
                         Urgent = document?.Urgent
+
                     });
                 }
             }
@@ -286,6 +287,22 @@ namespace API.Services
             }
 
             return allItems;
+        }
+
+        public RouteModel GetRouteByTransactionId(int id)
+        {
+            var route = _routeRepository.GetRouteByTransactionId(id);
+
+            return new RouteModel
+            {
+                Id = route?.Id ?? 0,
+                UniId = route?.UniId,
+                Transaction = _transactionService.GetTransactionById(route?.TransactionId ?? 0),
+                RecepientId = _departmentRepository.GetDepartmentById(route?.RecepientId ?? 0),
+                StatusId = _statusRepository.GetStatusById(route?.StatusId ?? 0),
+                RecievedBy = _userRepository.GetUserById(route?.RecievedBy ?? 0),
+                UpdatedDate = route?.UpdatedDate
+            };
         }
     }
 }

@@ -213,5 +213,10 @@ namespace API.Repositories.Data
 
             return uniId;
         }
+
+        public Route? GetRouteByTransactionId(int id)
+        {
+            return _dbcontext.Routes.FirstOrDefault(u => u.TransactionId == id);
+        }
     }
 }

@@ -75,5 +75,19 @@ namespace API.Services
                 _transactionRepository.DeleteTransaction(i);
             }
         }
+
+        public TransactionModel GetTransactionByDocumentId(int id)
+        {
+            var transaction = _transactionRepository.GetTransactionByDocumentId(id);
+
+            return new TransactionModel
+            {
+                Id = transaction?.Id ?? 0,
+                Restricted = transaction?.Restricted ?? false,
+                Document = _documentRepository.GetDocumentById(transaction?.DocumentId ?? 0),
+                Status = _statusRepository.GetStatusById(transaction?.StatusId ?? 0),
+                CreatedDate = transaction?.CreatedDate
+            };
+        }
     }
 }

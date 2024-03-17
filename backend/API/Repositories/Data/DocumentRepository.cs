@@ -1,4 +1,5 @@
 ﻿using API.Models;
+using API.Services;
 using DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,10 +8,18 @@ namespace API.Repositories.Data
     public class DocumentRepository : IDocumentRepository
     {
         private readonly PapertracedbContext _dbcontext;
+        private readonly ITransactionRepository _transactionRepository;
+        private readonly TransactionService _transactionService;
+        private readonly RouteService _routeService;
+        private readonly DocumentService _documentService;
 
-        public DocumentRepository(PapertracedbContext dbcontext)
+        public DocumentRepository(PapertracedbContext dbcontext, ITransactionRepository transactionRepository, TransactionService transactionService, RouteService routeService, DocumentService documentService)
         {
             _dbcontext = dbcontext;
+            _transactionRepository = transactionRepository;
+            _transactionService = transactionService;
+            _routeService = routeService;
+            _documentService = documentService;
         }
 
         public Document? GetDocumentById(int id)
@@ -73,6 +82,31 @@ namespace API.Repositories.Data
             return maxDocumentId;
         }
 
-        
+        public Document? GetDocumentBySubject(string subject)
+        {
+            return _dbcontext.Documents.FirstOrDefault(u => u.Subject == subject);
+        }
+
+        public List<Document> GetDocumentBySubjectBackEnd(string subject) 
+        {
+            return _dbcontext.Documents.Where(d => d.Subject.StartsWith(subject)).ToList();
+        }
+
+        public List<SubjectDocumentModel> GetDocumentsBySubjects(string docsubject)
+        {
+            var allItems = new List<SubjectDocumentModel>();
+
+            var subjects = _documentService.GetDocumentBySubjectBackEnd(docsubject);
+
+            foreach (var subject in subjects)
+            {
+                allItems.Add(new SubjectDocumentModel { DocumentModel = subject});
+                var tempTransaction = _transactionService.GetTransactionByDocumentId(subject.Id);
+                allItems.Add(new SubjectDocumentModel { TransactionModel = tempTransaction });
+                var tempTransactionId = _routeService.GetRouteByTransactionId(tempTransaction.Id);
+                allItems.Add(new SubjectDocumentModel { TransactionModel = tempTransaction });
+            }
+                return allItems;
+        }
     }
 }

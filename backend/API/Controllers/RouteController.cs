@@ -13,10 +13,12 @@ namespace API.Controllers
     public class RouteController : ControllerBase
     {
         private readonly RouteService _routeService;
+        private readonly DocumentService _documentService;
 
-        public RouteController(RouteService routeService)
+        public RouteController(RouteService routeService, DocumentService documentService)
         {
             _routeService = routeService;
+            _documentService = documentService;
         }
 
         [HttpGet]
@@ -255,6 +257,20 @@ namespace API.Controllers
             try
             {
                 return new JsonResponse().Success().For(_routeService.GenerateReport(uniId));
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
+
+        [HttpGet]
+        public JsonResponse GetDocumentsBySubjects(string subject)
+        {
+            try
+            {
+                return new JsonResponse().Success().For(_documentService.GetDocumentBySubjectBackEnd(subject));
             }
             catch (Exception ex)
             {
