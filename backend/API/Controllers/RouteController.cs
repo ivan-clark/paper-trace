@@ -162,11 +162,25 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public JsonResponse AcceptDocument(int RouteId)
+        public JsonResponse AcceptDocument(int RouteId, int recievebyId)
         {
             try
             {
-                _routeService.AcceptDocument(RouteId);
+                _routeService.AcceptDocument(RouteId, recievebyId);
+                return new JsonResponse().Success();
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public JsonResponse DeclineDocument(int RouteId, int recievebyId, string note)
+        {
+            try
+            {
+                _routeService.DeclineDocument(RouteId, recievebyId, note);
                 return new JsonResponse().Success();
             }
             catch (Exception ex)
@@ -177,12 +191,83 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public JsonResponse DeclineDocument(int RouteId)
+        public JsonResponse ApproveDocument(int RouteId, int recievebyId)
         {
             try
             {
-                _routeService.DeclineDocument(RouteId);
+                _routeService.ApproveDocument(RouteId, recievebyId);
                 return new JsonResponse().Success();
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
+
+        [HttpPost]
+        public JsonResponse TrashDocument(int RouteId)
+        {
+            try
+            {
+                _routeService.TrashDocument(RouteId);
+                return new JsonResponse().Success();
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
+
+        [HttpGet]
+        public JsonResponse GetAcceptedDocuments(int id)
+        {
+            try
+            {
+                return new JsonResponse().Success().For(_routeService.GetAcceptedDocuments(id));
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
+
+        [HttpGet]
+        public JsonResponse TrackingDocument(string uniId)
+        {
+            try
+            {
+                return new JsonResponse().Success().For(_routeService.TrackingDocument(uniId));
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
+
+        [HttpGet]
+        public JsonResponse GenerateReport(int uniId)
+        {
+            try
+            {
+                return new JsonResponse().Success().For(_routeService.GenerateReport(uniId));
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
+
+        [HttpGet]
+        public JsonResponse GetRouteByTransactionId(int id)
+        {
+            try
+            {
+                return new JsonResponse().Success().For(_routeService.GetRouteByTransactionId(id));
             }
             catch (Exception ex)
             {
