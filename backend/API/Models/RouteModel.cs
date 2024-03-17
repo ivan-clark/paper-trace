@@ -16,6 +16,10 @@ namespace API.Models
 
         public User? RecievedBy { get; set; }
 
+        public bool? Read { get; set; }
+
+        public bool? Visible { get; set; }
+
         public DateTime? UpdatedDate { get; set; }
 
         public string? Note { get; set; }

@@ -190,28 +190,28 @@ namespace API.Services
             _routeRepository.CreateRoute(routeModel);         
         }
 
-        public void AcceptDocument(int RouteId) 
+        public void AcceptDocument(int RouteId, int recievebyId) 
         {
             var routeModel = GetRouteById(RouteId);
-            _routeRepository.AcceptDocument(routeModel);
+            _routeRepository.AcceptDocument(routeModel, recievebyId);
         }
 
-        public void DeclineDocument(int RouteId)
+        public void DeclineDocument(int RouteId, int recievebyId, string note)
         {
             var routeModel = GetRouteById(RouteId);
-            _routeRepository.DeclineDocument(routeModel);
+            _routeRepository.DeclineDocument(routeModel, recievebyId, note);
         }
 
-        public void ApproveDocument(int RouteId)
+        public void ApproveDocument(int RouteId, int recievebyId)
         {
             var routeModel = GetRouteById(RouteId);
-            _routeRepository.ApproveDocument(routeModel);
+            _routeRepository.ApproveDocument(routeModel, recievebyId);
         }
 
         public void TrashDocument(int RouteId) 
         {
             var routeModel = GetRouteById(RouteId);
-            _routeRepository.ApproveDocument(routeModel);
+            _routeRepository.TrashDocument(routeModel);
         }
 
         public List<RouteModel> TrackingDocument(string uniId) 

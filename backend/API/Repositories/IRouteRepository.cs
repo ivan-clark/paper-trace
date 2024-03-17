@@ -13,9 +13,9 @@ namespace API.Repositories
         List<int> CreateMultipleRoute(List<RouteModel> models, string deptName, int transactionId, bool urgency, bool doctype);
         void UpdateRoute(RouteModel model);
         int GetMaxRouteId();
-        void AcceptDocument(RouteModel model);
-        void DeclineDocument(RouteModel model);
-        void ApproveDocument(RouteModel model);
+        void AcceptDocument(RouteModel model, int recievebyId);
+        void DeclineDocument(RouteModel model, int recievebyId, string note);
+        void ApproveDocument(RouteModel model, int recievebyId);
         void TrashDocument(RouteModel model);
         string UniqueIdGenerator(string DeptName, bool Urgency, bool docType);
     }

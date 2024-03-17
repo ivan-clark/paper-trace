@@ -162,11 +162,25 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public JsonResponse AcceptDocument(int RouteId)
+        public JsonResponse AcceptDocument(int RouteId, int recievebyId)
         {
             try
             {
-                _routeService.AcceptDocument(RouteId);
+                _routeService.AcceptDocument(RouteId, recievebyId);
+                return new JsonResponse().Success();
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public JsonResponse DeclineDocument(int RouteId, int recievebyId, string note)
+        {
+            try
+            {
+                _routeService.DeclineDocument(RouteId, recievebyId, note);
                 return new JsonResponse().Success();
             }
             catch (Exception ex)
@@ -177,26 +191,11 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public JsonResponse DeclineDocument(int RouteId)
+        public JsonResponse ApproveDocument(int RouteId, int recievebyId)
         {
             try
             {
-                _routeService.DeclineDocument(RouteId);
-                return new JsonResponse().Success();
-            }
-            catch (Exception ex)
-            {
-                return new JsonResponse().Error().Msg(ex.Message);
-
-            }
-        }
-
-        [HttpPost]
-        public JsonResponse ApproveDocument(int RouteId)
-        {
-            try
-            {
-                _routeService.ApproveDocument(RouteId);
+                _routeService.ApproveDocument(RouteId, recievebyId);
                 return new JsonResponse().Success();
             }
             catch (Exception ex)

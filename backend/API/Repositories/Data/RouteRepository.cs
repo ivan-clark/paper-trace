@@ -104,22 +104,16 @@ namespace API.Repositories.Data
             return maxRouteId;
         }
 
-        public void AcceptDocument(RouteModel model) 
+        public void AcceptDocument(RouteModel model, int recievebyId) 
         {
             var route = _dbcontext.Routes.SingleOrDefault(u => u.Id == model.Id);
 
             if (route != null)
             {
-                if (model.Transaction != null)
-                    route.TransactionId = model.Transaction.Id;
-
-                if (model.RecepientId != null)
+                    route.TransactionId = model.Transaction.Id;  
                     route.RecepientId = model.RecepientId.Id;
-
-                if (model.StatusId != null)
                     route.StatusId = 2;
-
-                if (model.Note != null)
+                    route.RecievedBy = recievebyId;
                     route.Note = "Your Document Has Been Accepted";
 
                 route.UpdatedDate = model.UpdatedDate;
@@ -128,23 +122,17 @@ namespace API.Repositories.Data
             }
         }
 
-        public void DeclineDocument(RouteModel model)
+        public void DeclineDocument(RouteModel model, int recievebyId, string note)
         {
             var route = _dbcontext.Routes.SingleOrDefault(u => u.Id == model.Id);
 
             if (route != null)
             {
-                if (model.Transaction != null)
                     route.TransactionId = model.Transaction.Id;
-
-                if (model.RecepientId != null)
                     route.RecepientId = model.RecepientId.Id;
-
-                if (model.StatusId != null)
                     route.StatusId = 3;
-
-                if (model.Note != null)
-                    route.Note = model.Note;
+                    route.RecievedBy = recievebyId;
+                    route.Note = note;
 
                 route.UpdatedDate = model.UpdatedDate;
 
@@ -152,22 +140,17 @@ namespace API.Repositories.Data
             }
         }
 
-        public void ApproveDocument(RouteModel model) 
+        public void ApproveDocument(RouteModel model, int recievebyId) 
         {
             var route = _dbcontext.Routes.SingleOrDefault(u => u.Id == model.Id);
 
             if (route != null)
             {
-                if (model.Transaction != null)
+                
                     route.TransactionId = model.Transaction.Id;
-
-                if (model.RecepientId != null)
-                    route.RecepientId = model.RecepientId.Id;
-
-                if (model.StatusId != null)
+                    route.RecepientId = model.RecepientId.Id;   
                     route.StatusId = 5;
-
-                if (model.Note != null)
+                    route.RecievedBy = recievebyId;
                     route.Note = "Your Document Has Been Approved";
 
                 route.UpdatedDate = model.UpdatedDate;
@@ -182,17 +165,10 @@ namespace API.Repositories.Data
 
             if (route != null)
             {
-                if (model.Transaction != null)
                     route.TransactionId = model.Transaction.Id;
-
-                if (model.RecepientId != null)
                     route.RecepientId = model.RecepientId.Id;
-
-                if (model.StatusId != null)
                     route.StatusId = 4;
-
-                if (model.Note != null)
-                    route.Note = "The document is on trash";
+                    route.Note = "The document is on Trash";
 
                 route.UpdatedDate = model.UpdatedDate;
 
