@@ -106,5 +106,19 @@ namespace API.Controllers
 
             }
         }
+
+        [HttpGet]
+        public JsonResponse GetDocumentByDocumentId(int id)
+        {
+            try
+            {
+                var transactions = _transactionService.GetDocumentByDocumentId(id);
+                return new JsonResponse().Success().For(transactions);
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+            }
+        }
     }
 }
