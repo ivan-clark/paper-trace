@@ -68,5 +68,9 @@ namespace API.Repositories.Data
 
             return maxTransactionId;
         }
+        public Transaction? GetDocumentByDocumentId(int docId)
+        {
+            return _dbcontext.Transactions.FirstOrDefault(u => u.DocumentId == docId);
+        }
     }
 }

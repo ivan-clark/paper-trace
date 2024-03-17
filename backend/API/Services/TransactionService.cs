@@ -51,7 +51,6 @@ namespace API.Services
 
             return result;
         }
-        
         public void CreateTransaction(TransactionModel model)
         {
             model.Status = new DataAccess.Entities.Status { Id = 1 };
@@ -67,6 +66,7 @@ namespace API.Services
         {
             _transactionRepository.UpdateTransaction(model);
         }
+
         public void ForTestingDeleteTransaction() 
         {
             var maxTransactionId = _transactionRepository.GetMaxTransactionId();
@@ -74,6 +74,20 @@ namespace API.Services
             {
                 _transactionRepository.DeleteTransaction(i);
             }
+        }
+
+        public TransactionModel GetDocumentByDocumentId(int id)
+        {
+            var transaction = _transactionRepository.GetDocumentByDocumentId(id);
+
+            return new TransactionModel
+            {
+                Id = transaction?.Id ?? 0,
+                Restricted = transaction?.Restricted ?? false,
+                Document = _documentRepository.GetDocumentById(transaction?.DocumentId ?? 0),
+                Status = _statusRepository.GetStatusById(transaction?.StatusId ?? 0),
+                CreatedDate = transaction?.CreatedDate
+            };
         }
     }
 }
