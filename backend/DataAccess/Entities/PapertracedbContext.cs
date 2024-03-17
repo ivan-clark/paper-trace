@@ -83,6 +83,9 @@ public partial class PapertracedbContext : DbContext
             entity.Property(e => e.Urgent)
                 .HasColumnType("bit(1)")
                 .HasColumnName("urgent");
+            entity.Property(e => e.Visible)
+                .HasColumnType("bit(1)")
+                .HasColumnName("visible");
         });
 
         modelBuilder.Entity<Role>(entity =>
@@ -108,6 +111,9 @@ public partial class PapertracedbContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Note).HasColumnName("note");
+            entity.Property(e => e.Read)
+                .HasColumnType("bit(1)")
+                .HasColumnName("read");
             entity.Property(e => e.RecepientId).HasColumnName("recepientId");
             entity.Property(e => e.RecievedBy).HasColumnName("recievedBy");
             entity.Property(e => e.StatusId).HasColumnName("statusId");
@@ -118,6 +124,9 @@ public partial class PapertracedbContext : DbContext
             entity.Property(e => e.UpdatedDate)
                 .HasColumnType("datetime")
                 .HasColumnName("updatedDate");
+            entity.Property(e => e.Visible)
+                .HasColumnType("bit(1)")
+                .HasColumnName("visible");
         });
 
         modelBuilder.Entity<Status>(entity =>

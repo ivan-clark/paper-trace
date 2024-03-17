@@ -19,5 +19,9 @@ public partial class Route
 
     public DateTime? UpdatedDate { get; set; }
 
+    public bool? Read { get; set; }
+
+    public bool? Visible { get; set; }
+
     public string? Note { get; set; }
 }
