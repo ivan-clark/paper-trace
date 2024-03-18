@@ -4,6 +4,7 @@ using API.Repositories.Data;
 using API.Utils;
 using DataAccess.Entities;
 using Microsoft.AspNetCore.Mvc;
+using sib_api_v3_sdk.Model;
 
 namespace API.Services
 {
@@ -13,17 +14,22 @@ namespace API.Services
         private readonly ITransactionRepository _transactionRepository;
         private readonly IDepartmentRepository _departmentRepository;
         private readonly IStatusRepository _statusRepository;
-        private readonly TransactionService _transactionService;
         private readonly IDocumentRepository _documentRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly TransactionService _transactionService;
+        private readonly DocumentService _documentService;
+        
 
-        public RouteService(IRouteRepository routeRepository, ITransactionRepository transactionRepository, IDepartmentRepository departmentRepository, IStatusRepository statusRepository, TransactionService transactionService, IDocumentRepository documentRepository)
+        public RouteService(IRouteRepository routeRepository, ITransactionRepository transactionRepository, IDepartmentRepository departmentRepository, IUserRepository userRepository, IStatusRepository statusRepository, TransactionService transactionService, IDocumentRepository documentRepository, DocumentService documentService)
         {
             _routeRepository = routeRepository;
             _transactionRepository = transactionRepository;
             _statusRepository = statusRepository;
             _departmentRepository = departmentRepository;
             _transactionService = transactionService;
+            _userRepository = userRepository;
             _documentRepository = documentRepository;
+            _documentService = documentService;
         }
 
         public RouteModel GetRouteById(int id)
@@ -33,9 +39,11 @@ namespace API.Services
             return new RouteModel
             {
                 Id = route?.Id ?? 0,
+                UniId = route?.UniId,
                 Transaction = _transactionService.GetTransactionById(route?.TransactionId ?? 0),
                 RecepientId = _departmentRepository.GetDepartmentById(route?.RecepientId ?? 0),
                 StatusId = _statusRepository.GetStatusById(route?.StatusId ?? 0),
+                RecievedBy = _userRepository.GetUserById(route?.RecievedBy ?? 0),
                 UpdatedDate = route?.UpdatedDate
             };
         }
@@ -50,12 +58,17 @@ namespace API.Services
                 result.Add(new RouteModel
                 {
                     Id = route.Id,
+                    UniId = route.UniId,
                     Transaction = _transactionService.GetTransactionById(route.TransactionId ?? 0),
                     RecepientId = _departmentRepository.GetDepartmentById(route.RecepientId ?? 0),
                     StatusId = _statusRepository.GetStatusById(route?.StatusId ?? 0),
+                    RecievedBy = _userRepository.GetUserById(route?.RecievedBy ?? 0),
+                    Note = route?.Note ?? "",
                     UpdatedDate = route?.UpdatedDate
-                });
+                    
+            });
             }
+            result = result.OrderByDescending(r => r.UpdatedDate).ToList();
 
             return result;
         }
@@ -89,13 +102,17 @@ namespace API.Services
                     result.Add(new RouteModel
                     {
                         Id = route.Id,
+                        UniId = route.UniId,
                         Transaction = _transactionService.GetTransactionById(route.TransactionId ?? 0),
                         RecepientId = _departmentRepository.GetDepartmentById(route.RecepientId ?? 0),
                         StatusId = _statusRepository.GetStatusById(route?.StatusId ?? 0),
+                        RecievedBy = _userRepository.GetUserById(route?.RecievedBy ?? 0),
+                        Note = route?.Note ?? "",
                         UpdatedDate = route?.UpdatedDate
                     });
                 }
             }
+            result = result.OrderByDescending(r => r.UpdatedDate).ToList();
 
             return result;
         }
@@ -115,10 +132,40 @@ namespace API.Services
                         SenderId = _departmentRepository.GetDepartmentById(document?.SenderId ?? 0),
                         Subject = document?.Subject,
                         Description = document?.Description,
+                        Doctype = document?.Doctype,
+                        CreatedDate = document?.CreatedDate,
                         Urgent = document?.Urgent
                     });
                 }
             }
+            result = result.OrderByDescending(r => r.CreatedDate).ToList();
+
+            return result;
+        }
+
+        public List<RouteModel> GetAcceptedDocuments(int id)
+        {
+            var result = new List<RouteModel>();
+            var routes = _routeRepository.GetRoutes();
+
+            foreach (var route in routes)
+            {
+                if (route.RecievedBy == id)
+                {
+                    result.Add(new RouteModel
+                    {
+                        Id = route.Id,
+                        UniId = route.UniId,
+                        Transaction = _transactionService.GetTransactionById(route.TransactionId ?? 0),
+                        RecepientId = _departmentRepository.GetDepartmentById(route.RecepientId ?? 0),
+                        StatusId = _statusRepository.GetStatusById(route?.StatusId ?? 0),
+                        RecievedBy = _userRepository.GetUserById(route?.RecievedBy ?? 0),
+                        Note = route?.Note ?? "",
+                        UpdatedDate = route?.UpdatedDate
+                    });
+                }
+            }
+            result = result.OrderByDescending(r => r.UpdatedDate).ToList();
 
             return result;
         }
@@ -145,16 +192,54 @@ namespace API.Services
             _routeRepository.CreateRoute(routeModel);         
         }
 
-        public void AcceptDocument(int RouteId) 
+        public void AcceptDocument(int RouteId, int recievebyId) 
         {
             var routeModel = GetRouteById(RouteId);
-            _routeRepository.AcceptDocument(routeModel);
+            _routeRepository.AcceptDocument(routeModel, recievebyId);
         }
 
-        public void DeclineDocument(int RouteId)
+        public void DeclineDocument(int RouteId, int recievebyId, string note)
         {
             var routeModel = GetRouteById(RouteId);
-            _routeRepository.DeclineDocument(routeModel);
+            _routeRepository.DeclineDocument(routeModel, recievebyId, note);
+        }
+
+        public void ApproveDocument(int RouteId, int recievebyId)
+        {
+            var routeModel = GetRouteById(RouteId);
+            _routeRepository.ApproveDocument(routeModel, recievebyId);
+        }
+
+        public void TrashDocument(int RouteId) 
+        {
+            var routeModel = GetRouteById(RouteId);
+            _routeRepository.TrashDocument(routeModel);
+        }
+
+        public List<RouteModel> TrackingDocument(string uniId) 
+        {
+            var result = new List<RouteModel>();
+            var routes = _routeRepository.GetRoutes();
+
+            foreach (var route in routes)
+            {
+                if (route.UniId == uniId)
+                {
+                    result.Add(new RouteModel
+                    {
+                        Id = route.Id,
+                        UniId = route.UniId,
+                        Transaction = _transactionService.GetTransactionById(route.TransactionId ?? 0),
+                        RecepientId = _departmentRepository.GetDepartmentById(route.RecepientId ?? 0),
+                        StatusId = _statusRepository.GetStatusById(route?.StatusId ?? 0),
+                        RecievedBy = _userRepository.GetUserById(route?.RecievedBy ?? 0),
+                        Note = route?.Note ?? "",
+                        UpdatedDate = route?.UpdatedDate
+                    });
+                }
+            }
+
+            return result;
         }
 
         public void MultipleCompose(DocumentModel documentModel, TransactionModel transactionModel, List<RouteModel> routeModel)
@@ -164,8 +249,87 @@ namespace API.Services
             transactionModel.Status = new DataAccess.Entities.Status { Id = 1 };
 
             var newTransactionId = _transactionRepository.CreateTransaction(transactionModel);
- 
-            _routeRepository.CreateMultipleRoute(routeModel, newTransactionId);
+
+            var docModel = _documentRepository.GetDocumentById(newDocumentId);
+            var docsenderID = docModel?.SenderId;
+            var SenderID = _userRepository.GetUserById(docsenderID ?? 0);
+            var SenderDeptID = SenderID?.DepartmentId;
+            var SenderDeptModel = _departmentRepository.GetDepartmentById(SenderDeptID ?? 0);
+            var SenderDeptName = SenderDeptModel?.Name;
+            var deptName = SenderDeptName ?? "";
+
+            var ReturnedDocModel = _documentRepository.GetDocumentById(newDocumentId);
+            var DocUrgency = ReturnedDocModel?.Urgent ?? false; 
+            var DocType = ReturnedDocModel?.Doctype ?? false;
+                           
+            _routeRepository.CreateMultipleRoute(routeModel, deptName, newTransactionId, DocUrgency, DocType);
+        }
+
+        public List<ReportItemModel> GenerateReport(int id)
+        {
+            var allItems = new List<ReportItemModel>();
+
+            var outgoingDocuments = GetOutgoing(id);
+            foreach (var document in outgoingDocuments)
+            {
+                allItems.Add(new ReportItemModel { Document = document });
+            }
+
+            var incomingRoutes = GetIncoming(id);
+            foreach (var route in incomingRoutes)
+            {
+                allItems.Add(new ReportItemModel { Route = route });
+            }
+
+            var acceptedDocuments = GetAcceptedDocuments(id);
+            foreach (var route in acceptedDocuments)
+            {
+                allItems.Add(new ReportItemModel { Route = route });
+            }
+
+            return allItems;
+        }
+
+        public List<RouteModel> GetRouteByTransactionId(int id) 
+        {
+            var routes = _routeRepository.GetRouteByTransactionId(id);
+            var routeModels = new List<RouteModel>();
+
+            foreach (var route in routes)
+            {
+                var routeModel = new RouteModel
+                {
+                    Id = route.Id,
+                    UniId = route.UniId,
+                    Transaction = _transactionService.GetTransactionById(route.TransactionId ?? 0),
+                    RecepientId = _departmentRepository.GetDepartmentById(route.RecepientId ?? 0),
+                    StatusId = _statusRepository.GetStatusById(route?.StatusId ?? 0),
+                    RecievedBy = _userRepository.GetUserById(route?.RecievedBy ?? 0),
+                    Note = route?.Note ?? "",
+                    UpdatedDate = route?.UpdatedDate
+                };
+
+                routeModels.Add(routeModel);
+            }
+
+            return routeModels;
+        }
+
+        public List<RouteModel> GetOutGoingImproved(int senderId)
+        {
+            var result = new List<RouteModel>();
+
+            var documentModelLists = _documentService.GetDocumentsBySenderId(senderId);
+            foreach (var documentModel in documentModelLists)
+            {
+                var transactionModel = _transactionService.GetTransactionByDocumentId(documentModel.Id);
+                var routeList = GetRouteByTransactionId(transactionModel.Id);
+                result.AddRange(routeList);
+            }
+            
+            result = result.OrderByDescending(r => r.UpdatedDate).ToList();
+
+            return result;
         }
     }
 }
