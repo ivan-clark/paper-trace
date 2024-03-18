@@ -17,9 +17,10 @@ namespace API.Services
         private readonly IDocumentRepository _documentRepository;
         private readonly IUserRepository _userRepository;
         private readonly TransactionService _transactionService;
+        private readonly DocumentService _documentService;
         
 
-        public RouteService(IRouteRepository routeRepository, ITransactionRepository transactionRepository, IDepartmentRepository departmentRepository, IUserRepository userRepository, IStatusRepository statusRepository, TransactionService transactionService, IDocumentRepository documentRepository)
+        public RouteService(IRouteRepository routeRepository, ITransactionRepository transactionRepository, IDepartmentRepository departmentRepository, IUserRepository userRepository, IStatusRepository statusRepository, TransactionService transactionService, IDocumentRepository documentRepository, DocumentService documentService)
         {
             _routeRepository = routeRepository;
             _transactionRepository = transactionRepository;
@@ -28,6 +29,7 @@ namespace API.Services
             _transactionService = transactionService;
             _userRepository = userRepository;
             _documentRepository = documentRepository;
+            _documentService = documentService;
         }
 
         public RouteModel GetRouteById(int id)
@@ -311,6 +313,23 @@ namespace API.Services
             }
 
             return routeModels;
+        }
+
+        public List<RouteModel> GetOutGoingImproved(int senderId)
+        {
+            var result = new List<RouteModel>();
+
+            var documentModelLists = _documentService.GetDocumentsBySenderId(senderId);
+            foreach (var documentModel in documentModelLists)
+            {
+                var transactionModel = _transactionService.GetTransactionByDocumentId(documentModel.Id);
+                var routeList = GetRouteByTransactionId(transactionModel.Id);
+                result.AddRange(routeList);
+            }
+            
+            result = result.OrderByDescending(r => r.UpdatedDate).ToList();
+
+            return result;
         }
     }
 }

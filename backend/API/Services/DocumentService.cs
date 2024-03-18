@@ -116,5 +116,31 @@ namespace API.Services
 
             return documentModels;
         }
+
+        public List<DocumentModel> GetDocumentsBySenderId(int senderId)
+        {
+            var result = new List<DocumentModel>();
+            var documents = _documentRepository.GetDocuments();
+
+            foreach (var document in documents)
+            {
+                if (document.SenderId == senderId)
+                {
+                    result.Add(new DocumentModel
+                    {
+                        Id = document.Id,
+                        SenderId = _departmentRepository.GetDepartmentById(document?.SenderId ?? 0),
+                        Subject = document?.Subject,
+                        Description = document?.Description,
+                        Doctype = document?.Doctype,
+                        CreatedDate = document?.CreatedDate,
+                        Urgent = document?.Urgent
+                    });
+                }
+            }
+            result = result.OrderByDescending(r => r.CreatedDate).ToList();
+
+            return result;
+        }
     }
 }

@@ -76,9 +76,9 @@ namespace API.Services
             }
         }
 
-        public TransactionModel GetDocumentByDocumentId(int id)
+        public TransactionModel GetTransactionByDocumentId(int id)
         {
-            var transaction = _transactionRepository.GetDocumentByDocumentId(id);
+            var transaction = _transactionRepository.GetTransactionByDocumentId(id);
 
             return new TransactionModel
             {

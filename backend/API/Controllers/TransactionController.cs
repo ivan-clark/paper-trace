@@ -108,11 +108,11 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public JsonResponse GetDocumentByDocumentId(int id)
+        public JsonResponse GetTransactionByDocumentId(int id)
         {
             try
             {
-                var transactions = _transactionService.GetDocumentByDocumentId(id);
+                var transactions = _transactionService.GetTransactionByDocumentId(id);
                 return new JsonResponse().Success().For(transactions);
             }
             catch (Exception ex)

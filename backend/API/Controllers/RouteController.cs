@@ -275,6 +275,20 @@ namespace API.Controllers
 
             }
         }
+
+        [HttpGet]
+        public JsonResponse GetOutGoingImproved(int senderId)
+        {
+            try
+            {
+                return new JsonResponse().Success().For(_routeService.GetOutGoingImproved(senderId));
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
     }
 }
 
