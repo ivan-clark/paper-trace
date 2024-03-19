@@ -289,6 +289,34 @@ namespace API.Controllers
 
             }
         }
+
+        [HttpGet]
+        public JsonResponse SearchEngineGetOutgoing(string subject, int senderId)
+        {
+            try
+            {
+                return new JsonResponse().Success().For(_routeService.SearchEngineGetOutgoing(subject, senderId));
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
+
+        [HttpGet]
+        public JsonResponse SearchEngineGeIncoming(string subject, int recepientId)
+        {
+            try
+            {
+                return new JsonResponse().Success().For(_routeService.SearchEngineGeIncoming(subject, recepientId));
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
     }
 }
 

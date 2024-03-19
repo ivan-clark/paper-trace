@@ -1,9 +1,11 @@
-﻿using API.Models;
+﻿using System.Reflection.Metadata;
+using API.Models;
 using API.Repositories;
 using API.Repositories.Data;
 using API.Utils;
 using DataAccess.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using sib_api_v3_sdk.Model;
 
 namespace API.Services
@@ -327,6 +329,61 @@ namespace API.Services
                 result.AddRange(routeList);
             }
             
+            result = result.OrderByDescending(r => r.UpdatedDate).ToList();
+
+            return result;
+        }
+
+        public List<RouteModel> SearchEngineGetOutgoing(string subject, int senderId)
+        {
+            var result = new List<RouteModel>();
+
+            var documentModelLists = _documentRepository.GetDocumentsBySubject(subject);
+            foreach (var documentModel in documentModelLists)
+            {
+                if (documentModel.SenderId == senderId)
+                {
+                    var transactionModel = _transactionService.GetTransactionByDocumentId(documentModel.Id);
+                    var routeList = GetRouteByTransactionId(transactionModel.Id);
+                    result.AddRange(routeList);
+                }
+            }
+
+            result = result.OrderByDescending(r => r.UpdatedDate).ToList();
+
+            return result;
+        }
+
+        public List<RouteModel> SearchEngineGeIncoming(string subject, int recepientId)
+        {
+            var result = new List<RouteModel>();
+
+            var documentModelLists = _documentRepository.GetDocumentsBySubject(subject);
+            foreach (var documentModel in documentModelLists)
+            {       
+                var transactionModel = _transactionRepository.GetTransactionByDocumentId(documentModel.Id);
+                var routeLists = _routeRepository.GetRouteByTransactionId(transactionModel.Id);
+
+                foreach (var routeList in routeLists) 
+                {
+                    if (routeList.RecepientId == recepientId)
+                    {
+                        var routeModel = new RouteModel
+                        {
+                            Id = routeList.Id,
+                            UniId = routeList.UniId,
+                            Transaction = _transactionService.GetTransactionById(routeList.TransactionId ?? 0),
+                            RecepientId = _departmentRepository.GetDepartmentById(routeList.RecepientId ?? 0),
+                            StatusId = _statusRepository.GetStatusById(routeList?.StatusId ?? 0),
+                            RecievedBy = _userRepository.GetUserById(routeList?.RecievedBy ?? 0),
+                            Note = routeList?.Note ?? "",
+                            UpdatedDate = routeList?.UpdatedDate
+                        };
+
+                        result.Add(routeModel);
+                    }
+                }                
+            }
             result = result.OrderByDescending(r => r.UpdatedDate).ToList();
 
             return result;
