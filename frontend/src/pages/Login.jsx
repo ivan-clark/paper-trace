@@ -27,6 +27,7 @@ const Login = (props) => {
 
   const handleLogin = (e) => {
     e.preventDefault();
+    
     if (!username.trim() || !password.trim()) {
       setErrorMessage("Please fill in both fields.");
       return false;
@@ -50,7 +51,7 @@ const Login = (props) => {
           const user = response.data.data.user;
 
           props.setIsLoggedIn(true);
-          props.setUser(user);
+          props.setUser(user);    
 
           if (user.role?.id === 1)
             navigate("users");

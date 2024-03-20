@@ -22,8 +22,8 @@ function InboxViewOutgoing() {
   const [isLoading, setIsLoading] = useState(true)
   const [description, setDescription] = useState("")
 
-  const [firstname, setFirstname] = useState("")
   const [lastname, setLastname] = useState("")
+  const [firstname, setFirstname] = useState("")
   const [department, setDepartment] = useState("")
   const [role, setRole] = useState("")
 
