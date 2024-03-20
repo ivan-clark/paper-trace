@@ -1,27 +1,31 @@
+import DocStatusSmall from "../../components/common/DocStatusSmall";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { LinearProgress, Alert } from "@mui/material";
 import React, { useEffect, useState } from "react"
+import Incoming from "../../assets/Incoming.png"
 import { useNavigate } from "react-router-dom";
 import Checkbox from "@mui/material/Checkbox";
 import Snackbar from '@mui/material/Snackbar';
 import Tooltip from "@mui/material/Tooltip";
-import Api from "../../services/Api";
 import DateFormat from "../../services/Util"
+import Api from "../../services/Api";
 import Box from '@mui/system/Box';
 
 function InboxUpcoming(props) {
   const controller = new AbortController();
   const navigate = useNavigate()
-  const [loading, setLoading] = useState(true);
-  const [documents, setDocuments] = useState([]);
-  const [createdDate, setCreatedDate] = useState("")
-  const [isEmpty, setIsEmpty] = useState(false)
+  const [read, setRead] = useState(true)
   const [senderId, setSenderId] = useState(0)
   const [lastname, setLastname] = useState("")
+  const [loading, setLoading] = useState(false);
+  const [isEmpty, setIsEmpty] = useState(false)
+  const [documents, setDocuments] = useState([]);
   const [department, setDepartment] = useState("")
+  const [createdDate, setCreatedDate] = useState("")
   const [showSnackbar, setShowSnackbar] = useState(false)
-  const [read, setRead] = useState(true)
-
+  const [isLoadingSender, setIsLoadingSender] = useState(true); 
+  const [isLoadingIncoming, setIsLoadingIncoming] = useState(true);
+  
   useEffect(() => {
     setLoading(true);
     getIncoming();
@@ -46,11 +50,10 @@ function InboxUpcoming(props) {
         setCreatedDate(sender.transaction?.createdDate)
       })
       setDocuments(transactionChecked);
-      console.log(res.data.data)
     }).catch((error) => {
       console.log(error);
     }).finally(() => {
-      setLoading(false);
+      setIsLoadingIncoming(false)
     })
   };
   
@@ -59,7 +62,10 @@ function InboxUpcoming(props) {
       const data = res.data.data;
       setLastname(data.lastName?.charAt(0).toUpperCase() + data.lastName?.slice(1))
       setDepartment(data.department?.name)
-      console.log(res.data.data)
+    }).catch((error) => {
+      console.log(error)
+    }).finally(() => {  
+      setIsLoadingSender(false)
     })
   }
 
@@ -83,9 +89,11 @@ function InboxUpcoming(props) {
     // })
   }
 
+  const isLoading = isLoadingIncoming && isLoadingSender;
+
   return (
     <>
-      {loading ? (  
+      {isLoading ? (  
           <LinearProgress />
         ) : (
         <>
@@ -98,16 +106,18 @@ function InboxUpcoming(props) {
             justifyContent: "center",
           }}>
             <div className="isEmpty">
+              <div>
+                <img className="img" src={Incoming} alt="" draggable={false} />
+              </div>
               <span id="h1">Incoming mails go here :)</span>
               <span>Start sending to other Departments!</span>
             </div>
           </Box>
-        ): (
+        ) : (
           <table>
           <tbody>
             {documents.map((document, i) => (
               <tr onClick={(e) => {
-                  // this checks if checkbox is clicked or not, very useful
                   if(!e.target.closest(".MuiCheckbox-root")) {
                     navigate(`/inbox/incoming/${document.id}`)
                   }
@@ -121,16 +131,19 @@ function InboxUpcoming(props) {
                   />
                 </td>
                 <td className="sender">
-                  <span className={document.transaction.document?.urgent === 1 ? "urgent" : "non-urgent"}>{document.transaction.document?.urgent === 1 ? "HIGH" : "LOW"} </span>
+                  <span className={document.transaction.document?.urgent === true ? "urgent" : "non-urgent"}>{document.transaction.document?.urgent === true ? "HIGH" : "LOW"} </span>
                   <span className={read ? "name-dept bold" : "name-dept"}>{lastname} {department}</span>
                 </td>
                 <td id="td-spacer"></td>
                 <td className="title-and-message">
                   <strong>{document.transaction.document?.subject} - </strong>
-                  <span>{document.transaction.document?.description?.slice(0, 200)}...</span>
+                  <span>{document.transaction.document?.description}</span>
                 </td>
                 <td id="td-spacer"></td>
                 <td className="date">
+                  <span className="doc-stat">
+                    <DocStatusSmall status={document.statusId?.name.charAt(0).toUpperCase() + document.statusId?.name.slice(1)} />
+                  </span>
                   <span><strong>{DateFormat({ createdDate: createdDate })}</strong></span>
                 </td>
                 <td className={`inbox-tr ${document.isChecked ? "checked" : ""}`}>
@@ -148,7 +161,7 @@ function InboxUpcoming(props) {
           <Snackbar open={showSnackbar} autoHideDuration={3000}>
               <Alert variant="filled" severity="error">Document deleted</Alert>
           </Snackbar>
-        </table>
+          </table>
         )}
         </>
       )}

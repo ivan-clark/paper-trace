@@ -15,17 +15,19 @@ function InboxViewOutgoing() {
   const { id } = useParams()
   const menuRef = useRef()
   const [name, setName] = useState("")
+  const [role, setRole] = useState("")
+  const [uniId, setUniId] = useState("")
   const [open, setOpen] = useState(false)
   const [urgent, setUrgent] = useState("")
   const [subject, setSubject] = useState("")
   const [senderId, setSenderId] = useState(0)
-  const [isLoading, setIsLoading] = useState(true)
-  const [description, setDescription] = useState("")
-
   const [lastname, setLastname] = useState("")
   const [firstname, setFirstname] = useState("")
   const [department, setDepartment] = useState("")
-  const [role, setRole] = useState("")
+  const [isLoading, setIsLoading] = useState(true)
+  const [description, setDescription] = useState("")
+  const [loadingOutoing, setloadingOutoing] = useState(false)
+  const [loadingSender, setloadingSender] = useState(false)
 
   useEffect(() => {
     setIsLoading(true)
@@ -57,11 +59,10 @@ function InboxViewOutgoing() {
       setSubject(data.subject)
       setSenderId(data.senderId?.id)
       setDescription(data.description)
-      console.log(res.data.data)
     }).catch((error) => {
       console.log(error)
     }).finally(() => {
-      setIsLoading(false)
+      setloadingOutoing(false)
     })
   }
 
@@ -72,28 +73,34 @@ function InboxViewOutgoing() {
       setLastname(data.lastName)
       setDepartment(data.department?.name)
       setRole(data.role?.name)
+    }).finally(() => {
+      setloadingSender(false)
     })
   }
+
+  const loading = loadingOutoing || loadingSender;
 
   return (
     <div className="view-message-wrapper">
       <div className="button-section">
-        <div>
-          <Tooltip title="Back to inbox" enterDelay={600}>
-            <Link to={'/inbox'}>
-              <ArrowBackIcon className="back" />
-            </Link>
-          </Tooltip>
-        </div>
-        <div>
-        <Tooltip title="Move to trash" enterDelay={600}>
-          <button className="move-to-trash">
-            <DeleteOutlineIcon className="delete-svg"/>
-          </button>
-        </Tooltip>
+        <div className="button-inner-section">
+          <div>
+            <Tooltip title="Back to inbox" enterDelay={600}>
+              <Link to={'/inbox'}>
+                <ArrowBackIcon className="back" />
+              </Link>
+            </Tooltip>
+          </div>
+          <div>
+            <Tooltip title="Move to trash" enterDelay={600}>
+              <button className="move-to-trash">
+                <DeleteOutlineIcon className="delete-svg"/>
+              </button>
+            </Tooltip>
+          </div>
         </div>
       </div>
-      {isLoading ? (
+      {loading ? (
         <LinearProgress />
       ) : (
         <div className="scrollable-area">
@@ -123,7 +130,7 @@ function InboxViewOutgoing() {
               </div>
               <div className="to-me">
                 <div className="to-me-doc-urgency">
-                  <span>to {name}</span>
+                  <span>to me</span>
                   <div>
                     <Tooltip title="Show details" enterDelay={600}>
                       <button onClick={() => {setOpen(!open)}} className="show-details-button">
@@ -131,7 +138,12 @@ function InboxViewOutgoing() {
                       </button>
                     </Tooltip>
                   </div>
-                  <div className={urgent === 1 ? "urgent" : "non-urgent"}>{urgent === 1 ? "HIGH" : "LOW"}</div>
+                  <div className={urgent === true ? "urgent" : "non-urgent"}>{urgent === true ? "HIGH" : "LOW"}
+                  </div>
+                </div>
+                <div className="uniId">
+                    <span className="upper-text">Tracking #:</span>
+                    <span> {uniId}</span>
                 </div>
                 {open && (
                   <div ref={menuRef} className="show-details-modal">

@@ -34,7 +34,7 @@ const Compose = (props) => {
   const [departments, setDepartments] = useState([]);
   //changed state value 0 to array
   const [error, setError] = useState(null)
-  const [urgent, setUrgent] = useState(0)
+  const [urgent, setUrgent] = useState(false)
   const [subject, setSubject] = useState("");
   const [doctype, setDoctype] = useState(false)
   const [department, setDepartment] = useState([]);
@@ -94,10 +94,10 @@ const Compose = (props) => {
       ]
     };
     Api.multipleCompose(model).then(()=>{
+      setShowSnackbar(true)
     }).catch(()=>{
       console.log(error)
     }).finally(() =>{
-      setShowSnackbar(true)
       navigate('/inbox')
       console.log(model)
     })
@@ -108,10 +108,6 @@ const Compose = (props) => {
       return;
     }
   }
-
-  const handleUrgentChange = (e) => {
-    setUrgent(e.target.checked ? 1 : 0); 
-  };
 
   return (
     <div className="send-content">

@@ -1,5 +1,6 @@
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import React, { useEffect, useState } from "react"
+import Outgoing from "../../assets/Outgoing.png"
 import { useNavigate } from "react-router-dom";
 import { LinearProgress } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
@@ -18,6 +19,8 @@ function InboxOutgoing(props) {
   const [firstname, setFirstname] = useState("")
   const [documents, setDocuments] = useState([]);
   const [createdDate, setCreatedDate] = useState("")
+  const [loadingOutoing, setloadingOutoing] = useState(false)
+  const [loadingSender, setloadingSender] = useState(false)
   
 
   useEffect(() => {
@@ -25,7 +28,6 @@ function InboxOutgoing(props) {
     getOutgoing(controller);
     if (senderId !== 0) {
       getSender(controller);
-      localStorage.setItem('senderId', senderId);
     }
 
     return () => {
@@ -34,7 +36,7 @@ function InboxOutgoing(props) {
   }, [senderId]);
 
   const getOutgoing = () => {
-    Api.getOutgoing(props.senderId).then((response) => {
+    Api.getOutGoingImproved(props.senderId).then((response) => {
       const transactionChecked = response.data.data.map((transaction) => ({
         ...transaction,
         isChecked: false
@@ -45,7 +47,7 @@ function InboxOutgoing(props) {
     }).catch((error) => {
       console.log(error);
     }).finally(() => {
-      setLoading(false);
+      setloadingOutoing(false);
     })
   };
 
@@ -54,7 +56,8 @@ function InboxOutgoing(props) {
       const data = res.data.data;
       setFirstname(data.firstName)
       setLastname(data.lastName)
-      console.log(senderId)
+    }).finally(() => {
+      setloadingSender(false)
     })
   }
   // flipper
@@ -68,9 +71,11 @@ function InboxOutgoing(props) {
     
   }
 
+  const isLoading = loadingOutoing || loadingSender;
+
   return (
     <>
-      {loading ? (
+      {isLoading ? (
           <LinearProgress />
         ) : (
         <>
@@ -83,6 +88,9 @@ function InboxOutgoing(props) {
               justifyContent: "center",
             }}>
               <div className="isEmpty">
+                <div>
+                  <img className="img" src={Outgoing} alt="" draggable={false} />
+                </div>
                 <span id="h1">Outgoing mails go here :)</span>
                 <span>Start sending to other Departments!</span>
               </div>
@@ -106,13 +114,13 @@ function InboxOutgoing(props) {
                   />
                 </td>
                   <td className="sender">
-                    <span className={document.urgent === 1 ? "urgent" : "non-urgent"}>{document.urgent === 1 ? "HIGH" : "LOW"} </span>
+                    <span className={document.urgent === true ? "urgent" : "non-urgent"}>{document.urgent === true ? "HIGH" : "LOW"} </span>
                     <span>{firstname} {lastname}</span>
                   </td>
                   <td id="td-spacer"></td>
                   <td className="title-and-message">
-                    <span><strong>{document.subject?.slice(0, 24)} - </strong></span>
-                    <span>{document.description?.slice(0, 200)}...</span>
+                    <span><strong>{document.subject} - </strong></span>
+                    <span>{document.description}</span>
                   </td>
                   <td id="td-spacer"></td>
                   {/* <td className="date">

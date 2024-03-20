@@ -1,27 +1,27 @@
 import React from 'react'
 
-function DocStatus({ status }) {
+function DocStatusSmall({ status }) {
   
   let statusClass = " ";
   
   switch(status){
     case "Ongoing":
-      statusClass = "ongoing";
+      statusClass = "ongoing-s";
       break
     case "Accepted":
-      statusClass = "accepted";
+      statusClass = "accepted-s";
       break
     case "Declined":
-      statusClass = "declined";
+      statusClass = "declined-s";
       break
     case "Completed":
-      statusClass = "completed";
+      statusClass = "completed-s";
       break
     default:
-      statusClass = "ongoing";
+      statusClass = "ongoing-s";
   }
 
   return <div className={statusClass}>{status}</div>
 }
 
-export default DocStatus
+export default DocStatusSmall

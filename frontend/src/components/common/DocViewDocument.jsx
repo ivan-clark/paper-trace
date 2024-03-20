@@ -1,7 +1,7 @@
 import { Alert, LinearProgress, CircularProgress } from "@mui/material";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { Link, useParams, useNavigate } from 'react-router-dom'
+import { Link, useParams, useNavigate, useLocation } from 'react-router-dom'
 import React, { useState, useEffect, useRef } from 'react'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DocStatus from '../../components/common/DocStatus';
@@ -19,10 +19,13 @@ import Tooltip from '@mui/material/Tooltip';
 import Dialog from '@mui/material/Dialog';
 import Api from "../../services/Api"
 
-function InboxViewMessage(props) {
+function DocViewDocument(props) {
   const controller = new AbortController()
   const menuRef = useRef(null)
   const { id } = useParams()
+  const location = useLocation()
+  const { pathname } = location
+
   const navigate = useNavigate()
   const [name, setName] = useState("")
   const [uniId, setUniId] = useState("")
@@ -31,7 +34,7 @@ function InboxViewMessage(props) {
   const [status, setStatus] = useState("")
   const [subject, setSubject] = useState("")
   const [senderId, setSenderId] = useState(0)
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
   const [createdDate, setCreatedDate] = useState("")
   const [description, setDescription] = useState("")
   const [declineNote, setDeclineNote] = useState("")
@@ -49,122 +52,41 @@ function InboxViewMessage(props) {
   const [firstname, setFirstname] = useState("")
   const [department, setDepartment] = useState("")
 
-  const handleClickOpen = (id) => {
+  const isAcceptedPath = pathname.includes("/accepted-docs")
+  const isDeclinedPath = pathname.includes("/declined-docs")
+ 
+  const handleClickOpen = () => {
     setOpenDialog(true)
-    setDocToDecline(id)
-    console.log(id)
+    setDocToDecline()
+    console.log()
   }
   const handleClose = () => {
     setOpenDialog(false)
     setDocToDecline(null)
   }
 
-  useEffect(() => {
-    setIsLoading(true);
-    getRouteById(controller);
-    if (senderId !== 0) {
-      getUser(controller)
-    }
-
-    return () => {
-      controller.abort();
-    }
-  }, [senderId])
-
-  useEffect(() => {
-    let handler = (e) => {
-      if(menuRef.current && !menuRef.current?.contains(e.target)) {
-        setOpen(false)
-      }
-    }
-    document.addEventListener("mousedown", handler)
-
-    return() => {
-      document.removeEventListener("mousedown", handler)
-    }
-  }, [menuRef])
-
-  const getRouteById = () => {
-    Api.getRouteById(id, controller).then((res) => {
-      const data = res.data.data;
-      setName(data.recepientId?.name)
-      setUrgent(data.transaction.document?.urgent);
-      setCreatedDate(data.transaction?.createdDate)
-      setSubject(data.transaction.document?.subject);
-      setSenderId(data.transaction.document?.senderId)
-      setDescription(data.transaction.document?.description);
-      setStatus(data.statusId?.name.charAt(0).toUpperCase() + data.statusId?.name.slice(1))
-      setUniId(data?.uniId)
-    }).catch((error) =>{
-      console.log(error)
-    }).finally(() => {
-      setLoadingRoute(false)
-    })
-  }
-
-  const getUser = () => {
-    Api.getUserById(senderId, controller).then((res) => {
-      const data = res.data.data;
-      setDepartment(data.department?.name)
-      setRole(data.role?.name.charAt(0).toUpperCase() + data.role?.name.slice(1))
-      setLastname(data.lastName?.charAt(0).toUpperCase() + data.lastName?.slice(1))
-      setFirstname(data.firstName?.charAt(0).toUpperCase() + data.firstName?.slice(1))
-    }).catch((error) => {
-      console.log(error)
-    }).finally(() => {
-      setLoadingUser(false)
-    })
-  }
-
-  const handleAccept = () => {
-    setIsAccepting(true)
-    Api.acceptDocument(id, props.user.id).then(() => {
-      setStatus("Accepted");
-      setShowSnackbar(true);
-    }).catch((error) => {
-      console.log(error)
-    }).finally(() => {
-      getRouteById(controller)
-      setTimeout(() => {  
-        setShowSnackbar(false);
-        setIsAccepting(false); 
-        navigate("/inbox"); 
-      }, 1300);
-    })
-  }
-
-  const handleDecline = () => {
-    if (!declineNote.trim()) {
-      setErrorMessage("Please provide a decline note");
-      return;
-    }
-
-    setIsDeclining(true)
-    Api.declineDocument(docToDecline, props.user.id, declineNote).then(() => {
-      setStatus("Declined");
-      setShowSnackbar(true);
-    }).catch((error) => {
-      console.log(error)
-    }).finally(() => {
-      setTimeout(() => {
-        setShowSnackbar(false);
-        getRouteById(controller)
-        setIsDeclining(false);
-        navigate("/inbox")
-      }, 1300)
-    })
-  }
-
-  const loading = isLoadingRoute || isLoadingUser;
-
   return (
-    <div className="view-message-wrapper">
+    <>
+      <div className="view-message-wrapper">
       <div className="button-section">
         <div className="button-inner-section">
           <div>
-          <Tooltip
-            title={"Back to inbox"} enterDelay={600}>
-              <Link to={"/inbox"}>
+            <Tooltip title={
+              isAcceptedPath 
+              ? "Back to accepted docs" 
+              :  isDeclinedPath 
+              ? "Back to declined docs"
+              : " "
+            } 
+              enterDelay={600}
+              >
+              <Link to={
+                isAcceptedPath 
+                ? "/accepted-docs" 
+                :  isDeclinedPath 
+                ? "/declined-docs"
+                : " "
+              }>
                 <ArrowBackIcon className="back" />
               </Link>
             </Tooltip>
@@ -178,14 +100,14 @@ function InboxViewMessage(props) {
           </div>
         </div>
       </div>
-      {loading ? (
+      {isLoading ? (
         <LinearProgress />
       ) : (
       <div className="scrollable-area">
         <div className="message-title-header">
-          <span>{subject}</span>
+          <span>{"Application for graduation"}</span>
           <div className="status-uniId">
-            <DocStatus status={status}/>
+            <DocStatus status={"Accepted"}/>
           </div>
         </div>
        <div className="message-and-footer">
@@ -193,20 +115,20 @@ function InboxViewMessage(props) {
             <div className="sender-profile">
               <div className="profile">
                 <span>
-                  {firstname.toUpperCase().charAt(0)}
-                  {lastname.toUpperCase().charAt(0)}
+                  {"vince".toUpperCase().charAt(0)}
+                  {"tapdasan".toUpperCase().charAt(0)}
                 </span>
               </div>
             </div>
             <div className="sender-message-body">
               <div className="top-section">
                 <div>
-                  <span><strong>{firstname} {lastname} </strong></span>
-                  <span>{department} </span>
-                  <span>{role}</span>
+                  <span><strong>{"Vince"} {"Tapdasan"} </strong></span>
+                  <span>{"CCS"} </span>
+                  <span>{"Head"}</span>
                 </div>
                 <div className="time-sent">
-                  <span>{DateFormatLong({ createdDate: createdDate })}</span>
+                  <span>{DateFormatLong({ createdDate: "1/24/24" })}</span>
                 </div>
               </div>
               <div className="to-me">
@@ -263,7 +185,7 @@ function InboxViewMessage(props) {
                   <div>
                     <button 
                     disabled={isAccepting}
-                    onClick={handleAccept} 
+                    //onClick={handleAccept} 
                     className="accept">
                       <CheckIcon />
                       {isAccepting ? <CircularProgress size={20} color="inherit" /> : "Accept"}
@@ -279,7 +201,7 @@ function InboxViewMessage(props) {
                           component: "form",
                           onSubmit: (e) => {
                             e.preventDefault()
-                            handleDecline()
+                            //handleDecline()
 
                           }
                         }}
@@ -335,7 +257,8 @@ function InboxViewMessage(props) {
       </div>
     )}
     </div>
+    </>
   )
 }
 
-export default InboxViewMessage
+export default DocViewDocument

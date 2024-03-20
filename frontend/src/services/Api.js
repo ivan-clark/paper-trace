@@ -92,10 +92,10 @@ class Api {
   }
 
   static getIncoming(recipientId) { 
-    return Http.get(`/api/Route/GetIncoming?id=${recipientId}`, )
+    return Http.get(`/api/Route/GetIncoming?id=${recipientId}`)
   }
 
-  static getOutgoing(senderId) {
+  static getOutGoingImproved(senderId) {
     return Http.get(`/api/Route/GetOutgoing?id=${senderId}`)
   }
   
@@ -116,6 +116,22 @@ class Api {
       RouteId: RouteId, 
       recievebyId: recievebyId
     })
+  }
+
+  static declineDocument(RouteId, recievebyId, note) {
+    return Http.post(`/api/Route/DeclineDocument?RouteId=${RouteId}&recievebyId=${recievebyId}&note=${note}`, {
+      RouteId: RouteId, 
+      recievebyId: recievebyId, 
+      note: note,
+    })
+  }
+
+  static getAcceptedDocs(id) {
+    return Http.get(`/api/Route/GetAcceptedDocuments?id=${id}`)
+  }
+
+  static getDeclinedDocs(routeId) {
+    return Http.get(`/api/Route/GetDeclineDocuments?routeId=${routeId}`)
   }
 } 
   

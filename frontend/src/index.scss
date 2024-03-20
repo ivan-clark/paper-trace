@@ -533,6 +533,15 @@ hr {
  top: 4px;
  right: 6px;
 }
+.ongoing-s,
+.accepted-s,
+.declined-s {
+  opacity: 65%;
+  color: white;
+  font-weight: 500;
+  border-radius: .3rem;
+  padding: 2px 4px 2px 4px;
+}
 
 .ongoing,
 .accepted,
@@ -545,12 +554,44 @@ hr {
   padding: 4px 8px 4px 8px;
 }
 
-.ongoing {
+.ongoing,
+.ongoing-s {
   background-color: gray;
 }
-.accepted {
+.accepted,
+.accepted-s {
   background-color: var(--accepted);
 }
-.declined {
+.declined,
+.declined-s {
   background-color: var(--declined);
 } 
+.date {
+  gap: 2rem;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  margin-right: 1rem;
+}
+
+.sender {
+  max-width: 300px;
+  display: flex;
+  align-items: center;
+}
+
+.title-and-message {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 90%;
+  flex-grow: 2;
+}
+
+.title-and-message2 {
+  width: 90%;
+  flex-grow: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

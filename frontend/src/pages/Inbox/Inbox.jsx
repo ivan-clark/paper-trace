@@ -32,7 +32,6 @@ function CustomTabPanel(props) {
 function Inbox(props) {
   let outgoing = 0;
   let upcoming = 0  
-
   const [value, setValue] = React.useState(0);
   
   const handleChange = (event, newValue) => {
