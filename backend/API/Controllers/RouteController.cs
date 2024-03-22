@@ -235,6 +235,20 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        public JsonResponse GetDeclineDocuments(int routeId)
+        {
+            try
+            {
+                return new JsonResponse().Success().For(_routeService.GetDeclineDocuments(routeId));
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
+
+        [HttpGet]
         public JsonResponse TrackingDocument(string uniId)
         {
             try

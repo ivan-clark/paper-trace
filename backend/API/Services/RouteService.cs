@@ -99,7 +99,7 @@ namespace API.Services
 
             foreach (var route in routes)
             {
-                if (route.RecepientId == id)
+                if (route.RecepientId == id && route.StatusId == 1)
                 {
                     result.Add(new RouteModel
                     {
@@ -152,7 +152,34 @@ namespace API.Services
 
             foreach (var route in routes)
             {
-                if (route.RecievedBy == id)
+                if (route.RecievedBy == id && route.StatusId == 2)
+                {
+                    result.Add(new RouteModel
+                    {
+                        Id = route.Id,
+                        UniId = route.UniId,
+                        Transaction = _transactionService.GetTransactionById(route.TransactionId ?? 0),
+                        RecepientId = _departmentRepository.GetDepartmentById(route.RecepientId ?? 0),
+                        StatusId = _statusRepository.GetStatusById(route?.StatusId ?? 0),
+                        RecievedBy = _userRepository.GetUserById(route?.RecievedBy ?? 0),
+                        Note = route?.Note ?? "",
+                        UpdatedDate = route?.UpdatedDate
+                    });
+                }
+            }
+            result = result.OrderByDescending(r => r.UpdatedDate).ToList();
+
+            return result;
+        }
+
+        public List<RouteModel> GetDeclineDocuments(int id)
+        {
+            var result = new List<RouteModel>();
+            var routes = _routeRepository.GetRoutes();
+
+            foreach (var route in routes)
+            {
+                if (route.RecievedBy == id && route.StatusId == 3)
                 {
                     result.Add(new RouteModel
                     {
@@ -321,14 +348,32 @@ namespace API.Services
         {
             var result = new List<RouteModel>();
 
-            var documentModelLists = _documentService.GetDocumentsBySenderId(senderId);
+            var documentModelLists = _documentRepository.GetDocumentBySenderId(senderId);
             foreach (var documentModel in documentModelLists)
             {
-                var transactionModel = _transactionService.GetTransactionByDocumentId(documentModel.Id);
-                var routeList = GetRouteByTransactionId(transactionModel.Id);
-                result.AddRange(routeList);
+                var transactionModel = _transactionRepository.GetTransactionByDocumentId(documentModel.Id);
+                var routeLists = _routeRepository.GetRouteByTransactionId(transactionModel.Id);
+
+                foreach (var routeList in routeLists)
+                {
+                    if (routeList.StatusId == 1)
+                    {
+                        var routeModel = new RouteModel
+                        {
+                            Id = routeList.Id,
+                            UniId = routeList.UniId,
+                            Transaction = _transactionService.GetTransactionById(routeList.TransactionId ?? 0),
+                            RecepientId = _departmentRepository.GetDepartmentById(routeList.RecepientId ?? 0),
+                            StatusId = _statusRepository.GetStatusById(routeList?.StatusId ?? 0),
+                            RecievedBy = _userRepository.GetUserById(routeList?.RecievedBy ?? 0),
+                            Note = routeList?.Note ?? "",
+                            UpdatedDate = routeList?.UpdatedDate
+                        };
+
+                        result.Add(routeModel);
+                    }
+                }
             }
-            
             result = result.OrderByDescending(r => r.UpdatedDate).ToList();
 
             return result;
