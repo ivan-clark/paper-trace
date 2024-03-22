@@ -39,6 +39,8 @@ namespace API.Repositories.Data
                 SenderId = model.SenderId?.Id,
                 Subject = model.Subject,
                 Description = model.Description,
+                Doctype = model.Doctype,
+                CreatedDate = DateTime.Now,
                 Urgent = model.Urgent
             };
 
@@ -57,6 +59,7 @@ namespace API.Repositories.Data
                 document.SenderId = model.SenderId?.Id;
                 document.Subject = model.Subject;
                 document.Description = model.Description;
+                document.Doctype = model.Doctype;
                 document.Urgent = model.Urgent;
 
                 _dbcontext.SaveChanges();
@@ -70,6 +73,21 @@ namespace API.Repositories.Data
             return maxDocumentId;
         }
 
-        
+        public Document? GetDocumentBySubject(string docSubject)
+        {
+            return _dbcontext.Documents.FirstOrDefault(u => u.Subject.StartsWith(docSubject));
+        }
+
+        public List<Document>? GetDocumentsBySubject(string docSubject)
+        {
+            var result = _dbcontext.Documents.Where(u => u.Subject.StartsWith(docSubject)).ToList();
+            return result;
+        }
+
+        public List<Document>? GetDocumentBySenderId(int senderId)
+        {
+            var result = _dbcontext.Documents.Where(u => u.SenderId == senderId).ToList();
+            return result;
+        }
     }
 }
