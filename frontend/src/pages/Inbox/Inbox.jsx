@@ -7,7 +7,7 @@ import InboxOutgoing from "./InboxOutgoing"
 import InboxUpcoming from "./InboxUpcoming"
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
-import React from "react"
+import { useState } from "react"
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -32,7 +32,7 @@ function CustomTabPanel(props) {
 function Inbox(props) {
   let outgoing = 0;
   let upcoming = 0  
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
   
   const handleChange = (event, newValue) => {
     setValue(newValue);

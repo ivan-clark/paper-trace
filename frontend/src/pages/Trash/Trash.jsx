@@ -1,15 +1,15 @@
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import DocTable from "../../components/common/DocTable";
 import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import DateFormat from "../../services/Util"
 import Tooltip from "@mui/material/Tooltip";
-import TrashDetails from "./TrashDetails"
 import Api from "../../services/Api";
 import "./_trash.scss"
 
-function Trash() {
+function Trash(props) {
   const controller = new AbortController();
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true);
@@ -25,7 +25,7 @@ function Trash() {
       <div className="inbox-outlet">
         <div className="inbox-outlet-wrapper">
           <div className="inbox-inbox">
-            <TrashDetails />
+            <DocTable user={props.user.id}/>
           </div>
         </div>
       </div>

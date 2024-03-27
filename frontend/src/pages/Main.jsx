@@ -16,7 +16,7 @@ const Main = (props) => {
       </div>
       <div className="sub-wrapper">
         <div className="sidebars">
-          <Sidebar roleId={props.user.role.id} />
+          <Sidebar roleId={props.user.role.id}/>
         </div>
         {isComposePath || isTrackPath ? (
           <Outlet />

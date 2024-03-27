@@ -24,7 +24,12 @@ class Api {
   }
 
   static getUserById(id, controller) {
-    return Http.get(`/api/User/GetUserById?id=${id}`, { signal: controller?.signal });
+    return Http.get(`/api/User/GetUserById?id=${id}`, { signal: controller?.signal })
+  }
+
+  static getUsersByIds(ids) {
+    const string = ids.map(id => `ids=${id}`).join("&")
+    return Http.get(`/api/User/GetUsersByIds?${string}&`)
   }
 
   static createUser(model) {
@@ -96,7 +101,7 @@ class Api {
   }
 
   static getOutGoingImproved(senderId) {
-    return Http.get(`/api/Route/GetOutgoing?id=${senderId}`)
+    return Http.get(`/api/Route/GetOutgoingImproved?senderId=${senderId}`)
   }
   
   static getTransactionById(id, controller) {
@@ -132,6 +137,26 @@ class Api {
 
   static getDeclinedDocs(routeId) {
     return Http.get(`/api/Route/GetDeclineDocuments?routeId=${routeId}`)
+  }
+
+  static trackDocument(uniId) {
+    return Http.get(`/api/Route/TrackingDocument?uniId=${uniId}`)
+  }
+
+  static getSentDocs(senderId) {
+    return Http.get(`/api/Route/GetSentDocuments?senderId=${senderId}`)
+  }
+
+  static trashDocument(RouteId) {
+    return Http.post(`/api/Route/TrashDocument?RouteId=${RouteId}`)
+  }
+
+  static getTrashDocuments(userId) {
+    return Http.get(`/api/Route/GetTrashDocuments?userId=${userId}`)
+  }
+
+  static readDocument(RouteId) {
+    return Http.post(`/api/Route/ReadDocument?RouteId=${RouteId}`)
   }
 } 
   

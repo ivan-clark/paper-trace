@@ -49,7 +49,6 @@ const Compose = (props) => {
       target: { value },
     } = event;
     setDepartment(
-      // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value,
     );
   };
@@ -107,6 +106,7 @@ const Compose = (props) => {
     if (reason === "clickaway") {
       return;
     }
+    setShowSnackbar(false)
   }
 
   return (
@@ -217,7 +217,7 @@ const Compose = (props) => {
         </div>
       </div>
       <Snackbar open={showSnackbar} autoHideDuration={5000} onClose={handleClose}>
-        <Alert onClose={handleClose} variant="filled" severity="success">
+        <Alert variant="filled" severity="success">
           {`Message sent successfully`}
         </Alert>
       </Snackbar>

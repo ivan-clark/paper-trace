@@ -1,5 +1,5 @@
+import MarkEmailUnreadOutlinedIcon from '@mui/icons-material/MarkEmailUnreadOutlined';
 import DocStatusSmall from "../../components/common/DocStatusSmall";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { LinearProgress, Alert } from "@mui/material";
 import React, { useEffect, useState } from "react"
 import Incoming from "../../assets/Incoming.png"
@@ -15,28 +15,31 @@ function InboxUpcoming(props) {
   const controller = new AbortController();
   const navigate = useNavigate()
   const [read, setRead] = useState(true)
-  const [senderId, setSenderId] = useState(0)
+  const [senderIds, setSenderIds] = useState([])
   const [lastname, setLastname] = useState("")
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false)
   const [isEmpty, setIsEmpty] = useState(false)
-  const [documents, setDocuments] = useState([]);
+  const [documents, setDocuments] = useState([])
   const [department, setDepartment] = useState("")
-  const [createdDate, setCreatedDate] = useState("")
   const [showSnackbar, setShowSnackbar] = useState(false)
   const [isLoadingSender, setIsLoadingSender] = useState(true); 
   const [isLoadingIncoming, setIsLoadingIncoming] = useState(true);
+  const [countDoc, setCountDoc] = useState(0)
   
   useEffect(() => {
     setLoading(true);
     getIncoming();
-    if (senderId !== 0) {
-      getSender(controller)
-    }
 
     return () => {
       controller.abort();
     }
-  }, [senderId]);
+  }, []);
+
+  useEffect(() => {
+    if (senderIds.length !== 0) {
+      getSender(controller)
+    }
+  }, [senderIds])
 
   const getIncoming = () => {
     Api.getIncoming(props.recipientId).then((res) => {
@@ -44,11 +47,10 @@ function InboxUpcoming(props) {
         ...transaction,
         isChecked: false
       }))
+      setCountDoc(transactionChecked.length)
       setIsEmpty(transactionChecked.length === 0);
-      res.data.data.forEach((sender) => {
-        setSenderId(sender.transaction.document?.senderId)
-        setCreatedDate(sender.transaction?.createdDate)
-      })
+      const newSenderIds = res.data.data.map((sender) => sender.transaction.document?.senderId)
+      setSenderIds(newSenderIds)
       setDocuments(transactionChecked);
     }).catch((error) => {
       console.log(error);
@@ -58,10 +60,22 @@ function InboxUpcoming(props) {
   };
   
   const getSender = () => {
-    Api.getUserById(senderId, controller).then((res) => {
+    Api.getUsersByIds(senderIds).then((res) => {
       const data = res.data.data;
-      setLastname(data.lastName?.charAt(0).toUpperCase() + data.lastName?.slice(1))
-      setDepartment(data.department?.name)
+      const departments = {}
+      const lastNames = {}
+
+      documents.forEach(doc => {
+        const senders = data.find(sender => sender.id === doc.transaction.document?.senderId)
+        if (senders) {
+          if(senders.department) {
+            departments[doc.id] = senders.department.name
+          }
+          lastNames[doc.id] = senders.lastName.charAt(0).toUpperCase() + senders.lastName.slice(1)
+        }
+      })
+      setDepartment(departments)
+      setLastname(lastNames)
     }).catch((error) => {
       console.log(error)
     }).finally(() => {  
@@ -76,17 +90,16 @@ function InboxUpcoming(props) {
     setDocuments(updatedDocuments)
   }
 
-  const handleDelete = (e, id) => {
-    e.preventDefault()
+  const handleRead = (e, id) => {
     e.stopPropagation()
-
-    // Api.deleteDocument(id).then(() => {
-    //   getDocuments(controller)
-    // }).catch((error) => {
-    //   console.log(error)
-    // }).finally(() => {
-    //   setLoading(false)
-    // })
+    Api.readDocument(id).then(() => {
+      getIncoming()
+    }).catch((error) => {
+      console.log(error)
+    }).finally(() => {
+      
+    })
+    
   }
 
   const isLoading = isLoadingIncoming && isLoadingSender;
@@ -132,11 +145,13 @@ function InboxUpcoming(props) {
                 </td>
                 <td className="sender">
                   <span className={document.transaction.document?.urgent === true ? "urgent" : "non-urgent"}>{document.transaction.document?.urgent === true ? "HIGH" : "LOW"} </span>
-                  <span className={read ? "name-dept bold" : "name-dept"}>{lastname} {department}</span>
+                  <span className="name-dept">
+                    From: {department[document.id]} {lastname[document.id]}
+                  </span>
                 </td>
                 <td id="td-spacer"></td>
                 <td className="title-and-message">
-                  <strong>{document.transaction.document?.subject} - </strong>
+                  <span>{document.transaction.document?.subject} - </span>
                   <span>{document.transaction.document?.description}</span>
                 </td>
                 <td id="td-spacer"></td>
@@ -144,14 +159,14 @@ function InboxUpcoming(props) {
                   <span className="doc-stat">
                     <DocStatusSmall status={document.statusId?.name.charAt(0).toUpperCase() + document.statusId?.name.slice(1)} />
                   </span>
-                  <span><strong>{DateFormat({ createdDate: createdDate })}</strong></span>
+                  <span>{DateFormat({ createdDate: document.transaction.document?.createdDate })}</span>
                 </td>
                 <td className={`inbox-tr ${document.isChecked ? "checked" : ""}`}>
-                  <Tooltip title="Delete">
+                  <Tooltip title="Mark as unread">
                     <button 
-                      onClick={(e) => handleDelete(e, document.id)} 
+                      onClick={(e) => handleRead(e, document.id)} 
                       className={`delete inbox-delete ${document.isChecked ? "checked" : ""}`}>
-                      <DeleteOutlineIcon fontSize="small"/>
+                      <MarkEmailUnreadOutlinedIcon fontSize="small"/>
                     </button>
                   </Tooltip>
                 </td>

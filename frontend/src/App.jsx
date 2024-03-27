@@ -69,17 +69,19 @@ const App = () => {
           )}
           {(user?.role.id !== 1) && (
             <>
-              <Route path="track" element={<Track />} />
+              <Route path="track" element={<Track user={user}/>} />
               <Route path="compose" element={<Compose user={user}/>} />
               <Route path="inbox" element={<Inbox user={user}/>} />
               <Route path="inbox/outgoing/:id" element={<InboxViewOutgoing user={user}/>} />
               <Route path="inbox/incoming/:id" element={<InboxViewUpcoming user={user}/>} />
-              <Route path="sent" element={<Sent />} />
+              <Route path="sent" element={<Sent user={user}/>} />
+              <Route path="sent/doc/:id" element={<DocViewDocument user={user}/>} />
               <Route path="accepted-docs" element={<Accepted user={user}/>} />
               <Route path="accepted-docs/doc/:id" element={<DocViewDocument user={user}/>} />
               <Route path="declined-docs" element={<Declined user={user}/>} />
               <Route path="declined-docs/doc/:id" element={<DocViewDocument user={user}/>} />
-              <Route path="trash" element={<Trash />} />
+              <Route path="trash" element={<Trash user={user}/>} />
+              <Route path="trash/doc/:id" element={<DocViewDocument user={user}/>} />
               
             </>
           )}

@@ -1,6 +1,6 @@
+import MarkEmailUnreadOutlinedIcon from '@mui/icons-material/MarkEmailUnreadOutlined';
 import { Alert, LinearProgress, CircularProgress } from "@mui/material";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import React, { useState, useEffect, useRef } from 'react'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -54,7 +54,11 @@ function InboxViewMessage(props) {
     setDocToDecline(id)
     console.log(id)
   }
-  const handleClose = () => {
+  const handleClose = (reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setShowSnackbar(false)
     setOpenDialog(false)
     setDocToDecline(null)
   }
@@ -126,7 +130,6 @@ function InboxViewMessage(props) {
     }).finally(() => {
       getRouteById(controller)
       setTimeout(() => {  
-        setShowSnackbar(false);
         setIsAccepting(false); 
         navigate("/inbox"); 
       }, 1300);
@@ -138,7 +141,7 @@ function InboxViewMessage(props) {
       setErrorMessage("Please provide a decline note");
       return;
     }
-
+    
     setIsDeclining(true)
     Api.declineDocument(docToDecline, props.user.id, declineNote).then(() => {
       setStatus("Declined");
@@ -146,9 +149,8 @@ function InboxViewMessage(props) {
     }).catch((error) => {
       console.log(error)
     }).finally(() => {
+      getRouteById(controller)
       setTimeout(() => {
-        setShowSnackbar(false);
-        getRouteById(controller)
         setIsDeclining(false);
         navigate("/inbox")
       }, 1300)
@@ -170,9 +172,9 @@ function InboxViewMessage(props) {
             </Tooltip>
           </div>
           <div>
-            <Tooltip title="Move to trash" enterDelay={600}>
+            <Tooltip title="Mark as unread" enterDelay={600}>
               <button className="move-to-trash">
-                <DeleteOutlineIcon className="delete-svg"/>
+                <MarkEmailUnreadOutlinedIcon className="delete-svg"/>
               </button>
             </Tooltip>
           </div>
@@ -326,8 +328,12 @@ function InboxViewMessage(props) {
           <div className="spacer">
                 
           </div>
-          <Snackbar open={showSnackbar && (status === "Accepted" || status === "Declined")}>
-            <Alert onClose={handleClose} variant="filled" severity={status === "Accepted" ? "success" : "error"}>
+          <Snackbar  
+              onClose={handleClose}
+              autoHideDuration={3000}
+              open={showSnackbar && (status === "Accepted" || status === "Declined")}
+            >
+            <Alert variant="filled" severity={status === "Accepted" ? "success" : "error"}>
               {status === "Accepted" ? "Document Accepted" : "Document Declined"}
             </Alert>
         </Snackbar>
