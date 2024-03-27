@@ -583,6 +583,27 @@ hr {
   flex-shrink: 0;
   align-items: center;
 }
+.name-dept {
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.name-dept-read {
+  font-weight: normal;
+}
+.title {
+  font-weight: 700;
+}
+.title-read {
+  font-weight: normal;
+}
+.date-read{
+  font-weight: normal;
+}
+.datefr{
+  font-weight: 700;
+}
 
 .title-and-message {
   flex-grow: 2;
@@ -592,12 +613,11 @@ hr {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-
 .title-and-message2 {
   flex-grow: 2;
   overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .notif{
   display: flex;
@@ -623,8 +643,4 @@ hr {
 .value-visible {
   opacity:  1;
 }
-.name-dept {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+

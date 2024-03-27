@@ -1,4 +1,5 @@
 import MarkEmailUnreadOutlinedIcon from '@mui/icons-material/MarkEmailUnreadOutlined';
+import DraftsOutlinedIcon from '@mui/icons-material/DraftsOutlined';
 import DocStatusSmall from "../../components/common/DocStatusSmall";
 import { LinearProgress, Alert } from "@mui/material";
 import React, { useEffect, useState } from "react"
@@ -14,7 +15,6 @@ import Box from '@mui/system/Box';
 function InboxUpcoming(props) {
   const controller = new AbortController();
   const navigate = useNavigate()
-  const [read, setRead] = useState(true)
   const [senderIds, setSenderIds] = useState([])
   const [lastname, setLastname] = useState("")
   const [loading, setLoading] = useState(false)
@@ -96,10 +96,12 @@ function InboxUpcoming(props) {
       getIncoming()
     }).catch((error) => {
       console.log(error)
-    }).finally(() => {
-      
     })
-    
+  }
+
+  const handleUnread = (e, id) => {
+    e.stopPropagation()
+    console.log(id)
   }
 
   const isLoading = isLoadingIncoming && isLoadingSender;
@@ -133,11 +135,12 @@ function InboxUpcoming(props) {
               <tr onClick={(e) => {
                   if(!e.target.closest(".MuiCheckbox-root")) {
                     navigate(`/inbox/incoming/${document.id}`)
+                    handleRead(e, document.id)
                   }
-                  setRead(false)
                 }} 
                 key={document.id} 
-                className={`tbl-row ${document.isChecked ? "checked" : ""}`}>
+                className={`tbl-row ${document.isChecked ? "checked" : ""}
+                ${document?.read === true ? "tbl-row-read" : " "}`}>
                 <td>
                   <Checkbox 
                     onChange={() => handleChecked(i)} size="small" checked={document.isChecked || false}
@@ -145,13 +148,13 @@ function InboxUpcoming(props) {
                 </td>
                 <td className="sender">
                   <span className={document.transaction.document?.urgent === true ? "urgent" : "non-urgent"}>{document.transaction.document?.urgent === true ? "HIGH" : "LOW"} </span>
-                  <span className="name-dept">
+                  <span className={document?.read === true ? "name-dept-read" : "name-dept"}>
                     From: {department[document.id]} {lastname[document.id]}
                   </span>
                 </td>
                 <td id="td-spacer"></td>
                 <td className="title-and-message">
-                  <span>{document.transaction.document?.subject} - </span>
+                  <span className={document?.read === true ? "title-read" : "title"}>{document.transaction.document?.subject} - </span>
                   <span>{document.transaction.document?.description}</span>
                 </td>
                 <td id="td-spacer"></td>
@@ -159,15 +162,26 @@ function InboxUpcoming(props) {
                   <span className="doc-stat">
                     <DocStatusSmall status={document.statusId?.name.charAt(0).toUpperCase() + document.statusId?.name.slice(1)} />
                   </span>
-                  <span>{DateFormat({ createdDate: document.transaction.document?.createdDate })}</span>
+                  <span className={document?.read === true ? "date-read" : "datefr"}>{DateFormat({ createdDate: document.transaction.document?.createdDate })}</span>
                 </td>
-                <td className={`inbox-tr ${document.isChecked ? "checked" : ""}`}>
-                  <Tooltip title="Mark as unread">
-                    <button 
-                      onClick={(e) => handleRead(e, document.id)} 
-                      className={`delete inbox-delete ${document.isChecked ? "checked" : ""}`}>
-                      <MarkEmailUnreadOutlinedIcon fontSize="small"/>
-                    </button>
+                <td className={`inbox-tr ${document.isChecked ? "checked" : ""}
+                ${document?.read === true ? "inbox-tr-read" : " "}`}>
+                  <Tooltip title={document?.read === true ? "Mark as unread" : "Mark as read"}>
+                      <button 
+                        onClick={
+                          document?.read === true ? (
+                            (e) => handleUnread(e, document.id)
+                          ) : (
+                            (e) => handleRead(e.document.id)
+                          )
+                        } 
+                        className={`delete inbox-delete ${document.isChecked ? "checked" : ""}`}>
+                        {document?.read === true ? (
+                          <MarkEmailUnreadOutlinedIcon fontSize="small"/>
+                        ) : (
+                          <DraftsOutlinedIcon fontSize="small" />
+                        )}
+                      </button>
                   </Tooltip>
                 </td>
               </tr>

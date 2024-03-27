@@ -36,7 +36,9 @@ function Track(props) {
       setIsEmpty(false)
       setDocuments(data)
       getUser(controller)
-      setFrom(data.transaction.document?.senderId)
+      const sender = data.transaction.document?.senderId
+      setFrom(sender)
+      getUser(sender)
     }).catch((error) => {
       console.log(error)
     }).finally(() => {
@@ -44,14 +46,12 @@ function Track(props) {
     })
   }
 
-  const getUser = () => {
-    Api.getUserById(from, controller).then((res) => {
+  const getUser = (sender) => {
+    Api.getUserById(sender).then((res) => {
       const data = res.data.data
       setDept(data.department?.name)
     }).catch((error) => {
       console.log(error)
-    }).finally(() => {
-      setIsLoading(false)
     })
   }
 
