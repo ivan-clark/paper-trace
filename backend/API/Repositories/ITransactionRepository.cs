@@ -11,5 +11,6 @@ namespace API.Repositories
         void DeleteTransaction(int transactionID);
         void UpdateTransaction(TransactionModel model);
         int GetMaxTransactionId();
+        Transaction? GetTransactionByDocumentId(int docId);
     }
 }

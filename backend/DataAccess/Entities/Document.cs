@@ -17,5 +17,7 @@ public partial class Document
 
     public DateTime? CreatedDate { get; set; }
 
-    public sbyte? Urgent { get; set; }
+    public bool? Urgent { get; set; }
+
+    public bool? Visible { get; set; }
 }
