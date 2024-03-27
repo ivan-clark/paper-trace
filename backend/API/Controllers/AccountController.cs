@@ -31,7 +31,7 @@ namespace API.Controllers
                 if (account != null)
                 {
                     var user = _userService.GetUserById(account?.User?.Id ?? 0);
-                    var tokenString = _accountService.GenerateJSONWebToken(account.User?.Id ?? 0);
+                    var tokenString = _accountService.GenerateJSONWebToken(account?.User?.Id ?? 0);
                     return new JsonResponse().Success().For(new { user, token = tokenString });
                 }
                 else

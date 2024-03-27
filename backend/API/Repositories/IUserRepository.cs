@@ -11,5 +11,6 @@ namespace API.Repositories
         void DeleteUser(int userId);
         int CreateUser(UserModel model);
         void UpdateUser(UserModel model);
+        List<User> GetUsersByIds(params int[] ids);
     }
 }
