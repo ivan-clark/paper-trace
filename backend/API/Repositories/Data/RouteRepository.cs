@@ -110,11 +110,14 @@ namespace API.Repositories.Data
 
             if (route != null)
             {
-                    route.TransactionId = model.Transaction?.Id;  
-                    route.RecepientId = model.RecepientId?.Id;
-                    route.StatusId = 2;
-                    route.RecievedBy = recievebyId;
-                    route.Note = "Your Document Has Been Accepted";
+                route.UniId = model.UniId;
+                route.TransactionId = model.Transaction?.Id;
+                route.RecepientId = model.RecepientId?.Id;
+                route.RecievedBy = recievebyId;
+                route.StatusId = 2;
+                route.Read = model.Read;
+                route.Visible = model.Visible;
+                route.Note = "Your Document Has Been Accepted";
 
                 route.UpdatedDate = model.UpdatedDate;
 
@@ -128,11 +131,14 @@ namespace API.Repositories.Data
 
             if (route != null)
             {
-                    route.TransactionId = model.Transaction?.Id;
-                    route.RecepientId = model.RecepientId?.Id;
-                    route.StatusId = 3;
-                    route.RecievedBy = recievebyId;
-                    route.Note = note;
+                route.UniId = model.UniId;
+                route.TransactionId = model.Transaction?.Id;
+                route.RecepientId = model.RecepientId?.Id;
+                route.RecievedBy = recievebyId;
+                route.StatusId = 3;
+                route.Read = model.Read;
+                route.Visible = model.Visible;
+                route.Note = note;
 
                 route.UpdatedDate = model.UpdatedDate;
 
@@ -146,12 +152,14 @@ namespace API.Repositories.Data
 
             if (route != null)
             {
-                
-                    route.TransactionId = model.Transaction?.Id;
-                    route.RecepientId = model.RecepientId?.Id;   
-                    route.StatusId = 5;
-                    route.RecievedBy = recievebyId;
-                    route.Note = "Your Document Has Been Approved";
+                route.UniId = model.UniId;
+                route.TransactionId = model.Transaction?.Id;
+                route.RecepientId = model.RecepientId?.Id;
+                route.RecievedBy = recievebyId;
+                route.StatusId = 5;
+                route.Read = model.Read;
+                route.Visible = model.Visible;
+                route.Note = "Your Document Has Been Approved";
 
                 route.UpdatedDate = model.UpdatedDate;
 
@@ -165,11 +173,14 @@ namespace API.Repositories.Data
 
             if (route != null)
             {
-                    route.TransactionId = model.Transaction?.Id;
-                    route.RecepientId = model.RecepientId?.Id;
-                    route.StatusId = model.StatusId?.Id;
-                    route.Visible = false;
-                    route.Note = "The document is on Trash";
+                route.UniId = model.UniId;
+                route.TransactionId = model.Transaction?.Id;
+                route.RecepientId = model.RecepientId?.Id;
+                route.RecievedBy = model.RecievedBy?.Id;
+                route.StatusId = model.StatusId?.Id;
+                route.Read = model.Read;
+                route.Visible = false;
+                route.Note = "The document is on Trash";
 
                 route.UpdatedDate = model.UpdatedDate;
 
@@ -183,12 +194,31 @@ namespace API.Repositories.Data
 
             if (route != null)
             {
+                route.UniId = model.UniId;
                 route.TransactionId = model.Transaction?.Id;
                 route.RecepientId = model.RecepientId?.Id;
                 route.StatusId = model.StatusId?.Id;
-                route.Visible = model.Visible;
-                route.Note = model.Note;
+                route.RecievedBy = model.RecievedBy?.Id;           
                 route.Read = true;
+
+                route.UpdatedDate = model.UpdatedDate;
+
+                _dbcontext.SaveChanges();
+            }
+        }
+
+        public void UnreadDocument(RouteModel model)
+        {
+            var route = _dbcontext.Routes.SingleOrDefault(u => u.Id == model.Id);
+
+            if (route != null)
+            {
+                route.UniId = model.UniId;
+                route.TransactionId = model.Transaction?.Id;
+                route.RecepientId = model.RecepientId?.Id;
+                route.StatusId = model.StatusId?.Id;
+                route.RecievedBy = model.RecievedBy?.Id;
+                route.Read = false;
 
                 route.UpdatedDate = model.UpdatedDate;
 

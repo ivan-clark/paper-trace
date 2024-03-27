@@ -46,6 +46,9 @@ namespace API.Services
                 RecepientId = _departmentRepository.GetDepartmentById(route?.RecepientId ?? 0),
                 StatusId = _statusRepository.GetStatusById(route?.StatusId ?? 0),
                 RecievedBy = _userRepository.GetUserById(route?.RecievedBy ?? 0),
+                Read = route?.Read,
+                Visible = route?.Visible,
+                Note = route?.Note,
                 UpdatedDate = route?.UpdatedDate
             };
         }
@@ -60,11 +63,13 @@ namespace API.Services
                 result.Add(new RouteModel
                 {
                     Id = route.Id,
-                    UniId = route.UniId,
-                    Transaction = _transactionService.GetTransactionById(route.TransactionId ?? 0),
-                    RecepientId = _departmentRepository.GetDepartmentById(route.RecepientId ?? 0),
+                    UniId = route?.UniId,
+                    Transaction = _transactionService.GetTransactionById(route?.TransactionId ?? 0),
+                    RecepientId = _departmentRepository.GetDepartmentById(route?.RecepientId ?? 0),
                     StatusId = _statusRepository.GetStatusById(route?.StatusId ?? 0),
                     RecievedBy = _userRepository.GetUserById(route?.RecievedBy ?? 0),
+                    Read = route?.Read,
+                    Visible = route?.Visible,
                     Note = route?.Note ?? "",
                     UpdatedDate = route?.UpdatedDate
                     
@@ -104,11 +109,13 @@ namespace API.Services
                     result.Add(new RouteModel
                     {
                         Id = route.Id,
-                        UniId = route.UniId,
-                        Transaction = _transactionService.GetTransactionById(route.TransactionId ?? 0),
-                        RecepientId = _departmentRepository.GetDepartmentById(route.RecepientId ?? 0),
+                        UniId = route?.UniId,
+                        Transaction = _transactionService.GetTransactionById(route?.TransactionId ?? 0),
+                        RecepientId = _departmentRepository.GetDepartmentById(route?.RecepientId ?? 0),
                         StatusId = _statusRepository.GetStatusById(route?.StatusId ?? 0),
                         RecievedBy = _userRepository.GetUserById(route?.RecievedBy ?? 0),
+                        Read = route?.Read,
+                        Visible = route?.Visible,
                         Note = route?.Note ?? "",
                         UpdatedDate = route?.UpdatedDate
                     });
@@ -157,11 +164,13 @@ namespace API.Services
                     result.Add(new RouteModel
                     {
                         Id = route.Id,
-                        UniId = route.UniId,
-                        Transaction = _transactionService.GetTransactionById(route.TransactionId ?? 0),
-                        RecepientId = _departmentRepository.GetDepartmentById(route.RecepientId ?? 0),
+                        UniId = route?.UniId,
+                        Transaction = _transactionService.GetTransactionById(route?.TransactionId ?? 0),
+                        RecepientId = _departmentRepository.GetDepartmentById(route?.RecepientId ?? 0),
                         StatusId = _statusRepository.GetStatusById(route?.StatusId ?? 0),
                         RecievedBy = _userRepository.GetUserById(route?.RecievedBy ?? 0),
+                        Read = route?.Read,
+                        Visible = route?.Visible,
                         Note = route?.Note ?? "",
                         UpdatedDate = route?.UpdatedDate
                     });
@@ -184,11 +193,13 @@ namespace API.Services
                     result.Add(new RouteModel
                     {
                         Id = route.Id,
-                        UniId = route.UniId,
-                        Transaction = _transactionService.GetTransactionById(route.TransactionId ?? 0),
-                        RecepientId = _departmentRepository.GetDepartmentById(route.RecepientId ?? 0),
+                        UniId = route?.UniId,
+                        Transaction = _transactionService.GetTransactionById(route?.TransactionId ?? 0),
+                        RecepientId = _departmentRepository.GetDepartmentById(route?.RecepientId ?? 0),
                         StatusId = _statusRepository.GetStatusById(route?.StatusId ?? 0),
                         RecievedBy = _userRepository.GetUserById(route?.RecievedBy ?? 0),
+                        Read = route?.Read,
+                        Visible = route?.Visible,
                         Note = route?.Note ?? "",
                         UpdatedDate = route?.UpdatedDate
                     });
@@ -216,11 +227,13 @@ namespace API.Services
                         var routeModel = new RouteModel
                         {
                             Id = routeList.Id,
-                            UniId = routeList.UniId,
-                            Transaction = _transactionService.GetTransactionById(routeList.TransactionId ?? 0),
-                            RecepientId = _departmentRepository.GetDepartmentById(routeList.RecepientId ?? 0),
+                            UniId = routeList?.UniId,
+                            Transaction = _transactionService.GetTransactionById(routeList?.TransactionId ?? 0),
+                            RecepientId = _departmentRepository.GetDepartmentById(routeList?.RecepientId ?? 0),
                             StatusId = _statusRepository.GetStatusById(routeList?.StatusId ?? 0),
                             RecievedBy = _userRepository.GetUserById(routeList?.RecievedBy ?? 0),
+                            Read = routeList?.Read,
+                            Visible = routeList?.Visible,
                             Note = routeList?.Note ?? "",
                             UpdatedDate = routeList?.UpdatedDate
                         };
@@ -237,11 +250,13 @@ namespace API.Services
                     var routeModel = new RouteModel
                     {
                         Id = routeModelList.Id,
-                        UniId = routeModelList.UniId,
-                        Transaction = _transactionService.GetTransactionById(routeModelList.TransactionId ?? 0),
-                        RecepientId = _departmentRepository.GetDepartmentById(routeModelList.RecepientId ?? 0),
+                        UniId = routeModelList?.UniId,
+                        Transaction = _transactionService.GetTransactionById(routeModelList?.TransactionId ?? 0),
+                        RecepientId = _departmentRepository.GetDepartmentById(routeModelList?.RecepientId ?? 0),
                         StatusId = _statusRepository.GetStatusById(routeModelList?.StatusId ?? 0),
                         RecievedBy = _userRepository.GetUserById(routeModelList?.RecievedBy ?? 0),
+                        Read = routeModelList?.Read,
+                        Visible = routeModelList?.Visible,
                         Note = routeModelList?.Note ?? "",
                         UpdatedDate = routeModelList?.UpdatedDate
                     };
@@ -303,6 +318,12 @@ namespace API.Services
         {
             var routeModel = GetRouteById(RouteId);
             _routeRepository.ReadDocument(routeModel);
+        }
+
+        public void UnreadDocument(int RouteId)
+        {
+            var routeModel = GetRouteById(RouteId);
+            _routeRepository.UnreadDocument(routeModel);
         }
 
         public List<RouteModel> TrackingDocument(string uniId) 
@@ -389,11 +410,13 @@ namespace API.Services
                 var routeModel = new RouteModel
                 {
                     Id = route.Id,
-                    UniId = route.UniId,
-                    Transaction = _transactionService.GetTransactionById(route.TransactionId ?? 0),
-                    RecepientId = _departmentRepository.GetDepartmentById(route.RecepientId ?? 0),
+                    UniId = route?.UniId,
+                    Transaction = _transactionService.GetTransactionById(route?.TransactionId ?? 0),
+                    RecepientId = _departmentRepository.GetDepartmentById(route?.RecepientId ?? 0),
                     StatusId = _statusRepository.GetStatusById(route?.StatusId ?? 0),
                     RecievedBy = _userRepository.GetUserById(route?.RecievedBy ?? 0),
+                    Read = route?.Read,
+                    Visible = route?.Visible,
                     Note = route?.Note ?? "",
                     UpdatedDate = route?.UpdatedDate
                 };
@@ -421,11 +444,13 @@ namespace API.Services
                         var routeModel = new RouteModel
                         {
                             Id = routeList.Id,
-                            UniId = routeList.UniId,
-                            Transaction = _transactionService.GetTransactionById(routeList.TransactionId ?? 0),
-                            RecepientId = _departmentRepository.GetDepartmentById(routeList.RecepientId ?? 0),
+                            UniId = routeList?.UniId,
+                            Transaction = _transactionService.GetTransactionById(routeList?.TransactionId ?? 0),
+                            RecepientId = _departmentRepository.GetDepartmentById(routeList?.RecepientId ?? 0),
                             StatusId = _statusRepository.GetStatusById(routeList?.StatusId ?? 0),
                             RecievedBy = _userRepository.GetUserById(routeList?.RecievedBy ?? 0),
+                            Read = routeList?.Read,
+                            Visible = routeList?.Visible,
                             Note = routeList?.Note ?? "",
                             UpdatedDate = routeList?.UpdatedDate
                         };
@@ -454,11 +479,13 @@ namespace API.Services
                         var routeModel = new RouteModel
                         {
                             Id = routeList.Id,
-                            UniId = routeList.UniId,
-                            Transaction = _transactionService.GetTransactionById(routeList.TransactionId ?? 0),
-                            RecepientId = _departmentRepository.GetDepartmentById(routeList.RecepientId ?? 0),
+                            UniId = routeList?.UniId,
+                            Transaction = _transactionService.GetTransactionById(routeList?.TransactionId ?? 0),
+                            RecepientId = _departmentRepository.GetDepartmentById(routeList?.RecepientId ?? 0),
                             StatusId = _statusRepository.GetStatusById(routeList?.StatusId ?? 0),
                             RecievedBy = _userRepository.GetUserById(routeList?.RecievedBy ?? 0),
+                            Read = routeList?.Read,
+                            Visible = routeList?.Visible,
                             Note = routeList?.Note ?? "",
                             UpdatedDate = routeList?.UpdatedDate
                         };
@@ -508,11 +535,13 @@ namespace API.Services
                         var routeModel = new RouteModel
                         {
                             Id = routeList.Id,
-                            UniId = routeList.UniId,
-                            Transaction = _transactionService.GetTransactionById(routeList.TransactionId ?? 0),
-                            RecepientId = _departmentRepository.GetDepartmentById(routeList.RecepientId ?? 0),
+                            UniId = routeList?.UniId,
+                            Transaction = _transactionService.GetTransactionById(routeList?.TransactionId ?? 0),
+                            RecepientId = _departmentRepository.GetDepartmentById(routeList?.RecepientId ?? 0),
                             StatusId = _statusRepository.GetStatusById(routeList?.StatusId ?? 0),
                             RecievedBy = _userRepository.GetUserById(routeList?.RecievedBy ?? 0),
+                            Read = routeList?.Read,
+                            Visible = routeList?.Visible,
                             Note = routeList?.Note ?? "",
                             UpdatedDate = routeList?.UpdatedDate
                         };

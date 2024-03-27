@@ -235,6 +235,21 @@ namespace API.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResponse UnreadDocument(int RouteId)
+        {
+            try
+            {
+                _routeService.UnreadDocument(RouteId);
+                return new JsonResponse().Success();
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
+
         [HttpGet]
         public JsonResponse GetAcceptedDocuments(int id)
         {
