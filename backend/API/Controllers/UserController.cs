@@ -35,6 +35,24 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        public JsonResponse GetUsersByIds([FromQuery] int[] ids)
+        {
+            try
+            {
+                if (ids == null || ids.Length == 0)
+                {
+                    return new JsonResponse().Error().Msg("No IDs provided.");
+                }
+
+                return new JsonResponse().Success().For(_userService.GetUsersByIds(ids));
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+            }
+        }
+
+        [HttpGet]
         public JsonResponse GetUsers()
         {
             try

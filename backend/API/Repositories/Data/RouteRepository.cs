@@ -167,8 +167,28 @@ namespace API.Repositories.Data
             {
                     route.TransactionId = model.Transaction?.Id;
                     route.RecepientId = model.RecepientId?.Id;
-                    route.StatusId = 4;
+                    route.StatusId = model.StatusId?.Id;
+                    route.Visible = false;
                     route.Note = "The document is on Trash";
+
+                route.UpdatedDate = model.UpdatedDate;
+
+                _dbcontext.SaveChanges();
+            }
+        }
+
+        public void ReadDocument(RouteModel model)
+        {
+            var route = _dbcontext.Routes.SingleOrDefault(u => u.Id == model.Id);
+
+            if (route != null)
+            {
+                route.TransactionId = model.Transaction?.Id;
+                route.RecepientId = model.RecepientId?.Id;
+                route.StatusId = model.StatusId?.Id;
+                route.Visible = model.Visible;
+                route.Note = model.Note;
+                route.Read = true;
 
                 route.UpdatedDate = model.UpdatedDate;
 

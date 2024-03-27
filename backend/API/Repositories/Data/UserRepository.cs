@@ -16,6 +16,11 @@ namespace API.Repositories.Data
             return _dbcontext.Users.FirstOrDefault(u => u.Id == id);
         }
 
+        public List<User> GetUsersByIds(params int[] ids)
+        {
+            return _dbcontext.Users.Where(u => ids.Contains(u.Id)).ToList();
+        }
+
         public List<User> GetUsers()
         {
             return _dbcontext.Users.ToList();

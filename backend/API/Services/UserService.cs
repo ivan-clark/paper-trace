@@ -37,6 +37,31 @@ namespace API.Services
             };
         }
 
+        public List<UserModel> GetUsersByIds(params int[] ids)
+        {
+            List<UserModel> users = new List<UserModel>();
+
+            foreach (int id in ids)
+            {
+                var user = _userRepository.GetUserById(id);
+                if (user != null)
+                {
+                    users.Add(new UserModel
+                    {
+                        Id = user.Id,
+                        FirstName = user.Firstname,
+                        LastName = user.Lastname,
+                        Email = user.Email,
+                        CreatedDate = user.CreatedDate,
+                        Role = _roleRepository.GetRoleById(user?.RoleId ?? 0),
+                        Department = _departmentRepository.GetDepartmentById(user?.DepartmentId ?? 0)
+                    });
+                }
+            }
+
+            return users;
+        }
+
         public List<UserModel> GetUsers()
         {
             var result = new List<UserModel>();

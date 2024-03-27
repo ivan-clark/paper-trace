@@ -17,6 +17,7 @@ namespace API.Repositories
         void DeclineDocument(RouteModel model, int recievebyId, string note);
         void ApproveDocument(RouteModel model, int recievebyId);
         void TrashDocument(RouteModel model);
+        void ReadDocument(RouteModel model);
         string UniqueIdGenerator(string DeptName, bool Urgency, bool docType);
         List<Route>? GetRouteByTransactionId(int id);
     }

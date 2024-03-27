@@ -220,6 +220,21 @@ namespace API.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResponse ReadDocument(int RouteId)
+        {
+            try
+            {
+                _routeService.ReadDocument(RouteId);
+                return new JsonResponse().Success();
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
+
         [HttpGet]
         public JsonResponse GetAcceptedDocuments(int id)
         {
@@ -240,6 +255,20 @@ namespace API.Controllers
             try
             {
                 return new JsonResponse().Success().For(_routeService.GetDeclineDocuments(routeId));
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
+
+        [HttpGet]
+        public JsonResponse GetTrashDocuments(int userId)
+        {
+            try
+            {
+                return new JsonResponse().Success().For(_routeService.GetTrashDocuments(userId));
             }
             catch (Exception ex)
             {
@@ -296,6 +325,20 @@ namespace API.Controllers
             try
             {
                 return new JsonResponse().Success().For(_routeService.GetOutGoingImproved(senderId));
+            }
+            catch (Exception ex)
+            {
+                return new JsonResponse().Error().Msg(ex.Message);
+
+            }
+        }
+
+        [HttpGet]
+        public JsonResponse GetSentDocuments(int senderId)
+        {
+            try
+            {
+                return new JsonResponse().Success().For(_routeService.GetSentDocuments(senderId));
             }
             catch (Exception ex)
             {

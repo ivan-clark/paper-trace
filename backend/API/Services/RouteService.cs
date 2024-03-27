@@ -199,6 +199,60 @@ namespace API.Services
             return result;
         }
 
+        public List<RouteModel> GetTrashDocuments(int userId)
+        {
+            var result = new List<RouteModel>();
+
+            var documentModelLists = _documentRepository.GetDocumentBySenderId(userId);
+            foreach (var documentModel in documentModelLists)
+            {
+                if (documentModel.Visible == false) 
+                { 
+                    var transactionModel = _transactionRepository.GetTransactionByDocumentId(documentModel.Id);
+                    var routeLists = _routeRepository.GetRouteByTransactionId(transactionModel.Id);
+
+                    foreach (var routeList in routeLists)
+                    {
+                        var routeModel = new RouteModel
+                        {
+                            Id = routeList.Id,
+                            UniId = routeList.UniId,
+                            Transaction = _transactionService.GetTransactionById(routeList.TransactionId ?? 0),
+                            RecepientId = _departmentRepository.GetDepartmentById(routeList.RecepientId ?? 0),
+                            StatusId = _statusRepository.GetStatusById(routeList?.StatusId ?? 0),
+                            RecievedBy = _userRepository.GetUserById(routeList?.RecievedBy ?? 0),
+                            Note = routeList?.Note ?? "",
+                            UpdatedDate = routeList?.UpdatedDate
+                        };
+                        result.Add(routeModel);
+                    }
+                }
+            }
+            var userDeptId = _userRepository.GetUserById(userId);          
+            var routeModelLists = _routeRepository.GetRoutes();
+            foreach (var routeModelList in routeModelLists) 
+            {
+                if(routeModelList.RecepientId == userDeptId?.DepartmentId && routeModelList.RecievedBy == userId && routeModelList.Visible == false)
+                { 
+                    var routeModel = new RouteModel
+                    {
+                        Id = routeModelList.Id,
+                        UniId = routeModelList.UniId,
+                        Transaction = _transactionService.GetTransactionById(routeModelList.TransactionId ?? 0),
+                        RecepientId = _departmentRepository.GetDepartmentById(routeModelList.RecepientId ?? 0),
+                        StatusId = _statusRepository.GetStatusById(routeModelList?.StatusId ?? 0),
+                        RecievedBy = _userRepository.GetUserById(routeModelList?.RecievedBy ?? 0),
+                        Note = routeModelList?.Note ?? "",
+                        UpdatedDate = routeModelList?.UpdatedDate
+                    };
+                result.Add(routeModel);
+                }
+            }
+                result = result.OrderByDescending(r => r.UpdatedDate).ToList();
+
+            return result;
+        }
+
         public void ForTestingDeleteRoute()
         {
             var maxRouteId = _routeRepository.GetMaxRouteId();
@@ -243,6 +297,12 @@ namespace API.Services
         {
             var routeModel = GetRouteById(RouteId);
             _routeRepository.TrashDocument(routeModel);
+        }
+
+        public void ReadDocument(int RouteId)
+        {
+            var routeModel = GetRouteById(RouteId);
+            _routeRepository.ReadDocument(routeModel);
         }
 
         public List<RouteModel> TrackingDocument(string uniId) 
@@ -372,6 +432,38 @@ namespace API.Services
 
                         result.Add(routeModel);
                     }
+                }
+            }
+            result = result.OrderByDescending(r => r.UpdatedDate).ToList();
+
+            return result;
+        }
+
+        public List<RouteModel> GetSentDocuments(int senderId)
+        {
+            var result = new List<RouteModel>();
+
+            var documentModelLists = _documentRepository.GetDocumentBySenderId(senderId);
+            foreach (var documentModel in documentModelLists)
+            {
+                var transactionModel = _transactionRepository.GetTransactionByDocumentId(documentModel.Id);
+                var routeLists = _routeRepository.GetRouteByTransactionId(transactionModel.Id);
+
+                foreach (var routeList in routeLists)
+                {
+                        var routeModel = new RouteModel
+                        {
+                            Id = routeList.Id,
+                            UniId = routeList.UniId,
+                            Transaction = _transactionService.GetTransactionById(routeList.TransactionId ?? 0),
+                            RecepientId = _departmentRepository.GetDepartmentById(routeList.RecepientId ?? 0),
+                            StatusId = _statusRepository.GetStatusById(routeList?.StatusId ?? 0),
+                            RecievedBy = _userRepository.GetUserById(routeList?.RecievedBy ?? 0),
+                            Note = routeList?.Note ?? "",
+                            UpdatedDate = routeList?.UpdatedDate
+                        };
+
+                        result.Add(routeModel);
                 }
             }
             result = result.OrderByDescending(r => r.UpdatedDate).ToList();
