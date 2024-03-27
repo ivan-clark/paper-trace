@@ -24,7 +24,12 @@ class Api {
   }
 
   static getUserById(id, controller) {
-    return Http.get(`/api/User/GetUserById?id=${id}`, { signal: controller?.signal });
+    return Http.get(`/api/User/GetUserById?id=${id}`, { signal: controller?.signal })
+  }
+
+  static getUsersByIds(ids) {
+    const string = ids.map(id => `ids=${id}`).join("&")
+    return Http.get(`/api/User/GetUsersByIds?${string}&`)
   }
 
   static createUser(model) {
@@ -63,8 +68,8 @@ class Api {
     return Http.post("/api/Document/CreateDocument", model);
   }
 
-  static createUserTransmittal(model) {
-    return Http.post("/api/Route/CreateUserTransmittal", model)
+  static multipleCompose(model) {
+    return Http.post("/api/Route/MulitipleCompose", model)
   }
   
   static getDocuments(senderId, recepientId, statusId, controller) {
@@ -92,11 +97,11 @@ class Api {
   }
 
   static getIncoming(recipientId) { 
-    return Http.get(`/api/Route/GetIncoming?id=${recipientId}`, )
+    return Http.get(`/api/Route/GetIncoming?id=${recipientId}`)
   }
 
-  static getOutgoing(senderId) {
-    return Http.get(`/api/Route/GetOutgoing?id=${senderId}`)
+  static getOutGoingImproved(senderId) {
+    return Http.get(`/api/Route/GetOutgoingImproved?senderId=${senderId}`)
   }
   
   static getTransactionById(id, controller) {
@@ -110,6 +115,49 @@ class Api {
   static getRouteById(id, controller) {
     return Http.get(`api/Route/GetRouteById?id=${id}`, {signal: controller?.signal},)
   }
-} 
 
+  static acceptDocument(RouteId, recievebyId) {
+    return Http.post(`/api/Route/AcceptDocument?RouteId=${RouteId}&recievebyId=${recievebyId}`, {
+      RouteId: RouteId, 
+      recievebyId: recievebyId
+    })
+  }
+
+  static declineDocument(RouteId, recievebyId, note) {
+    return Http.post(`/api/Route/DeclineDocument?RouteId=${RouteId}&recievebyId=${recievebyId}&note=${note}`, {
+      RouteId: RouteId, 
+      recievebyId: recievebyId, 
+      note: note,
+    })
+  }
+
+  static getAcceptedDocs(id) {
+    return Http.get(`/api/Route/GetAcceptedDocuments?id=${id}`)
+  }
+
+  static getDeclinedDocs(routeId) {
+    return Http.get(`/api/Route/GetDeclineDocuments?routeId=${routeId}`)
+  }
+
+  static trackDocument(uniId) {
+    return Http.get(`/api/Route/TrackingDocument?uniId=${uniId}`)
+  }
+
+  static getSentDocs(senderId) {
+    return Http.get(`/api/Route/GetSentDocuments?senderId=${senderId}`)
+  }
+
+  static trashDocument(RouteId) {
+    return Http.post(`/api/Route/TrashDocument?RouteId=${RouteId}`)
+  }
+
+  static getTrashDocuments(userId) {
+    return Http.get(`/api/Route/GetTrashDocuments?userId=${userId}`)
+  }
+
+  static readDocument(RouteId) {
+    return Http.post(`/api/Route/ReadDocument?RouteId=${RouteId}`)
+  }
+} 
+  
 export default Api;

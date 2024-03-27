@@ -1,12 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap");
 /*----------* global-section *----------*/
- * {
+ /* * {
 	 -webkit-user-select: none;
 	 -khtml-user-select: none;
 	 -moz-user-select: -moz-none;
 	 -o-user-select: none;
 	 user-select: none;
-}
+} */
  html, body {
 	 margin: 0;
 	 height: 100%;
@@ -24,10 +24,14 @@
 	 --sidebar-active-color: #d4d9e2;
 	 --outlet-bg: #fff;
 	 --on-white-hover: #f6f6f6;
+	 --on-white-hover2: #eeeeee;
 	 --on-white-darker-hover: #c2c2c2;
 	 --border-bottom-onwhite: #dfdfdf;
 	 --secondary-font-color: #969696;
 	 --error-color: #dd3d3d;
+	 --declined: #c51212;
+	 --accepted: rgb(51, 161, 51);
+	 --read: #F8F8FA;
 }
  html body {
 	 font-family: 'Inter', 'Arial', sans-serif;
@@ -47,9 +51,10 @@
 }
 
 ::-webkit-scrollbar {
-	width: 12px;
+	width: 8px;
 }
 
 ::-webkit-scrollbar-thumb {
-	background-color: var(--on-white-darker-hover);
+	background-color: var(--border-bottom-onwhite);
+	border-radius: 1em;
 }

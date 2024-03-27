@@ -1,8 +1,8 @@
-import SentDetails from "./SentDetails"
+import DocTable from "../../components/common/DocTable"
 import React from "react"
 import "./_sent.scss"
 
-function Sent() {
+function Sent(props) {
   return (
     <div className="sent-wrapper">
       <div className="sent-header">
@@ -13,7 +13,7 @@ function Sent() {
       <div className="inbox-outlet">
         <div className="inbox-outlet-wrapper">
           <div className="inbox-inbox">
-            <SentDetails />
+            <DocTable receiver={props.user.id}/>
           </div>
         </div>
       </div>

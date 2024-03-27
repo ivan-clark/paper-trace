@@ -23,7 +23,7 @@ import CreateIcon from "@mui/icons-material/Create";
 
 const Sidebar = (props) => {
   const location = useLocation();
-
+  
   const navItems = [
     ...(props.roleId === 2 || props.roleId === 3 ? [
       {
@@ -48,7 +48,8 @@ const Sidebar = (props) => {
         path: "/inbox",
         icon: <InboxOutlinedIcon />,
         activeIcon: <InboxIcon />,
-        cName: "sidebar-text"
+        cName: "sidebar-text",
+        value: 1,
       },
       {
         title: "Sent",
@@ -88,7 +89,7 @@ const Sidebar = (props) => {
         cName: "sidebar-text"
       },
     ] : []),
-    ...(props.roleId !==3 ? [
+    ...(props.roleId !== 3 ? [
       {
         title: "Users",
         path: "/users",
@@ -121,7 +122,14 @@ const Sidebar = (props) => {
               <li>
                 <NavLink to={item.path} id={item.cName}>
                   { isActive(item) ? item.activeIcon : item.icon}
-                  <span>{item.title}</span>
+                  <div className="notif">
+                    <div className="inner">
+                      <span>{item.title}</span>
+                      <span className={`${isActive(item) ? "value-active" : ""} ${item.value === 0 ? "value-invisible" : "value-visible"}`}>
+                      {item.value}
+                    </span>
+                    </div>
+                  </div>
                 </NavLink>
               </li>
             </nav>

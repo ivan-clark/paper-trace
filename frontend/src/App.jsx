@@ -22,6 +22,7 @@ import DepartmentAdd from "./pages/Departments/DepartmentsAdd"
 import DepartmentEdit from "./pages/Departments/DepartmentsEdit"
 import InboxViewUpcoming from "./pages/Inbox/InboxViewUpcoming";
 import InboxViewOutgoing from "./pages/Inbox/InboxViewOutgoing";
+import DocViewDocument from "./components/common/DocViewDocument";
 
 const Protected = ({ isLoggedIn, children }) => {
   return isLoggedIn ? children : <Navigate to="/" replace />;
@@ -30,7 +31,7 @@ const Protected = ({ isLoggedIn, children }) => {
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(); 
 
   useEffect(() => {
     Api.validate().then((response) => {
@@ -68,15 +69,19 @@ const App = () => {
           )}
           {(user?.role.id !== 1) && (
             <>
-              <Route path="track" element={<Track />} />
+              <Route path="track" element={<Track user={user}/>} />
               <Route path="compose" element={<Compose user={user}/>} />
               <Route path="inbox" element={<Inbox user={user}/>} />
-              <Route path="inbox/outgoing/:id" element={<InboxViewOutgoing />} />
-              <Route path="inbox/incoming/:id" element={<InboxViewUpcoming />} />
-              <Route path="sent" element={<Sent />} />
-              <Route path="accepted-docs" element={<Accepted />} />
-              <Route path="declined-docs" element={<Declined />} />
-              <Route path="trash" element={<Trash />} />
+              <Route path="inbox/outgoing/:id" element={<InboxViewOutgoing user={user}/>} />
+              <Route path="inbox/incoming/:id" element={<InboxViewUpcoming user={user}/>} />
+              <Route path="sent" element={<Sent user={user}/>} />
+              <Route path="sent/doc/:id" element={<DocViewDocument user={user}/>} />
+              <Route path="accepted-docs" element={<Accepted user={user}/>} />
+              <Route path="accepted-docs/doc/:id" element={<DocViewDocument user={user}/>} />
+              <Route path="declined-docs" element={<Declined user={user}/>} />
+              <Route path="declined-docs/doc/:id" element={<DocViewDocument user={user}/>} />
+              <Route path="trash" element={<Trash user={user}/>} />
+              <Route path="trash/doc/:id" element={<DocViewDocument user={user}/>} />
               
             </>
           )}

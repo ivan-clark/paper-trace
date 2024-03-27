@@ -1,28 +1,21 @@
-import MarkEmailUnreadOutlinedIcon from '@mui/icons-material/MarkEmailUnreadOutlined';
-import { Alert, LinearProgress, CircularProgress } from "@mui/material";
+import { LinearProgress } from "@mui/material";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { Link, useParams, useNavigate } from 'react-router-dom'
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { Link, useParams, useNavigate, useLocation } from 'react-router-dom'
 import React, { useState, useEffect, useRef } from 'react'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DocStatus from '../../components/common/DocStatus';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import ShortcutIcon from '@mui/icons-material/Shortcut';
-import DialogTitle from '@mui/material/DialogTitle';
 import DateFormatLong from '../../services/Format';
-import FormControl from '@mui/material/FormControl';
-import CheckIcon from '@mui/icons-material/Check';
-import CloseIcon from '@mui/icons-material/Close';
-import TextField from '@mui/material/TextField';
-import Snackbar from "@mui/material/Snackbar";
 import Tooltip from '@mui/material/Tooltip';
-import Dialog from '@mui/material/Dialog';
 import Api from "../../services/Api"
 
-function InboxViewMessage(props) {
+function DocViewDocument(props) {
   const controller = new AbortController()
   const menuRef = useRef(null)
   const { id } = useParams()
+  const location = useLocation()
+  const { pathname } = location
+
   const navigate = useNavigate()
   const [name, setName] = useState("")
   const [uniId, setUniId] = useState("")
@@ -31,7 +24,7 @@ function InboxViewMessage(props) {
   const [status, setStatus] = useState("")
   const [subject, setSubject] = useState("")
   const [senderId, setSenderId] = useState(0)
-  const [isLoading, setIsLoading] = useState(true)
+  const [loading, setIsLoading] = useState(false)
   const [createdDate, setCreatedDate] = useState("")
   const [description, setDescription] = useState("")
   const [declineNote, setDeclineNote] = useState("")
@@ -49,19 +42,10 @@ function InboxViewMessage(props) {
   const [firstname, setFirstname] = useState("")
   const [department, setDepartment] = useState("")
 
-  const handleClickOpen = (id) => {
-    setOpenDialog(true)
-    setDocToDecline(id)
-    console.log(id)
-  }
-  const handleClose = (reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setShowSnackbar(false)
-    setOpenDialog(false)
-    setDocToDecline(null)
-  }
+  const isAcceptedPath = pathname.includes("/accepted-docs")
+  const isDeclinedPath = pathname.includes("/declined-docs")
+  const isSentPath = pathname.includes("/sent")
+  const isTrashPath = pathname.includes("/trash")
 
   useEffect(() => {
     setIsLoading(true);
@@ -120,67 +104,53 @@ function InboxViewMessage(props) {
     })
   }
 
-  const handleAccept = () => {
-    setIsAccepting(true)
-    Api.acceptDocument(id, props.user.id).then(() => {
-      setStatus("Accepted");
-      setShowSnackbar(true);
-    }).catch((error) => {
-      console.log(error)
-    }).finally(() => {
-      getRouteById(controller)
-      setTimeout(() => {  
-        setIsAccepting(false); 
-        navigate("/inbox"); 
-      }, 1300);
-    })
-  }
+  const isLoading = isLoadingRoute || isLoadingUser;
 
-  const handleDecline = () => {
-    if (!declineNote.trim()) {
-      setErrorMessage("Please provide a decline note");
-      return;
-    }
-    
-    setIsDeclining(true)
-    Api.declineDocument(docToDecline, props.user.id, declineNote).then(() => {
-      setStatus("Declined");
-      setShowSnackbar(true);
-    }).catch((error) => {
-      console.log(error)
-    }).finally(() => {
-      getRouteById(controller)
-      setTimeout(() => {
-        setIsDeclining(false);
-        navigate("/inbox")
-      }, 1300)
-    })
-  }
-
-  const loading = isLoadingRoute || isLoadingUser;
 
   return (
-    <div className="view-message-wrapper">
+    <>
+      <div className="view-message-wrapper">
       <div className="button-section">
         <div className="button-inner-section">
           <div>
-          <Tooltip
-            title={"Back to inbox"} enterDelay={600}>
-              <Link to={"/inbox"}>
+            <Tooltip title={
+              isAcceptedPath 
+              ? "Back to accepted docs" 
+              : isDeclinedPath 
+              ? "Back to declined docs"
+              : isSentPath 
+              ? "Back to sent docs"
+              : isTrashPath
+              ? "Back to trash docs"
+              : " "
+            } 
+              enterDelay={600}
+              >
+              <Link to={
+                isAcceptedPath 
+                ? "/accepted-docs" 
+                :  isDeclinedPath 
+                ? "/declined-docs"
+                : isSentPath
+                ? "/sent"
+                : isTrashPath
+                ? "/trash"
+                : " "
+              }>
                 <ArrowBackIcon className="back" />
               </Link>
             </Tooltip>
           </div>
           <div>
-            <Tooltip title="Mark as unread" enterDelay={600}>
+            <Tooltip title="Move to trash" enterDelay={600}>
               <button className="move-to-trash">
-                <MarkEmailUnreadOutlinedIcon className="delete-svg"/>
+                <DeleteOutlineIcon className="delete-svg"/>
               </button>
             </Tooltip>
           </div>
         </div>
       </div>
-      {loading ? (
+      {isLoading ? (
         <LinearProgress />
       ) : (
       <div className="scrollable-area">
@@ -213,7 +183,7 @@ function InboxViewMessage(props) {
               </div>
               <div className="to-me">
                 <div className="to-me-doc-urgency">
-                  <div>to me</div>
+                  <div>{isSentPath ? "from you" : "to me"}</div>
                   <div>
                     <Tooltip title="Show details" enterDelay={600}>
                       <button onClick={() => {setOpen(!open)}} className="show-details-button">
@@ -254,94 +224,14 @@ function InboxViewMessage(props) {
                   </span> 
                 </div>
               </div>
-              <div className="footer-button-section">
-                <div className="left-section-button">
-                  <div>
-                    <button onClick={() => handleClickOpen(id)} className="decline">
-                      <CloseIcon />
-                      <span>Decline</span>
-                    </button>
-                  </div>
-                  <div>
-                    <button 
-                    disabled={isAccepting}
-                    onClick={handleAccept} 
-                    className="accept">
-                      <CheckIcon />
-                      {isAccepting ? <CircularProgress size={20} color="inherit" /> : "Accept"}
-                    </button>
-                  </div>
-                  <FormControl sx={{ mt: 2, minWidth: 120 }}>
-                      <Dialog
-                        fullWidth
-                        sx={{maxWidth: 420, margin: "auto"}}
-                        open={openDialog}
-                        onClose={handleClose}
-                        PaperProps={{
-                          component: "form",
-                          onSubmit: (e) => {
-                            e.preventDefault()
-                            handleDecline()
-
-                          }
-                        }}
-                      >
-                        <DialogTitle 
-                          sx={{ fontFamily: "Inter" }}
-                        >{`Decline document?`}</DialogTitle>
-                        <DialogContent>
-                          <TextField
-                            autoFocus
-                            required
-                            fullWidth
-                            name="note"
-                            type="text"
-                            variant="standard"
-                            value={declineNote}
-                            onChange={(e) => setDeclineNote(e.target.value)}
-                            label={"Write a note"}
-                            placeholder="Write a note to let them know"
-                          />
-                        </DialogContent>
-                        <DialogActions>
-                          <button
-                            disabled={isDeclining}
-                            className="confirm-decline"
-                          >
-                            {isDeclining ? <CircularProgress size={20} color="inherit" />  : "Confirm Decline"}
-                          </button> 
-                        </DialogActions>
-                      </Dialog>
-                    </FormControl>
-                </div>
-                <div className="right-section-button">
-                  <div>
-                    <button className="forward">
-                      <ShortcutIcon />
-                      <span>Forward</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
-          <div className="spacer">
-                
-          </div>
-          <Snackbar  
-              onClose={handleClose}
-              autoHideDuration={3000}
-              open={showSnackbar && (status === "Accepted" || status === "Declined")}
-            >
-            <Alert variant="filled" severity={status === "Accepted" ? "success" : "error"}>
-              {status === "Accepted" ? "Document Accepted" : "Document Declined"}
-            </Alert>
-        </Snackbar>
        </div>
       </div>
     )}
     </div>
+    </>
   )
 }
 
-export default InboxViewMessage
+export default DocViewDocument

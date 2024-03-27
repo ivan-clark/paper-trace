@@ -1,8 +1,8 @@
-import AcceptedDetails from "./AcceptedDetails"
+import DocTable from "../../components/common/DocTable"
 import React from "react"
 import "./_accepted.scss"
 
-function Accepted() {
+function Accepted(props) {
   return (
     <div className="sent-wrapper">
       <div className="sent-header">
@@ -13,7 +13,7 @@ function Accepted() {
       <div className="inbox-outlet">
         <div className="inbox-outlet-wrapper">
           <div className="inbox-inbox">
-            <AcceptedDetails />
+            <DocTable receiver={props.user.id}/>
           </div>
         </div>
       </div>

@@ -1,10 +1,13 @@
-import { Form, Link, useNavigate } from "react-router-dom"
+import FormControlLabel from '@mui/material/FormControlLabel';
 import { Alert, LinearProgress } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom"
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
+import FormGroup from '@mui/material/FormGroup';
 import React, { useEffect, useState } from "react"
 import SendIcon from "@mui/icons-material/Send";
 import TextField from "@mui/material/TextField";
+import Checkbox from '@mui/material/Checkbox';
 import Snackbar from "@mui/material/Snackbar";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
@@ -30,13 +33,14 @@ const Compose = (props) => {
   const [loading, setLoading] = useState(true);
   const [departments, setDepartments] = useState([]);
   //changed state value 0 to array
-  const [department, setDepartment] = useState([]);
-  const [subject, setSubject] = useState("");
-  const [description, setDescription] = useState("");
-  const [urgent, setUrgent] = useState("")
   const [error, setError] = useState(null)
-  const [showSnackbar, setShowSnackbar] = useState(false)
+  const [urgent, setUrgent] = useState(false)
+  const [subject, setSubject] = useState("");
+  const [doctype, setDoctype] = useState(false)
+  const [department, setDepartment] = useState([]);
+  const [description, setDescription] = useState("");
   const [restricted, setRestricted] = useState(false)
+  const [showSnackbar, setShowSnackbar] = useState(false)
 
   const navigate = useNavigate();
 
@@ -45,7 +49,6 @@ const Compose = (props) => {
       target: { value },
     } = event;
     setDepartment(
-      // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value,
     );
   };
@@ -76,18 +79,21 @@ const Compose = (props) => {
         subject: subject,
         description: description,
         urgent: urgent,
+        doctype: doctype,
       },
       transactionModel: {
         restricted: restricted,
       },
-      routeModel: {
-        recepientId: {
-          id: department[0]
-        },
-      }
+      routeModel: [
+        {
+          recepientId: {
+            id: department[0]
+          },
+        }
+      ]
     };
-    setShowSnackbar(true)
-    Api.createUserTransmittal(model).then(()=>{
+    Api.multipleCompose(model).then(()=>{
+      setShowSnackbar(true)
     }).catch(()=>{
       console.log(error)
     }).finally(() =>{
@@ -100,6 +106,7 @@ const Compose = (props) => {
     if (reason === "clickaway") {
       return;
     }
+    setShowSnackbar(false)
   }
 
   return (
@@ -150,17 +157,6 @@ const Compose = (props) => {
                 ))
               )}
             </Select>
-            <FormControl sx={{ flex: 3, marginTop: .8 }}>
-              <InputLabel id="urgent-select">Restricted?</InputLabel>  
-              <Select
-                value={restricted}
-                onChange={(e) => setRestricted(e.target.value)}
-                label="Restricted?"
-              >
-                <MenuItem value={true}>Yes</MenuItem>
-                <MenuItem value={false}>No</MenuItem>
-              </Select>
-            </FormControl>
           </Box>
           <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
             <TextField
@@ -171,15 +167,15 @@ const Compose = (props) => {
               onChange={(e) => setSubject(e.target.value)} 
             />
             <FormControl sx={{ flex: 3, marginTop: .8 }}>
-              <InputLabel id="urgent-select">Is this urgent?</InputLabel>  
+              <InputLabel id="doctype">Document type</InputLabel>  
               <Select
-                value={urgent}
-                onChange={(e) => setUrgent(e.target.value)}
-                id="urgent-select"
-                label="Is this urgent?"
+                value={doctype}
+                onChange={(e) => setDoctype(e.target.value)}
+                id="doctype"
+                label="Document type"
               >
-                <MenuItem value={1}>Yes</MenuItem>
-                <MenuItem value={0}>No</MenuItem>
+                <MenuItem value={true}>For signature</MenuItem>
+                <MenuItem value={false}>Carbon copy</MenuItem>
               </Select>
             </FormControl>
           </Box>
@@ -187,23 +183,41 @@ const Compose = (props) => {
             <textarea placeholder="Type here..." value={description} onChange={(e) => setDescription(e.target.value)}/>
           </div>
           <div className="send-button-wrapper">
-            <button className="cancel">
-              <Link to={"/inbox"}>
-                Cancel
-              </Link>
-            </button>
-            <button onClick={handleSubmit} className="send-doc-btn">
-              <span>
-                <SendIcon fontSize="small" />
-                Send
-              </span>
-            </button>
+            <div className="checkboxes">
+              <div>
+                <FormControlLabel 
+                label="Restricted?" control={<Checkbox 
+                checked={restricted}
+                onChange={(e) => setRestricted(e.target.checked)}
+                size="small"/>} 
+                />
+                <FormControlLabel 
+                label="Is this urgent?" control={<Checkbox 
+                checked={urgent}
+                onChange={(e) => setUrgent(e.target.checked)}
+                size="small"/>} 
+                />
+              </div>
+            </div>
+            <div>
+              <button className="cancel">
+                <Link to={"/inbox"}>
+                  Cancel
+                </Link>
+              </button>
+              <button onClick={handleSubmit} className="send-doc-btn">
+                <span>
+                  <SendIcon fontSize="small" />
+                  Send
+                </span>
+              </button>
+            </div>
           </div>
           </FormControl>
         </div>
       </div>
       <Snackbar open={showSnackbar} autoHideDuration={5000} onClose={handleClose}>
-        <Alert onClose={handleClose} variant="filled" severity="success">
+        <Alert variant="filled" severity="success">
           {`Message sent successfully`}
         </Alert>
       </Snackbar>

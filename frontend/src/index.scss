@@ -517,14 +517,13 @@ hr {
   display: flex;
   overflow: hidden;
   position: relative;
+  min-width: 520px;
   margin-right: 1em;
   margin-bottom: 1em;
   flex-direction: row;
   border-radius: 10px;
   background: var(--outlet-bg);
   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.1);
-  border: solid 1px #fafafa;
-  min-width: 520px;
 }
 
 #absolute {
@@ -532,4 +531,100 @@ hr {
  position: absolute;
  top: 4px;
  right: 6px;
+}
+.ongoing-s,
+.accepted-s,
+.declined-s {
+  opacity: 65%;
+  color: white;
+  font-weight: 500;
+  border-radius: .3rem;
+  padding: 2px 4px 2px 4px;
+}
+
+.ongoing,
+.accepted,
+.declined {
+  font-size: 18px;
+  font-weight: 500;
+  color: white;
+  margin-right: .8em;
+  border-radius: 6px;
+  padding: 4px 8px 4px 8px;
+}
+
+.ongoing,
+.ongoing-s {
+  background-color: gray;
+}
+.accepted,
+.accepted-s {
+  background-color: var(--accepted);
+}
+.declined,
+.declined-s {
+  background-color: var(--declined);
+} 
+.date {
+  display: flex;
+  width: 150px;
+  flex-shrink: 0;
+  align-items: center;
+  flex-direction: row;
+  margin-right: 2rem;
+  justify-content: space-between;
+}
+.date-date {
+  max-width: 47px;
+}
+.sender {
+  width: 200px;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+.title-and-message {
+  flex-grow: 2;
+  max-width: 90%;
+  min-width: 100px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.title-and-message2 {
+  flex-grow: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.notif{
+  display: flex;
+  flex: 1;
+}
+.notif .inner {
+  flex: 1;
+  display: flex;
+  padding-right: .4em;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.inner .value-active {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.value-invisible {
+  opacity: 0;
+}
+
+.value-visible {
+  opacity:  1;
+}
+.name-dept {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
